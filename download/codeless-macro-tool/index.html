@@ -4,30 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>JP's Codeless Macro Tool 다운로드</title>
-<style>
-  body{font-family:sans-serif;text-align:center;margin-top:80px;color:#333}
-  a{color:#2563eb}
-  .hint{margin-top:24px;color:#888;font-size:.9em}
-</style>
+<meta http-equiv="refresh" content="0; url=https://plcmanjp.github.io/codeless-macro-tool/download/">
+<style>body{font-family:sans-serif;text-align:center;margin-top:80px;color:#333}a{color:#2563eb}</style>
 </head>
 <body>
-  <p>다운로드를 시작합니다…</p>
-  <p>자동으로 시작되지 않으면
-     <a href="https://github.com/plcmanjp/JPs-Codeless-Macro-Tool-Release/releases/latest/download/JPsCodelessMacroTool.zip">여기를 클릭</a>하세요.</p>
-  <p class="hint">잠시 후 제품 페이지로 이동합니다…</p>
-  <script>
-    var ZIP  = "https://github.com/plcmanjp/JPs-Codeless-Macro-Tool-Release/releases/latest/download/JPsCodelessMacroTool.zip";
-    var HOME = "https://plcmanjp.github.io/";
-    // 1) 현재 탭을 zip으로 이동시키지 않고 숨김 iframe으로 다운로드만 트리거(페이지 유지)
-    var f = document.createElement("iframe");
-    f.style.display = "none";
-    f.src = ZIP;
-    document.body.appendChild(f);
-    // 2) 다운로드 시작 여유를 준 뒤: 스크립트로 열린 팝업이면 닫고, 직접 연 탭이면 제품 페이지로 이동
-    setTimeout(function () {
-      window.close();          // window.open으로 열린 창에서만 동작
-      location.replace(HOME);  // 직접 연 탭은 close()가 무시되므로 홈으로 리디렉션
-    }, 1500);
-  </script>
+  <!-- 레거시 브랜드 영구링크(블로그 /209 등 기게시) — 정본은 /codeless-macro-tool/download/ 로 이동. 이 스텁은 삭제 금지. -->
+  <p>다운로드 페이지로 이동합니다…
+     <a href="https://plcmanjp.github.io/codeless-macro-tool/download/">자동으로 이동하지 않으면 여기를 클릭</a>하세요.</p>
+  <script>location.replace("https://plcmanjp.github.io/codeless-macro-tool/download/");</script>
 </body>
 </html>
