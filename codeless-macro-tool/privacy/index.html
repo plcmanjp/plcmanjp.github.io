@@ -30,13 +30,26 @@
   h1 { font-size: 1.5rem; margin: 0 0 8px; }
   .meta { color: var(--muted); font-size: 0.9rem; }
   .lang-nav { margin-top: 16px; font-size: 0.95rem; }
-  .lang-nav a {
+  .lang-nav a.lang-btn {
+    display: inline-block;
+    padding: 5px 16px;
+    margin-right: 8px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
     color: var(--accent);
     text-decoration: none;
     font-weight: 600;
+    line-height: 1.4;
   }
-  .lang-nav a:hover { text-decoration: underline; }
-  .lang-nav span { color: var(--muted); margin: 0 8px; }
+  .lang-nav a.lang-btn:hover { border-color: var(--accent); }
+  .lang-nav a.lang-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #ffffff;
+  }
+  /* JS 활성 시에만 단일 언어 표시 (미활성 시 양어 병기 폴백) */
+  body.js-lang-ko #en, body.js-lang-ko hr.divider { display: none; }
+  body.js-lang-en #ko, body.js-lang-en hr.divider { display: none; }
   h2 {
     font-size: 1.2rem;
     margin-top: 40px;
@@ -76,7 +89,7 @@
   <h1>개인정보처리방침 / Privacy Policy</h1>
   <div class="meta">JP's Codeless Macro Tool &middot; 개발자 / Developer: PLCManJP &middot; 시행일 / Effective date: 2026-07-02</div>
   <div class="lang-nav">
-    <a href="#ko">한국어</a><span>|</span><a href="#en">English</a>
+    <a href="#ko" class="lang-btn" data-lang="ko" aria-pressed="false">한국어</a><a href="#en" class="lang-btn" data-lang="en" aria-pressed="false">English</a>
   </div>
 </header>
 
@@ -181,5 +194,46 @@
 </section>
 
 </div>
+
+<script>
+(function () {
+  "use strict";
+  var buttons = document.querySelectorAll(".lang-nav a.lang-btn");
+  var STORAGE_KEY = "jpcmt-privacy-lang";
+
+  function apply(lang) {
+    document.body.classList.remove("js-lang-ko", "js-lang-en");
+    document.body.classList.add("js-lang-" + lang);
+    document.documentElement.lang = lang;
+    for (var i = 0; i < buttons.length; i++) {
+      var on = buttons[i].getAttribute("data-lang") === lang;
+      buttons[i].classList.toggle("active", on);
+      buttons[i].setAttribute("aria-pressed", on ? "true" : "false");
+    }
+    try { localStorage.setItem(STORAGE_KEY, lang); } catch (e) { /* private mode 등 */ }
+  }
+
+  for (var i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener("click", function (e) {
+      e.preventDefault();
+      var lang = this.getAttribute("data-lang");
+      apply(lang);
+      if (history.replaceState) { history.replaceState(null, "", "#" + lang); }
+    });
+  }
+
+  // 초기 언어: URL 해시 > 저장된 선택 > 브라우저 언어(ko 계열=ko, 그 외=en)
+  var initial = null;
+  if (location.hash === "#en") { initial = "en"; }
+  else if (location.hash === "#ko") { initial = "ko"; }
+  if (!initial) {
+    try { initial = localStorage.getItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+  }
+  if (initial !== "ko" && initial !== "en") {
+    initial = /^ko/i.test(navigator.language || "") ? "ko" : "en";
+  }
+  apply(initial);
+})();
+</script>
 </body>
 </html>
