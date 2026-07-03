@@ -1,43 +1,104 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PLC IO Check Helper — Privacy Policy / 개인정보처리방침</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>개인정보처리방침 / Privacy Policy — PLC IO Check Helper</title>
 <style>
-  body { font-family: -apple-system, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
-         max-width: 760px; margin: 0 auto; padding: 24px; line-height: 1.7; color: #222; }
-  h1 { font-size: 1.5rem; } h2 { font-size: 1.15rem; margin-top: 1.6em; }
-  code { background: #f3f3f3; padding: 1px 4px; border-radius: 3px; }
-  .meta { color: #666; font-size: 0.9rem; }
-  footer { margin-top: 2.5em; color: #666; font-size: 0.85rem; border-top: 1px solid #eee; padding-top: 1em; }
-  a { color: #1558d6; }
-  .lang-switch { float: right; margin: 4px 0 12px 12px; }
-  .lang-switch button { border: 1px solid #ccc; background: #fff; color: #444;
-         padding: 4px 12px; cursor: pointer; font-size: 0.85rem; }
-  .lang-switch button:first-child { border-radius: 4px 0 0 4px; border-right: none; }
-  .lang-switch button:last-child { border-radius: 0 4px 4px 0; }
-  .lang-switch button.active { background: #1558d6; border-color: #1558d6; color: #fff; }
-  body[data-lang="ko"] .en { display: none; }
-  body[data-lang="en"] .ko { display: none; }
+  :root {
+    --fg: #1c1e21;
+    --muted: #5f6368;
+    --border: #e2e5e9;
+    --accent: #2563eb;
+    --bg-code: #f4f5f7;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 0 16px 64px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", Roboto, Arial, sans-serif;
+    color: var(--fg);
+    line-height: 1.7;
+    background: #ffffff;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; }
+  header {
+    padding: 32px 0 16px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+  h1 { font-size: 1.5rem; margin: 0 0 8px; }
+  .meta { color: var(--muted); font-size: 0.9rem; }
+  .lang-nav { margin-top: 16px; font-size: 0.95rem; }
+  .lang-nav a.lang-btn {
+    display: inline-block;
+    padding: 5px 16px;
+    margin-right: 8px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  .lang-nav a.lang-btn:hover { border-color: var(--accent); }
+  .lang-nav a.lang-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #ffffff;
+  }
+  /* JS 활성 시에만 단일 언어 표시 (미활성 시 양어 병기 폴백) */
+  body.js-lang-ko #en, body.js-lang-ko hr.divider { display: none; }
+  body.js-lang-en #ko, body.js-lang-en hr.divider { display: none; }
+  h2 {
+    font-size: 1.2rem;
+    margin-top: 40px;
+    padding-top: 4px;
+    border-top: 1px solid var(--border);
+  }
+  section.lang-block > h2:first-of-type { border-top: none; margin-top: 8px; }
+  code {
+    font-family: "Consolas", "SFMono-Regular", Menlo, monospace;
+    background: var(--bg-code);
+    border-radius: 4px;
+    font-size: 0.9em;
+    padding: 1px 5px;
+    word-break: break-all;
+  }
+  ul { padding-left: 22px; }
+  li { margin-bottom: 6px; }
+  a { color: var(--accent); }
+  .footer-note {
+    margin-top: 40px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+  hr.divider {
+    margin: 48px 0;
+    border: none;
+    border-top: 2px dashed var(--border);
+  }
 </style>
 </head>
-<body data-lang="ko">
+<body>
+<div class="wrap">
 
-<div class="lang-switch" role="group" aria-label="Language">
-  <button type="button" data-lang="ko">한국어</button>
-  <button type="button" data-lang="en">English</button>
-</div>
+<header>
+  <h1>개인정보처리방침 / Privacy Policy</h1>
+  <div class="meta">PLC IO Check Helper &middot; 개발자 / Developer: PLCManJP &middot; 시행일 / Effective date: 2026-06-05 &middot; 최종 갱신 / Last updated: 2026-07-03</div>
+  <div class="lang-nav">
+    <a href="#ko" class="lang-btn" data-lang="ko" aria-pressed="false">한국어</a><a href="#en" class="lang-btn" data-lang="en" aria-pressed="false">English</a>
+  </div>
+</header>
 
-<!-- ===================== 한국어 ===================== -->
-<div class="ko">
-<h1>개인정보처리방침 — PLC IO Check Helper</h1>
-<p class="meta">시행일: 2026-06-05 · 최종 갱신: 2026-07-03</p>
-
+<section class="lang-block" id="ko">
+<h2>1. 개요</h2>
 <p>본 방침은 <strong>PLC IO Check Helper</strong>(이하 "본 앱")가 이용자의 정보를 어떻게 처리하는지 설명합니다.
 본 앱은 Mitsubishi Electric Corporation과 제휴하거나 승인·후원을 받지 않은 <strong>독립 개발자의 비공식 유틸리티</strong>입니다.</p>
 
-<h2>1. 개발자가 수집·전송하는 개인정보 — 없음</h2>
+<h2>2. 개발자가 수집·전송하는 개인정보 — 없음</h2>
 <p>본 앱은 이용자 계정을 만들지 않으며, 다음 정보를 <strong>개발자의 서버로 전송하거나 수집하지 않습니다.</strong>
 모든 데이터는 <strong>이용자 단말 내부에만</strong> 저장됩니다.</p>
 <ul>
@@ -50,50 +111,47 @@
 <p>가져오기(import)에 사용하는 GX Works2(.gxw)·CSV 파일은 <strong>이용자 단말에서만</strong> 읽혀 디바이스·코멘트를 추출하며,
 파일 자체나 그 내용을 개발자 서버 등 외부로 <strong>전송·업로드하지 않습니다.</strong></p>
 
-<h2>2. 네트워크 통신</h2>
+<h2>3. 네트워크 통신</h2>
 <p>본 앱은 이용자가 입력한 PLC(공장 내부망 등)와 직접 통신하기 위해 인터넷/네트워크 권한
 (<code>INTERNET</code>)을 사용합니다. 이 통신은 이용자가 지정한 PLC 장비와 단말 사이에서만 이루어지며,
 통신 내용은 개발자에게 전송되지 않습니다.</p>
 
-<h2>3. 제3자 광고 (Google AdMob)</h2>
+<h2>4. 제3자 광고 (Google AdMob)</h2>
 <p>본 앱은 Google AdMob 광고를 표시합니다. 광고 제공 과정에서 Google 및 광고 파트너는
 광고 식별자, 대략적 위치, 기기 정보 등을 수집·이용할 수 있습니다. 이는 Google의 정책에 따라 처리됩니다.</p>
 <ul>
-  <li>Google의 데이터 처리: <a href="https://policies.google.com/privacy">policies.google.com/privacy</a></li>
-  <li>광고에서의 데이터 사용: <a href="https://policies.google.com/technologies/ads">policies.google.com/technologies/ads</a></li>
+  <li>Google의 데이터 처리: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a></li>
+  <li>광고에서의 데이터 사용: <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">policies.google.com/technologies/ads</a></li>
 </ul>
 <p>유럽 경제 지역(EEA) 등 해당 지역 이용자에게는 Google User Messaging Platform(UMP)을 통해
 광고 개인정보 동의를 수집하며, 동의 상태에 따라 개인화 또는 비개인화 광고가 제공됩니다.</p>
 
-<h2>4. 아동</h2>
+<h2>5. 아동</h2>
 <p>본 앱은 산업 현장 PLC 점검을 위한 도구로, 아동을 대상으로 하지 않습니다.</p>
 
-<h2>5. 데이터 보안</h2>
+<h2>6. 데이터 보안</h2>
 <p>앱이 저장하는 데이터는 단말 내부 저장소에 보관됩니다. 단말 분실·도난 시 보호를 위해
 기기 잠금 등 운영체제 보안 기능 사용을 권장합니다.</p>
 
-<h2>6. 방침 변경</h2>
+<h2>7. 방침 변경</h2>
 <p>본 방침은 법령·서비스 변경에 따라 갱신될 수 있으며, 갱신 시 본 페이지에 게시합니다.</p>
 
-<h2>7. 문의</h2>
+<h2>8. 문의</h2>
 <p>개인정보 관련 문의: <a href="mailto:chechapbg@gmail.com">chechapbg@gmail.com</a></p>
 
-<footer>
-Mitsubishi, MELSEC, MELSEC-Q, Q Series, iQ-R 등은 Mitsubishi Electric Corporation의 등록 상표 또는 상표입니다.
-본 앱은 해당 회사와 제휴·승인 관계가 없는 비공식 앱입니다.
-</footer>
-</div>
+<p class="footer-note">Mitsubishi, MELSEC, MELSEC-Q, Q Series, iQ-R 등은 Mitsubishi Electric Corporation의 등록 상표 또는 상표입니다.
+본 앱은 해당 회사와 제휴·승인 관계가 없는 비공식 앱입니다.</p>
+</section>
 
-<!-- ===================== English ===================== -->
-<div class="en">
-<h1>Privacy Policy — PLC IO Check Helper</h1>
-<p class="meta">Effective date: 2026-06-05 · Last updated: 2026-07-03</p>
+<hr class="divider">
 
+<section class="lang-block" id="en">
+<h2>1. Overview</h2>
 <p>This policy explains how <strong>PLC IO Check Helper</strong> ("the App") handles your information.
 The App is an <strong>unofficial utility by an independent developer</strong>, and is not affiliated with,
 endorsed, or sponsored by Mitsubishi Electric Corporation.</p>
 
-<h2>1. Personal data collected or transmitted by the developer — None</h2>
+<h2>2. Personal Data Collected or Transmitted by the Developer — None</h2>
 <p>The App does not create user accounts, and does <strong>not collect or transmit any of the following
 to the developer's servers.</strong> All data is stored <strong>only on your device.</strong></p>
 <ul>
@@ -108,59 +166,81 @@ when the App is uninstalled.</p>
 devices and comments; neither the files nor their contents are <strong>transmitted or uploaded</strong>
 to the developer's servers or any other external destination.</p>
 
-<h2>2. Network communication</h2>
+<h2>3. Network Communication</h2>
 <p>The App uses the network permission (<code>INTERNET</code>) to communicate directly with the PLC
 you specify (e.g., on a factory internal network). This communication occurs only between your device
 and the specified PLC equipment; its contents are not sent to the developer.</p>
 
-<h2>3. Third-party advertising (Google AdMob)</h2>
+<h2>4. Third-Party Advertising (Google AdMob)</h2>
 <p>The App displays Google AdMob advertisements. In the course of serving ads, Google and its advertising
 partners may collect and use advertising identifiers, approximate location, and device information.
 This is processed in accordance with Google's policies.</p>
 <ul>
-  <li>How Google processes data: <a href="https://policies.google.com/privacy">policies.google.com/privacy</a></li>
-  <li>How Google uses data in advertising: <a href="https://policies.google.com/technologies/ads">policies.google.com/technologies/ads</a></li>
+  <li>How Google processes data: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a></li>
+  <li>How Google uses data in advertising: <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">policies.google.com/technologies/ads</a></li>
 </ul>
 <p>For users in the European Economic Area (EEA) and other applicable regions, advertising privacy consent
 is collected via the Google User Messaging Platform (UMP), and personalized or non-personalized ads are
 served according to your consent status.</p>
 
-<h2>4. Children</h2>
+<h2>5. Children's Privacy</h2>
 <p>The App is a tool for inspecting PLCs at industrial sites and is not directed at children.</p>
 
-<h2>5. Data security</h2>
+<h2>6. Data Security</h2>
 <p>Data stored by the App is kept in your device's internal storage. To protect it in case of loss or theft,
 we recommend using operating system security features such as a device lock.</p>
 
-<h2>6. Changes to this policy</h2>
+<h2>7. Changes to This Policy</h2>
 <p>This policy may be updated in response to changes in laws or the service. Updates will be posted on this page.</p>
 
-<h2>7. Contact</h2>
+<h2>8. Contact</h2>
 <p>Privacy inquiries: <a href="mailto:chechapbg@gmail.com">chechapbg@gmail.com</a></p>
 
-<footer>
-Mitsubishi, MELSEC, MELSEC-Q, Q Series, and iQ-R are registered trademarks or trademarks of
+<p class="footer-note">Mitsubishi, MELSEC, MELSEC-Q, Q Series, and iQ-R are registered trademarks or trademarks of
 Mitsubishi Electric Corporation. This app is an unofficial app with no affiliation with,
-or endorsement by, that company.
-</footer>
+or endorsement by, that company.</p>
+</section>
+
 </div>
 
 <script>
 (function () {
-  var buttons = document.querySelectorAll('.lang-switch button');
-  function setLang(lang) {
-    document.body.dataset.lang = lang;
+  "use strict";
+  var buttons = document.querySelectorAll(".lang-nav a.lang-btn");
+  var STORAGE_KEY = "pioch-privacy-lang";
+
+  function apply(lang) {
+    document.body.classList.remove("js-lang-ko", "js-lang-en");
+    document.body.classList.add("js-lang-" + lang);
     document.documentElement.lang = lang;
-    try { localStorage.setItem('pp-lang', lang); } catch (e) {}
-    buttons.forEach(function (b) { b.classList.toggle('active', b.dataset.lang === lang); });
+    for (var i = 0; i < buttons.length; i++) {
+      var on = buttons[i].getAttribute("data-lang") === lang;
+      buttons[i].classList.toggle("active", on);
+      buttons[i].setAttribute("aria-pressed", on ? "true" : "false");
+    }
+    try { localStorage.setItem(STORAGE_KEY, lang); } catch (e) { /* private mode 등 */ }
   }
-  buttons.forEach(function (b) {
-    b.addEventListener('click', function () { setLang(b.dataset.lang); });
-  });
-  var saved = null;
-  try { saved = localStorage.getItem('pp-lang'); } catch (e) {}
-  var initial = saved || ((navigator.language || '').toLowerCase().indexOf('ko') === 0 ? 'ko' : 'en');
-  setLang(initial === 'ko' ? 'ko' : 'en');
+
+  for (var i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener("click", function (e) {
+      e.preventDefault();
+      var lang = this.getAttribute("data-lang");
+      apply(lang);
+      if (history.replaceState) { history.replaceState(null, "", "#" + lang); }
+    });
+  }
+
+  // 초기 언어: URL 해시 > 저장된 선택 > 브라우저 언어(ko 계열=ko, 그 외=en)
+  var initial = null;
+  if (location.hash === "#en") { initial = "en"; }
+  else if (location.hash === "#ko") { initial = "ko"; }
+  if (!initial) {
+    try { initial = localStorage.getItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+  }
+  if (initial !== "ko" && initial !== "en") {
+    initial = /^ko/i.test(navigator.language || "") ? "ko" : "en";
+  }
+  apply(initial);
 })();
 </script>
 </body>
