@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>원둘레 계산기 — 지름·반지름·원주·면적·PCD | 엔지니어 도구</title>
+<meta name="description" content="지름·반지름·원주·면적 중 하나만 입력하면 나머지가 자동 계산되는 원둘레 계산기. 모듈·잇수로 기어 피치원 지름(PCD)까지. 설치 없이 브라우저에서 무료.">
+<meta property="og:title" content="원둘레 계산기 | PLCManJP 엔지니어 도구">
+<meta property="og:description" content="지름·반지름·원주·면적 상호 변환 + 기어 PCD 계산. 무료 웹 도구.">
+<link rel="canonical" href="https://plcmanjp.github.io/engineer-tool/circumference/">
+<script>try{var t=localStorage.getItem("plcmanjp-tool-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
+<style>
+  :root {
+    --bg: #e9edf1; --surface: #ffffff; --surface-2: #f3f6f9; --ink: #18222e;
+    --muted: #5c6772; --line: #d3dae1; --primary: #15629f; --primary-soft: #e4eef7;
+    --warn: #c9720a; --warn-soft: #fbeed6; --danger: #c2384c; --good: #2e7d32; --good-soft: #e7f5ea;
+    --signal: #7a3ea8; --signal-soft: #efe4f7; --readout: #0f1a26;
+    --mono: ui-monospace, "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+    --sans: -apple-system, "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #10161d; --surface: #19222c; --surface-2: #141c25; --ink: #e7edf3;
+      --muted: #93a1b0; --line: #2a3542; --primary: #4ea3e6; --primary-soft: #17303f;
+      --warn: #e6a13c; --warn-soft: #33270f; --danger: #e26374; --good: #7fc08a; --good-soft: #14241a;
+      --signal: #b088d8; --signal-soft: #2a1c3a; --readout: #dfe8f0;
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #e9edf1; --surface: #ffffff; --surface-2: #f3f6f9; --ink: #18222e;
+    --muted: #5c6772; --line: #d3dae1; --primary: #15629f; --primary-soft: #e4eef7;
+    --warn: #c9720a; --warn-soft: #fbeed6; --danger: #c2384c; --good: #2e7d32; --good-soft: #e7f5ea;
+    --signal: #7a3ea8; --signal-soft: #efe4f7; --readout: #0f1a26;
+  }
+  :root[data-theme="dark"] {
+    --bg: #10161d; --surface: #19222c; --surface-2: #141c25; --ink: #e7edf3;
+    --muted: #93a1b0; --line: #2a3542; --primary: #4ea3e6; --primary-soft: #17303f;
+    --warn: #e6a13c; --warn-soft: #33270f; --danger: #e26374; --good: #7fc08a; --good-soft: #14241a;
+    --signal: #b088d8; --signal-soft: #2a1c3a; --readout: #dfe8f0;
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 520px; margin: 0 auto; padding: 22px 16px 56px; }
+  .eyebrow { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--primary); font-weight: 700; margin: 0 0 6px; }
+  h1.page { font-size: clamp(20px, 3.4vw, 26px); margin: 0 0 8px; letter-spacing: -.01em; text-wrap: balance; }
+  p.lede { margin: 0 0 20px; color: var(--muted); }
+
+  .device { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; box-shadow: 0 8px 30px rgba(20,32,46,.12); overflow: hidden; }
+  .device-bar { padding: 13px 16px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--line); }
+  .device-bar .back { font-size: 18px; color: var(--ink); text-decoration: none; line-height: 1; }
+  .device-bar .back:hover { color: var(--primary); }
+  .device-bar h2 { font-size: 15px; margin: 0; font-weight: 600; flex: 1; }
+
+  .tabs { display: flex; border-bottom: 1px solid var(--line); }
+  .tab { flex: 1; appearance: none; border: 0; background: transparent; cursor: pointer; padding: 12px 8px 10px; font-family: var(--sans); font-size: 13.5px; font-weight: 700; color: var(--muted); border-bottom: 2.5px solid transparent; }
+  .tab[aria-selected="true"] { color: var(--primary); border-bottom-color: var(--primary); }
+
+  .screen { padding: 14px 14px 18px; display: flex; flex-direction: column; gap: 12px; }
+  .hint0 { font-size: 12px; color: var(--muted); }
+
+  .zone { border: 1px solid var(--line); border-radius: 14px; padding: 12px 13px 14px; display: flex; flex-direction: column; gap: 11px; }
+  .zone.input { background: color-mix(in srgb, var(--primary-soft) 45%, var(--surface)); border-color: color-mix(in srgb, var(--primary) 35%, var(--line)); }
+  .zone.green { background: color-mix(in srgb, var(--good-soft) 75%, var(--surface)); border-color: color-mix(in srgb, var(--good) 40%, var(--line)); }
+  .zone-head { display: flex; flex-direction: column; gap: 1px; }
+  .zone-head .h { font-size: 12px; font-weight: 800; letter-spacing: .02em; display: flex; align-items: center; gap: 7px; }
+  .zone-head .sub { font-size: 10.5px; color: var(--muted); padding-left: 19px; }
+  .zone.input .h { color: var(--primary); } .zone.green .h { color: var(--good); }
+
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  label.f { display: flex; flex-direction: column; gap: 3px; font-size: 11px; color: var(--muted); }
+  label.f input, label.f select { font-family: var(--mono); font-size: 15px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 9px 10px; width: 100%; }
+  label.f input:focus, label.f select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-soft); }
+  input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+  .badge { align-self: flex-start; font-size: 11.5px; font-weight: 700; padding: 5px 10px; border-radius: 8px; background: color-mix(in srgb, var(--warn) 16%, transparent); color: var(--warn); }
+  .badge[hidden] { display: none; }
+  .badge.danger { background: color-mix(in srgb, var(--danger) 16%, transparent); color: var(--danger); }
+
+  ul.notes { margin: 16px 2px 0; padding-left: 18px; color: var(--muted); font-size: 12.5px; }
+  ul.notes li { margin-bottom: 6px; } ul.notes b { color: var(--ink); }
+
+  /* S0019 도구 고유 스타일 */
+  .diagram-canvas { display: block; width: 100%; height: 190px; border-radius: 10px; touch-action: none; }
+  .frow { display: flex; align-items: flex-end; gap: 8px; }
+  .frow label.f { flex: 1; }
+  .iwrap { position: relative; }
+  .iwrap input { padding-right: 42px; }
+  .iwrap input[readonly] { background: var(--surface-2); color: var(--muted); cursor: default; }
+  .iwrap .unit { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-family: var(--sans); font-size: 11.5px; color: var(--muted); pointer-events: none; }
+  .copybtn { flex: 0 0 auto; width: 40px; height: 40px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--muted); font-size: 16px; line-height: 1; cursor: pointer; }
+  .copybtn:disabled { opacity: .35; cursor: default; }
+  .copybtn:not(:disabled):hover { border-color: var(--primary); color: var(--primary); }
+  .active-src span:first-child { color: var(--primary); }
+  .formula { font-family: var(--mono); font-size: 11px; color: var(--muted); padding-left: 2px; margin-top: -4px; }
+  #panelCirc[hidden], #panelPcd[hidden] { display: none; }
+
+  /* ── 웹 셸 (엔지니어 도구 공용) ─────────────────────────── */
+  .topbar { border-bottom: 1px solid var(--line); background: var(--surface); }
+  .topbar .tw { max-width: 520px; margin: 0 auto; padding: 0 16px; height: 50px; display: flex; align-items: center; justify-content: space-between; }
+  .crumb { font-size: 13px; font-weight: 600; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .crumb a { color: var(--muted); text-decoration: none; } .crumb a:hover { color: var(--ink); }
+  .crumb .sep { margin: 0 6px; opacity: .5; } .crumb .cur { color: var(--ink); font-weight: 700; }
+  .themebtn { flex: 0 0 auto; appearance: none; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font-family: var(--sans); font-size: 12.5px; font-weight: 600; padding: 6px 11px; border-radius: 999px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; margin-left: 10px; }
+  .themebtn:hover { border-color: var(--primary); }
+  footer.site { border-top: 1px solid var(--line); margin-top: 30px; padding: 26px 16px 40px; text-align: center; color: var(--muted); font-size: 12.5px; }
+  footer.site .fl { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 12px; }
+  footer.site .fl a { color: var(--muted); font-weight: 600; text-decoration: none; } footer.site .fl a:hover { color: var(--ink); }
+  footer.site .note { font-size: 11.5px; line-height: 1.7; max-width: 460px; margin: 0 auto; }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="tw">
+      <div class="crumb"><a href="/">PLCManJP</a><span class="sep">/</span><a href="../">엔지니어 도구</a><span class="sep">/</span><span class="cur">원둘레 계산기</span></div>
+      <button class="themebtn" id="themeBtn" type="button" aria-label="테마 전환">🌓 <span id="themeLbl">시스템</span></button>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <header>
+      <p class="eyebrow">엔지니어 도구</p>
+      <h1 class="page">원둘레 계산기</h1>
+      <p class="lede">지름·반지름·원주·면적 중 하나를 입력하면 나머지 3개가 자동 산출됩니다. 도식 위에서 값의 관계를 확인하고, <b>PCD(기어)</b> 탭에서 모듈·잇수로 피치원 지름을 계산합니다.</p>
+    </header>
+
+    <section class="device">
+      <div class="device-bar"><a class="back" href="../" aria-label="도구 목록으로">&larr;</a><h2>원둘레 계산기</h2></div>
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" id="tab-circ" aria-selected="true">원둘레</button>
+        <button class="tab" role="tab" id="tab-pcd" aria-selected="false">PCD(기어)</button>
+      </div>
+
+      <div class="screen">
+        <!-- ── 탭0: 원둘레 ── -->
+        <div id="panelCirc">
+          <p class="hint0">하나의 값을 입력하면 나머지 3개가 자동 산출됩니다 (mm / mm&sup2;)</p>
+
+          <div class="zone green">
+            <div class="zone-head"><span class="h"><span>&#9670;</span><span>원 도식</span></span></div>
+            <canvas class="diagram-canvas" id="circleCanvas" width="480" height="190" aria-label="원 도식(지름·반지름·원주·면적)"></canvas>
+          </div>
+
+          <div class="zone input">
+            <div class="zone-head"><span class="h"><span>&#9654;</span><span>값 입력 (하나만 편집)</span></span><span class="sub">지름 &middot; 반지름 &middot; 원주 &middot; 면적 상호 변환</span></div>
+
+            <div class="frow" id="rowD">
+              <label class="f"><span>지름 (d)</span>
+                <div class="iwrap"><input type="number" step="any" id="dInput" value="100" placeholder="0"><span class="unit">mm</span></div>
+              </label>
+              <button type="button" class="copybtn" data-target="dInput" aria-label="지름 값 복사">&#10209;</button>
+            </div>
+
+            <div class="frow" id="rowR">
+              <label class="f"><span>반지름 (r)</span>
+                <div class="iwrap"><input type="number" step="any" id="rInput" value="" placeholder="0"><span class="unit">mm</span></div>
+              </label>
+              <button type="button" class="copybtn" data-target="rInput" aria-label="반지름 값 복사">&#10209;</button>
+            </div>
+
+            <div>
+              <div class="frow" id="rowC">
+                <label class="f"><span>원주 (C)</span>
+                  <div class="iwrap"><input type="number" step="any" id="cInput" value="" placeholder="0"><span class="unit">mm</span></div>
+                </label>
+                <button type="button" class="copybtn" data-target="cInput" aria-label="원주 값 복사">&#10209;</button>
+              </div>
+              <div class="formula">C = &pi; &times; d&nbsp;&nbsp;(= 2&pi; &times; r)</div>
+            </div>
+
+            <div>
+              <div class="frow" id="rowA">
+                <label class="f"><span>면적 (A)</span>
+                  <div class="iwrap"><input type="number" step="any" id="aInput" value="" placeholder="0"><span class="unit">mm&sup2;</span></div>
+                </label>
+                <button type="button" class="copybtn" data-target="aInput" aria-label="면적 값 복사">&#10209;</button>
+              </div>
+              <div class="formula">A = &pi; &times; r&sup2;&nbsp;&nbsp;(= &pi; &times; d&sup2; / 4)</div>
+            </div>
+
+            <div class="badge danger" id="circError" hidden>&#9888; 0 이하의 값은 입력할 수 없습니다</div>
+          </div>
+        </div>
+
+        <!-- ── 탭1: PCD(기어) ── -->
+        <div id="panelPcd" hidden>
+          <p class="hint0">모듈(m)과 잇수(z)를 입력하면 피치원 지름(PCD)이 자동 산출됩니다 (단방향 &mdash; 역산 없음)</p>
+
+          <div class="zone green">
+            <div class="zone-head"><span class="h"><span>&#9670;</span><span>기어 도식</span></span></div>
+            <canvas class="diagram-canvas" id="gearCanvas" width="480" height="200" aria-label="기어 도식(피치원·톱니 모식도)"></canvas>
+          </div>
+
+          <div class="zone input">
+            <div class="zone-head"><span class="h"><span>&#9654;</span><span>모듈 &middot; 잇수 입력</span></span><span class="sub">PCD = m &times; z (단방향, 역산 없음)</span></div>
+
+            <div class="row">
+              <label class="f">모듈 (m)<input type="number" step="any" id="mInput" value="2" placeholder="2"></label>
+              <label class="f">잇수 (z)<input type="number" step="1" id="zInput" value="20" placeholder="20"></label>
+            </div>
+
+            <div>
+              <div class="frow">
+                <label class="f"><span>PCD (피치원 지름)</span>
+                  <div class="iwrap"><input type="text" id="pcdOutput" readonly value=""><span class="unit">mm</span></div>
+                </label>
+                <button type="button" class="copybtn" data-target="pcdOutput" aria-label="PCD 값 복사">&#10209;</button>
+              </div>
+              <div class="formula">PCD = m &times; z</div>
+            </div>
+
+            <div class="badge danger" id="pcdError" hidden>&#9888; 모듈은 0보다 크고 잇수는 1 이상 정수여야 합니다</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <ul class="notes">
+      <li><b>변환</b> &mdash; 지름&middot;반지름&middot;원주&middot;면적 중 마지막으로 편집한 값이 입력이 되고 나머지 3개는 자동 산출됩니다(단위 mm 고정, 면적 mm&sup2;). 값이 비면 입력 필드를 제외한 나머지가 비워지고, 0 이하 입력은 오류로 표시됩니다.</li>
+      <li><b>도식</b> &mdash; 원 도식은 지름선(d)&middot;반지름선(r)&middot;원주 강조 호(C)&middot;면적(A) 위치를 보여주는 참고도입니다. 기어 도식은 피치원(점선)과 톱니 수(z)에 반응하는 모식도입니다.</li>
+      <li><b>PCD 탭</b> &mdash; 모듈&middot;잇수 &rarr; PCD 단방향 산출(역산 없음). 표시 값은 소수 4자리, 반올림 HALF_UP, 끝자리 0은 생략됩니다.</li>
+    </ul>
+  </div>
+
+  <footer class="site">
+    <div class="fl">
+      <a href="/">PLCManJP 홈</a>
+      <a href="../">엔지니어 도구</a>
+      <a href="https://play.google.com/store/apps/details?id=com.plciocheck.iocheck">앱으로 (Android)</a>
+    </div>
+    <p class="note">본 도구는 특정 제조사와 무관한 독립 개발 소프트웨어입니다. 계산 결과는 참고용이며, 최종 확인은 사용자 책임입니다.</p>
+  </footer>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var el = {};
+  ["dInput","rInput","cInput","aInput","circError",
+   "mInput","zInput","pcdOutput","pcdError",
+   "circleCanvas","gearCanvas"].forEach(function (id) { el[id] = $(id); });
+
+  var activeTab = "circ";
+  var lastKind = "D"; // 초기 데모값(d=100)이 입력 kind — S0019 Preview 골든값과 동일
+
+  // ── 공통 숫자 파싱/표시 (도메인 CircleConvert/PcdGear의 π·반올림 규칙 반영) ──
+  var PI = 3.14159265358979323846264338327950288419716939937510582097494459230781;
+
+  function parseNum(text) {
+    var t = (text || "").trim();
+    if (t === "") return null;
+    if (!/^[+-]?(\d+\.?\d*|\.\d+)$/.test(t)) return null;
+    var v = Number(t);
+    return isFinite(v) ? v : null;
+  }
+  function parseIntStrict(text) {
+    var t = (text || "").trim();
+    if (t === "" || !/^[+-]?\d+$/.test(t)) return null;
+    var v = parseInt(t, 10);
+    return isFinite(v) ? v : null;
+  }
+  /** BigDecimal setScale(4, HALF_UP).stripTrailingZeros().toPlainString() 근사. */
+  function fmtDisplay(v) {
+    if (!isFinite(v)) return "";
+    var sign = v < 0 ? "-" : "";
+    var av = Math.abs(v);
+    var r = Math.round(av * 10000 + 1e-7) / 10000;
+    var s = r.toFixed(4).replace(/0+$/, "").replace(/\.$/, "");
+    if (s === "" || s === "-0") s = "0";
+    return (r === 0 ? "" : sign) + s;
+  }
+
+  function updateCopyState() {
+    document.querySelectorAll(".copybtn").forEach(function (btn) {
+      var input = $(btn.getAttribute("data-target"));
+      btn.disabled = !(input && input.value);
+    });
+  }
+  function markActiveField(kind) {
+    ["rowD","rowR","rowC","rowA"].forEach(function (id) { $(id).classList.remove("active-src"); });
+    var map = { D: "rowD", R: "rowR", C: "rowC", A: "rowA" };
+    if (map[kind]) $(map[kind]).classList.add("active-src");
+  }
+
+  // ── 탭0: 원둘레 (지름·반지름·원주·면적 상호 변환) ──
+  function clearOthers(kind) {
+    if (kind !== "D") el.dInput.value = "";
+    if (kind !== "R") el.rInput.value = "";
+    if (kind !== "C") el.cInput.value = "";
+    if (kind !== "A") el.aInput.value = "";
+  }
+  function recomputeCirc(kind) {
+    lastKind = kind;
+    markActiveField(kind);
+    var raw = { D: el.dInput, R: el.rInput, C: el.cInput, A: el.aInput }[kind].value;
+    var v = parseNum(raw);
+
+    if (v === null) {
+      clearOthers(kind);
+      el.circError.hidden = true;
+      updateCopyState();
+      drawCircleDiagram();
+      return;
+    }
+    if (v <= 0) {
+      clearOthers(kind);
+      el.circError.hidden = false;
+      updateCopyState();
+      drawCircleDiagram();
+      return;
+    }
+    el.circError.hidden = true;
+
+    var d;
+    switch (kind) {
+      case "D": d = v; break;
+      case "R": d = v * 2; break;
+      case "C": d = v / PI; break;
+      case "A": d = 2 * Math.sqrt(v / PI); break;
+    }
+    var r = d / 2, c = PI * d, a = PI * d * d / 4;
+
+    if (kind !== "D") el.dInput.value = fmtDisplay(d);
+    if (kind !== "R") el.rInput.value = fmtDisplay(r);
+    if (kind !== "C") el.cInput.value = fmtDisplay(c);
+    if (kind !== "A") el.aInput.value = fmtDisplay(a);
+
+    updateCopyState();
+    drawCircleDiagram();
+  }
+  el.dInput.addEventListener("input", function () { recomputeCirc("D"); });
+  el.rInput.addEventListener("input", function () { recomputeCirc("R"); });
+  el.cInput.addEventListener("input", function () { recomputeCirc("C"); });
+  el.aInput.addEventListener("input", function () { recomputeCirc("A"); });
+
+  // ── 탭1: PCD(기어) — 모듈·잇수 → PCD 단방향 ──
+  function recomputePcd() {
+    var modText = el.mInput.value.trim();
+    var zText = el.zInput.value.trim();
+
+    if (modText === "" || zText === "") {
+      el.pcdOutput.value = "";
+      el.pcdError.hidden = true;
+      updateCopyState();
+      drawGear();
+      return;
+    }
+    var mod = parseNum(modText);
+    var z = parseIntStrict(zText);
+    if (mod === null || z === null || mod <= 0 || z < 1) {
+      el.pcdOutput.value = "";
+      el.pcdError.hidden = false;
+      updateCopyState();
+      drawGear();
+      return;
+    }
+    el.pcdError.hidden = true;
+    el.pcdOutput.value = fmtDisplay(mod * z);
+    updateCopyState();
+    drawGear();
+  }
+  el.mInput.addEventListener("input", recomputePcd);
+  el.zInput.addEventListener("input", recomputePcd);
+
+  // ── 복사 버튼 ──
+  function fallbackCopy(text) {
+    var ta = document.createElement("textarea");
+    ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    try { document.execCommand("copy"); } catch (e) { /* no-op */ }
+    document.body.removeChild(ta);
+  }
+  document.querySelectorAll(".copybtn").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var input = $(btn.getAttribute("data-target"));
+      if (!input || !input.value) return;
+      var text = input.value;
+      var restore = btn.textContent;
+      function flash() {
+        btn.textContent = "✓";
+        setTimeout(function () { btn.textContent = restore; }, 900);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(flash).catch(function () { fallbackCopy(text); flash(); });
+      } else {
+        fallbackCopy(text); flash();
+      }
+    });
+  });
+
+  // ── 탭 전환 ──
+  function setTab(t) {
+    activeTab = t;
+    $("tab-circ").setAttribute("aria-selected", t === "circ");
+    $("tab-pcd").setAttribute("aria-selected", t === "pcd");
+    $("panelCirc").hidden = t !== "circ";
+    $("panelPcd").hidden = t !== "pcd";
+    if (t === "circ") drawCircleDiagram(); else drawGear();
+  }
+  $("tab-circ").addEventListener("click", function () { setTab("circ"); });
+  $("tab-pcd").addEventListener("click", function () { setTab("pcd"); });
+
+  // ── 원 도식 (CircleDiagram — 값과 무관한 고정 참고도) ──
+  function arrowHead(ctx, color, tipX, tipY, angleRad, arrowAngRad, arrowLen, strokeWidth) {
+    var lx = tipX - arrowLen * Math.cos(angleRad - arrowAngRad);
+    var ly = tipY - arrowLen * Math.sin(angleRad - arrowAngRad);
+    var rx = tipX - arrowLen * Math.cos(angleRad + arrowAngRad);
+    var ry = tipY - arrowLen * Math.sin(angleRad + arrowAngRad);
+    ctx.beginPath(); ctx.moveTo(lx, ly); ctx.lineTo(tipX, tipY); ctx.lineTo(rx, ry);
+    ctx.strokeStyle = color; ctx.lineWidth = strokeWidth; ctx.lineCap = "round"; ctx.lineJoin = "round"; ctx.stroke();
+  }
+  function drawCircleDiagram() {
+    var c = el.circleCanvas, ctx = c.getContext("2d");
+    var dpr = window.devicePixelRatio || 1, W = c.clientWidth, H = c.clientHeight;
+    if (!W || !H) return;
+    c.width = W * dpr; c.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
+    var cs = getComputedStyle(document.documentElement), col = function (n) { return cs.getPropertyValue(n).trim(); };
+
+    var cx = W / 2, cy = H / 2, radius = Math.min(W, H) * 0.36;
+
+    ctx.globalAlpha = 0.08; ctx.fillStyle = col("--primary");
+    ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1;
+
+    ctx.strokeStyle = col("--primary"); ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2); ctx.stroke();
+
+    // 원주 강조 호 (상단→우측 1/4)
+    ctx.strokeStyle = col("--warn"); ctx.lineWidth = 5; ctx.lineCap = "round";
+    ctx.beginPath(); ctx.arc(cx, cy, radius, -Math.PI / 2, 0, false); ctx.stroke();
+
+    ctx.fillStyle = col("--ink");
+    ctx.beginPath(); ctx.arc(cx, cy, 3, 0, Math.PI * 2); ctx.fill();
+
+    // 지름선(d) — 좌우 화살촉
+    var dStroke = 2, arrowLen = 8, arrowAng = Math.toRadians ? Math.toRadians(25) : 25 * Math.PI / 180;
+    ctx.strokeStyle = col("--signal"); ctx.lineWidth = dStroke;
+    ctx.beginPath(); ctx.moveTo(cx - radius, cy); ctx.lineTo(cx + radius, cy); ctx.stroke();
+    arrowHead(ctx, col("--signal"), cx - radius, cy, Math.PI, arrowAng, arrowLen, dStroke);
+    arrowHead(ctx, col("--signal"), cx + radius, cy, 0, arrowAng, arrowLen, dStroke);
+
+    // 반지름선(r) — 135도 방향, 끝점 화살촉
+    var rAngle = Math.PI * 135 / 180;
+    var rEndX = cx + radius * Math.cos(rAngle), rEndY = cy + radius * Math.sin(rAngle);
+    ctx.strokeStyle = col("--good"); ctx.lineWidth = dStroke;
+    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(rEndX, rEndY); ctx.stroke();
+    arrowHead(ctx, col("--good"), rEndX, rEndY, rAngle, arrowAng, arrowLen, dStroke);
+
+    ctx.font = "13px " + col("--sans"); ctx.fillStyle = col("--ink"); ctx.textAlign = "center"; ctx.textBaseline = "top";
+    ctx.fillText("d", cx, cy + 6);
+
+    var rMidX = cx + (radius / 2) * Math.cos(rAngle), rMidY = cy + (radius / 2) * Math.sin(rAngle);
+    ctx.textAlign = "right"; ctx.textBaseline = "bottom";
+    ctx.fillText("r", rMidX - 4, rMidY - 2);
+
+    var cLabelAngle = -Math.PI / 4, cLabelDist = radius + 14;
+    ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.fillText("C", cx + cLabelDist * Math.cos(cLabelAngle), cy + cLabelDist * Math.sin(cLabelAngle));
+
+    var aLabelDist = radius * 0.5, aAngle = Math.PI / 4;
+    ctx.fillText("A", cx + aLabelDist * Math.cos(aAngle), cy + aLabelDist * Math.sin(aAngle));
+  }
+
+  // ── 기어 도식 (GearDiagram — 톱니수 z에 반응하는 모식도, 인볼류트 간략화) ──
+  function drawGear() {
+    var c = el.gearCanvas, ctx = c.getContext("2d");
+    var dpr = window.devicePixelRatio || 1, W = c.clientWidth, H = c.clientHeight;
+    if (!W || !H) return;
+    c.width = W * dpr; c.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
+    var cs = getComputedStyle(document.documentElement), col = function (n) { return cs.getPropertyValue(n).trim(); };
+
+    var zParsed = parseIntStrict(el.zInput.value);
+    var isExample = (zParsed === null || zParsed < 1);
+    var actualZ = isExample ? 12 : zParsed;
+    var drawZ = Math.max(5, Math.min(40, actualZ));
+
+    var modText = el.mInput.value.trim();
+    var modDisplay = modText !== "" ? modText : "2";
+    var pcdText = el.pcdOutput.value;
+    var pcdDisplay = pcdText !== "" ? pcdText : String(2 * actualZ);
+
+    var cx = W / 2, cy = H / 2, pitchR = Math.min(W, H) * 0.32;
+    var mPx = 2 * pitchR / drawZ;
+    var toothH = Math.min(mPx, pitchR * 0.15);
+    var ra = pitchR + toothH;
+    var rf = Math.max(pitchR - 1.25 * toothH, pitchR * 0.2);
+
+    var toothColor = isExample ? hexAlpha(col("--signal"), 0.40) : col("--signal");
+    var fillColor = hexAlpha(col("--signal"), isExample ? 0.06 : 0.12);
+    var pitchColor = isExample ? hexAlpha(col("--primary"), 0.35) : col("--primary");
+
+    // 1) 톱니 실루엣(사다리꼴 근사 — 실제 인볼류트 곡선 간략화)
+    var toothAngle = (Math.PI * 2) / drawZ;
+    var tipHalf = toothAngle * 0.17, rootHalf = toothAngle * 0.30;
+    ctx.beginPath();
+    for (var i = 0; i < drawZ; i++) {
+      var center = -Math.PI / 2 + i * toothAngle;
+      var rl = center - rootHalf, tl = center - tipHalf, tr = center + tipHalf, rr = center + rootHalf;
+      var p0 = [cx + rf * Math.cos(rl), cy + rf * Math.sin(rl)];
+      var p1 = [cx + ra * Math.cos(tl), cy + ra * Math.sin(tl)];
+      var p2 = [cx + ra * Math.cos(tr), cy + ra * Math.sin(tr)];
+      var p3 = [cx + rf * Math.cos(rr), cy + rf * Math.sin(rr)];
+      if (i === 0) ctx.moveTo(p0[0], p0[1]); else ctx.lineTo(p0[0], p0[1]);
+      ctx.lineTo(p1[0], p1[1]); ctx.lineTo(p2[0], p2[1]); ctx.lineTo(p3[0], p3[1]);
+    }
+    ctx.closePath();
+    ctx.fillStyle = fillColor; ctx.fill();
+    ctx.strokeStyle = toothColor; ctx.lineWidth = 1.8; ctx.lineJoin = "round"; ctx.stroke();
+
+    // 2) 피치원(점선)
+    ctx.strokeStyle = pitchColor; ctx.lineWidth = 1.5;
+    ctx.setLineDash([6, 5]);
+    ctx.beginPath(); ctx.arc(cx, cy, pitchR, 0, Math.PI * 2); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // 3) 중심 라벨 칩(m / z / PCD)
+    var lStyle = isExample ? col("--muted") : col("--ink");
+    ctx.font = "12px " + col("--sans");
+    var mStr = "m = " + modDisplay, zStr = "z = " + actualZ, pStr = "PCD = " + pcdDisplay + " mm";
+    var lineH = 15, lineGap = 3, padX = 8, padY = 6;
+    var textW = Math.max(ctx.measureText(mStr).width, ctx.measureText(zStr).width, ctx.measureText(pStr).width);
+    var chipW = textW + padX * 2, chipH = lineH * 3 + lineGap * 2 + padY * 2;
+    var chipLeft = cx - chipW / 2, chipTop = cy - chipH / 2, corner = 8;
+
+    ctx.fillStyle = hexAlpha(col("--surface"), 0.90);
+    roundRect(ctx, chipLeft, chipTop, chipW, chipH, corner); ctx.fill();
+    ctx.strokeStyle = hexAlpha(col("--muted"), 0.25); ctx.lineWidth = 1;
+    roundRect(ctx, chipLeft, chipTop, chipW, chipH, corner); ctx.stroke();
+
+    ctx.fillStyle = lStyle; ctx.textAlign = "center"; ctx.textBaseline = "top";
+    var ly = chipTop + padY;
+    ctx.fillText(mStr, cx, ly); ly += lineH + lineGap;
+    ctx.fillText(zStr, cx, ly); ly += lineH + lineGap;
+    ctx.fillText(pStr, cx, ly);
+  }
+  function roundRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+  /** hex(#rrggbb) 문자열에 alpha 적용(rgba()) — canvas fillStyle/strokeStyle 용. */
+  function hexAlpha(hex, alpha) {
+    var h = hex.replace("#", "");
+    if (h.length === 3) h = h.split("").map(function (ch) { return ch + ch; }).join("");
+    var r = parseInt(h.substring(0, 2), 16), g = parseInt(h.substring(2, 4), 16), b = parseInt(h.substring(4, 6), 16);
+    if (isNaN(r) || isNaN(g) || isNaN(b)) return hex;
+    return "rgba(" + r + "," + g + "," + b + "," + alpha + ")";
+  }
+
+  window.addEventListener("resize", function () { if (activeTab === "circ") drawCircleDiagram(); else drawGear(); });
+
+  // ── 초기화 — S0019 Preview 골든값(d=100 / m=2,z=20)으로 즉시 검산 가능하게 시작 ──
+  markActiveField("D");
+  recomputeCirc("D");
+  recomputePcd();
+  setTab("circ");
+})();
+</script>
+
+<script>
+(function(){
+  var KEY="plcmanjp-tool-theme", order=["","light","dark"], lbl={"":"시스템","light":"라이트","dark":"다크"};
+  var root=document.documentElement, btn=document.getElementById("themeBtn"), lblEl=document.getElementById("themeLbl");
+  var cur=root.getAttribute("data-theme")||"";
+  if(lblEl) lblEl.textContent=lbl[cur];
+  function apply(t){
+    if(t) root.setAttribute("data-theme",t); else root.removeAttribute("data-theme");
+    if(lblEl) lblEl.textContent=lbl[t];
+    try{ if(t) localStorage.setItem(KEY,t); else localStorage.removeItem(KEY); }catch(e){}
+    window.dispatchEvent(new Event("resize"));
+  }
+  if(btn) btn.addEventListener("click",function(){ cur=order[(order.indexOf(cur)+1)%order.length]; apply(cur); });
+})();
+</script>
+</body>
+</html>

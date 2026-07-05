@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>아날로그 스케일 변환 — 4-20mA·0-10V 스케일링 | 엔지니어 도구</title>
+<meta name="description" content="4–20mA·0–10V 등 입력 레인지↔공학단위 선형 변환. 오프셋·병합 존. 설치 없이 브라우저에서 무료.">
+<meta property="og:title" content="아날로그 스케일 변환 | PLCManJP 엔지니어 도구">
+<meta property="og:description" content="아날로그 입력↔공학단위 스케일 변환. 무료 웹 도구.">
+<link rel="canonical" href="https://plcmanjp.github.io/engineer-tool/analog-scale/">
+<script>try{var t=localStorage.getItem("plcmanjp-tool-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
+<style>
+  :root {
+    --bg: #e9edf1; --surface: #ffffff; --surface-2: #f3f6f9; --ink: #18222e;
+    --muted: #5c6772; --line: #d3dae1; --primary: #15629f; --primary-soft: #e4eef7;
+    --warn: #c9720a; --warn-soft: #fbeed6; --danger: #c2384c; --good: #2e7d32; --good-soft: #e7f5ea;
+    --signal: #7a3ea8; --signal-soft: #efe4f7; --readout: #0f1a26;
+    --mono: ui-monospace, "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+    --sans: -apple-system, "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #10161d; --surface: #19222c; --surface-2: #141c25; --ink: #e7edf3;
+      --muted: #93a1b0; --line: #2a3542; --primary: #4ea3e6; --primary-soft: #17303f;
+      --warn: #e6a13c; --warn-soft: #33270f; --danger: #e26374; --good: #7fc08a; --good-soft: #14241a;
+      --signal: #b088d8; --signal-soft: #2a1c3a; --readout: #dfe8f0;
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #e9edf1; --surface: #ffffff; --surface-2: #f3f6f9; --ink: #18222e;
+    --muted: #5c6772; --line: #d3dae1; --primary: #15629f; --primary-soft: #e4eef7;
+    --warn: #c9720a; --warn-soft: #fbeed6; --danger: #c2384c; --good: #2e7d32; --good-soft: #e7f5ea;
+    --signal: #7a3ea8; --signal-soft: #efe4f7; --readout: #0f1a26;
+  }
+  :root[data-theme="dark"] {
+    --bg: #10161d; --surface: #19222c; --surface-2: #141c25; --ink: #e7edf3;
+    --muted: #93a1b0; --line: #2a3542; --primary: #4ea3e6; --primary-soft: #17303f;
+    --warn: #e6a13c; --warn-soft: #33270f; --danger: #e26374; --good: #7fc08a; --good-soft: #14241a;
+    --signal: #b088d8; --signal-soft: #2a1c3a; --readout: #dfe8f0;
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 520px; margin: 0 auto; padding: 28px 16px 64px; }
+  .eyebrow { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--primary); font-weight: 700; margin: 0 0 6px; }
+  h1.page { font-size: clamp(20px, 3.4vw, 26px); margin: 0 0 8px; letter-spacing: -.01em; text-wrap: balance; }
+  p.lede { margin: 0 0 20px; color: var(--muted); }
+
+  .device { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; box-shadow: 0 8px 30px rgba(20,32,46,.12); overflow: hidden; }
+  .device-bar { padding: 13px 16px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--line); }
+  .device-bar .back { font-size: 18px; color: var(--ink); }
+  .device-bar h2 { font-size: 15px; margin: 0; font-weight: 600; flex: 1; }
+
+  .tabs { display: flex; border-bottom: 1px solid var(--line); }
+  .tab { flex: 1; appearance: none; border: 0; background: transparent; cursor: pointer; padding: 12px 8px 10px; font-family: var(--sans); font-size: 13.5px; font-weight: 700; color: var(--muted); border-bottom: 2.5px solid transparent; }
+  .tab[aria-selected="true"] { color: var(--primary); border-bottom-color: var(--primary); }
+
+  .screen { padding: 14px 14px 18px; display: flex; flex-direction: column; gap: 12px; }
+  .hint0 { font-size: 12px; color: var(--muted); }
+
+  .zone { border: 1px solid var(--line); border-radius: 14px; padding: 12px 13px 14px; display: flex; flex-direction: column; gap: 11px; }
+  .zone.input { background: color-mix(in srgb, var(--primary-soft) 45%, var(--surface)); border-color: color-mix(in srgb, var(--primary) 35%, var(--line)); }
+  .zone.output { background: var(--surface-2); border-color: color-mix(in srgb, var(--signal) 30%, var(--line)); }
+  .zone.green { background: color-mix(in srgb, var(--good-soft) 75%, var(--surface)); border-color: color-mix(in srgb, var(--good) 40%, var(--line)); }
+  .zone-head { display: flex; flex-direction: column; gap: 1px; }
+  .zone-head .h { font-size: 12px; font-weight: 800; letter-spacing: .02em; display: flex; align-items: center; gap: 7px; }
+  .zone-head .sub { font-size: 10.5px; color: var(--muted); padding-left: 19px; }
+  .zone.input .h { color: var(--primary); } .zone.output .h { color: var(--signal); } .zone.green .h { color: var(--good); }
+
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .row.three { grid-template-columns: 1fr 1fr 1fr; }
+  label.f { display: flex; flex-direction: column; gap: 3px; font-size: 11px; color: var(--muted); }
+  label.f input, label.f select { font-family: var(--mono); font-size: 15px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 9px 10px; width: 100%; }
+  label.f select { font-family: var(--sans); font-size: 13.5px; cursor: pointer; background: transparent; height: 40px; }
+  label.f input:focus, label.f select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-soft); }
+  input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .pv label.f input { font-size: 18px; font-weight: 600; }
+
+  .sig-toggle { display: flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 600; color: var(--signal); cursor: pointer; user-select: none; }
+  .sig-toggle input { width: 16px; height: 16px; accent-color: var(--signal); cursor: pointer; }
+  .sig-body { display: flex; flex-direction: column; gap: 8px; }
+  .sig-body[hidden] { display: none; }
+  .sig-line { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; align-items: end; }
+  /* 종류 버튼 — 존 OFF 배경과 같은 primary 계열·테두리 없음·동일폭·프리셋 높이(40px) 정렬 */
+  .seg-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .seg-toggle button { appearance: none; border: 0; border-radius: 8px; background: var(--primary-soft); color: var(--primary); font-family: var(--sans); font-size: 12.5px; font-weight: 600; height: 40px; padding: 0; cursor: pointer; white-space: nowrap; }
+  .seg-toggle button[aria-pressed="true"] { background: var(--primary); color: #fff; font-weight: 800; }
+
+  .result { display: flex; flex-direction: column; gap: 6px; }
+  .result .rrow { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+  .result .cap { font-size: 12.5px; color: var(--ink); font-weight: 600; }
+  .result .val { font-family: var(--mono); font-size: 22px; font-weight: 800; color: var(--primary); font-variant-numeric: tabular-nums; }
+  .result .val.out { color: var(--warn); }
+  .sig-out { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding-left: 8px; }
+  .sig-out[hidden] { display: none; }
+  .sig-out .sk { font-size: 11px; color: var(--muted); }
+  .sig-out .sv { font-family: var(--mono); font-size: 16px; font-weight: 700; color: var(--signal); }
+  .sig-out .sv.out { color: var(--warn); }
+  .coef { font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+  .eq { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .badge { align-self: flex-start; font-size: 11.5px; font-weight: 700; padding: 5px 10px; border-radius: 8px; background: color-mix(in srgb, var(--warn) 16%, transparent); color: var(--warn); }
+  .badge[hidden] { display: none; }
+
+  .graphwrap { display: flex; flex-direction: column; gap: 6px; }
+  .graphwrap .gtitle { font-size: 12px; font-weight: 800; color: var(--good); }
+  canvas { display: block; width: 100%; height: 230px; border-radius: 10px; touch-action: none; cursor: ew-resize; }
+
+  ul.notes { margin: 16px 2px 0; padding-left: 18px; color: var(--muted); font-size: 12.5px; }
+  ul.notes li { margin-bottom: 6px; } ul.notes b { color: var(--ink); }
+  footer.mock { margin-top: 22px; font-size: 12px; color: var(--muted); text-align: center; }
+
+  /* ── 웹 셸 (엔지니어 도구 공용) ─────────────────────────── */
+  .topbar { border-bottom: 1px solid var(--line); background: var(--surface); }
+  .topbar .tw { max-width: 520px; margin: 0 auto; padding: 0 16px; height: 50px; display: flex; align-items: center; justify-content: space-between; }
+  .crumb { font-size: 13px; font-weight: 600; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .crumb a { color: var(--muted); text-decoration: none; } .crumb a:hover { color: var(--ink); }
+  .crumb .sep { margin: 0 6px; opacity: .5; } .crumb .cur { color: var(--ink); font-weight: 700; }
+  .themebtn { flex: 0 0 auto; appearance: none; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font-family: var(--sans); font-size: 12.5px; font-weight: 600; padding: 6px 11px; border-radius: 999px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; margin-left: 10px; }
+  .themebtn:hover { border-color: var(--primary); }
+  footer.site { border-top: 1px solid var(--line); margin-top: 30px; padding: 26px 16px 40px; text-align: center; color: var(--muted); font-size: 12.5px; }
+  footer.site .fl { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 12px; }
+  footer.site .fl a { color: var(--muted); font-weight: 600; text-decoration: none; } footer.site .fl a:hover { color: var(--ink); }
+  footer.site .note { font-size: 11.5px; line-height: 1.7; max-width: 460px; margin: 0 auto; }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="tw">
+      <div class="crumb"><a href="/">PLCManJP</a><span class="sep">/</span><a href="../">엔지니어 도구</a><span class="sep">/</span><span class="cur">아날로그 스케일 변환</span></div>
+      <button class="themebtn" id="themeBtn" type="button" aria-label="테마 전환">🌓 <span id="themeLbl">시스템</span></button>
+    </div>
+  </div>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">엔지니어 도구</p>
+    <h1 class="page">아날로그 스케일 변환</h1>
+    <p class="lede">파라미터(기준축 입력값 / 변환값 출력값)를 위에서 등록하고, 아래 <b>현재값·변환값</b> 존과 <b>XY 전달 특성 그래프</b>에서 PV를 바꿔가며 검산한다. 그래프 위를 <b>좌우로 드래그</b>하면 PV가 유동적으로 변한다.</p>
+  </header>
+
+  <section class="device">
+    <div class="device-bar"><a class="back" href="../" aria-label="도구 목록으로">&larr;</a><h2>아날로그 스케일 변환</h2></div>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" id="tab-ad" aria-selected="true">A/D 입력</button>
+      <button class="tab" role="tab" id="tab-da" aria-selected="false">D/A 출력</button>
+    </div>
+    <div class="screen">
+      <p class="hint0">분해능(디지털 값)을 기준으로 대응 신호와 공학값을 동시에 환산합니다.</p>
+
+      <!-- 1) 기준축(입력값) 파라미터 -->
+      <div class="zone input">
+        <div class="zone-head"><span class="h"><span>&#9654;</span><span id="inHead">기준축(입력값) 파라미터</span></span><span class="sub" id="inSub">분해능, 전압/전류신호</span></div>
+        <div id="zoneInput"></div>
+      </div>
+
+      <!-- 2) 변환값(출력값) 파라미터 -->
+      <div class="zone output">
+        <div class="zone-head"><span class="h"><span>&#9660;</span><span id="outHead">변환값(출력값) 파라미터</span></span><span class="sub" id="outSub">공학단위</span></div>
+        <div id="zoneOutput"></div>
+      </div>
+
+      <!-- 3) 현재값 + 변환값 (병합, 녹색) -->
+      <div class="zone green">
+        <div class="zone-head"><span class="h"><span>&#9670;</span><span>현재값 · 변환값</span></span></div>
+        <div class="pv">
+          <label class="f"><span id="pvHint">현재값 PV (분해능)</span><input type="number" id="pv" value="0" placeholder="분해능 입력 또는 그래프 드래그" inputmode="decimal"></label>
+        </div>
+        <div class="result" id="resultBox" hidden>
+          <div class="rrow"><span class="cap" id="resCap">변환값</span><span class="val" id="resVal">—</span></div>
+          <div class="sig-out" id="sigOut" hidden><span class="sk">대응 신호</span><span class="sv" id="sigVal">—</span></div>
+          <div class="coef" id="coef">SPAN_e = 0.0250&nbsp;&nbsp; OFFSET_e = 0.0000</div>
+          <div class="eq" id="eqEu">변환값 = SPAN_e &times; PV + OFFSET_e</div>
+          <div class="eq" id="eqSig" hidden>신호 = SPAN_s &times; 분해능 + OFFSET_s</div>
+          <div class="badge" id="badge" hidden>&#9888; 입력 범위 초과 (외삽값)</div>
+        </div>
+      </div>
+
+      <!-- 4) XY 전달 특성 그래프 (녹색) -->
+      <div class="zone green">
+        <div class="graphwrap">
+          <span class="gtitle">전달 특성 그래프 (드래그로 PV 조정)</span>
+          <canvas id="graph" width="480" height="230" aria-label="전달 특성 그래프"></canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <ul class="notes">
+    <li><b>축</b> — X=분해능(정의역) MIN~MAX <b>10분할</b> +&minus;1밴드 · Y=변환값(공학값) MIN~MAX <b>5분할</b> +&minus;1밴드. 전달선(정의 구간)·현재 PV 마커(점선 가이드).</li>
+    <li><b>드래그</b> — 그래프를 좌우로 끌면 PV가 &plusmn;1밴드 범위까지 유동 변경(직접 입력 병행). 범위 밖은 외삽 + 주황 경고.</li>
+    <li><b>단위</b> — 변환값 단위는 상시 입력창 + ▼(상용 프리셋 kPa·MPa·bar·psi·torr·µm·mm·m). 전압/전류 신호는 기본 꺼짐(전류 mA / 전압 V, 종류가 프리셋 필터).</li>
+  </ul>
+</div>
+
+  <footer class="site">
+    <div class="fl">
+      <a href="/">PLCManJP 홈</a>
+      <a href="../">엔지니어 도구</a>
+      <a href="https://play.google.com/store/apps/details?id=com.plciocheck.iocheck">앱으로 (Android)</a>
+    </div>
+    <p class="note">본 도구는 특정 제조사와 무관한 독립 개발 소프트웨어입니다. 계산 결과는 참고용이며, 최종 확인은 사용자 책임입니다.</p>
+  </footer>
+
+<!-- 이동식 블록 템플릿 -->
+<template id="tpl-count">
+  <div data-blk="count" style="display:flex;flex-direction:column;gap:8px">
+    <label class="f">분해능 프리셋
+      <select id="countPreset">
+        <option value="0,4000">0 ~ 4000</option>
+        <option value="0,12000">0 ~ 12000</option>
+        <option value="-16000,16000">-16000 ~ 16000</option>
+        <option value="-4000,4000">-4000 ~ 4000</option>
+        <option value="0,32767">0 ~ 32767</option>
+        <option value="-32767,32767">-32767 ~ 32767</option>
+        <option value="custom">직접입력</option>
+      </select>
+    </label>
+    <div class="row">
+      <label class="f">분해능 MIN<input type="number" id="countMin" value="0" inputmode="numeric"></label>
+      <label class="f">분해능 MAX<input type="number" id="countMax" value="4000" inputmode="numeric"></label>
+    </div>
+  </div>
+</template>
+
+<template id="tpl-sig">
+  <div data-blk="sig" style="display:flex;flex-direction:column;gap:8px">
+    <label class="sig-toggle"><input type="checkbox" id="sigEnable"> 전압/전류 신호 사용</label>
+    <div class="sig-body" id="sigBody" hidden>
+      <div class="sig-line">
+        <label class="f">신호 프리셋<select id="sigPreset"></select></label>
+        <div class="seg-toggle">
+          <button type="button" id="sigCur" aria-pressed="true">전류(mA)</button>
+          <button type="button" id="sigVol" aria-pressed="false">전압(V)</button>
+        </div>
+      </div>
+      <div class="row">
+        <label class="f">신호 MIN<input type="number" id="sigMin" value="4" inputmode="decimal"></label>
+        <label class="f">신호 MAX<input type="number" id="sigMax" value="20" inputmode="decimal"></label>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template id="tpl-eu">
+  <div data-blk="eu">
+    <div class="row three">
+      <label class="f">변환값 MIN<input type="number" id="euMin" value="0" inputmode="decimal"></label>
+      <label class="f">변환값 MAX<input type="number" id="euMax" value="100" inputmode="decimal"></label>
+      <label class="f">단위<input type="text" id="euUnit" list="unitList" value="kPa" placeholder="단위"></label>
+    </div>
+    <datalist id="unitList">
+      <option value="kPa"></option><option value="MPa"></option><option value="bar"></option>
+      <option value="psi"></option><option value="torr"></option><option value="&#181;m"></option>
+      <option value="mm"></option><option value="m"></option>
+    </datalist>
+  </div>
+</template>
+
+<script>
+(function () {
+  var mode = "AD", sigUnit = "mA";
+  var $ = function (id) { return document.getElementById(id); };
+  var zoneInput = $("zoneInput"), zoneOutput = $("zoneOutput");
+
+  // 블록 1회 인스턴스화(위치는 layout()에서 배치)
+  ["count", "sig", "eu"].forEach(function (k) { zoneInput.appendChild($("tpl-" + k).content.cloneNode(true)); });
+  var blk = {};
+  document.querySelectorAll("[data-blk]").forEach(function (n) { blk[n.dataset.blk] = n; });
+
+  var el = {};
+  ["countPreset","countMin","countMax","sigEnable","sigBody","sigPreset","sigMin","sigMax","sigCur","sigVol",
+   "euMin","euMax","euUnit","pv","pvHint","resultBox","resCap","resVal","sigOut","sigVal","coef","eqEu","eqSig","badge",
+   "inHead","inSub","outHead","outSub","graph"].forEach(function (id) { el[id] = $(id); });
+
+  function layout() {
+    [blk.count, blk.sig, blk.eu].forEach(function (b) { if (b.parentNode) b.parentNode.removeChild(b); });
+    if (mode === "AD") {
+      zoneInput.append(blk.count, blk.sig); zoneOutput.append(blk.eu);
+      el.inSub.textContent = "분해능, 전압/전류신호"; el.outSub.textContent = "공학단위";
+      el.pvHint.textContent = "현재값 PV (분해능)"; el.resCap.textContent = "변환값";
+    } else {
+      zoneInput.append(blk.eu); zoneOutput.append(blk.count, blk.sig);
+      el.inSub.textContent = "공학단위"; el.outSub.textContent = "분해능, 전압/전류신호";
+      el.pvHint.textContent = "현재값 PV (공학값)"; el.resCap.textContent = "출력값 (분해능)";
+    }
+  }
+  function setTab(m) { mode = m; $("tab-ad").setAttribute("aria-selected", m === "AD"); $("tab-da").setAttribute("aria-selected", m === "DA"); layout(); compute(); }
+  $("tab-ad").addEventListener("click", function () { setTab("AD"); });
+  $("tab-da").addEventListener("click", function () { setTab("DA"); });
+
+  el.sigEnable.addEventListener("change", function () { el.sigBody.hidden = !this.checked; compute(); });
+
+  var PRESETS = { mA: [["4,20","4~20 mA"],["0,20","0~20 mA"]], V: [["0,5","0~5 V"],["1,5","1~5 V"],["0,10","0~10 V"],["-10,10","-10~10 V"]] };
+  var SIG_DEFAULT = { mA: "4,20", V: "1,5" };
+  function rebuildPresets(u) {
+    el.sigPreset.innerHTML = "";
+    PRESETS[u].forEach(function (o) { var p = document.createElement("option"); p.value = o[0]; p.textContent = o[1]; el.sigPreset.appendChild(p); });
+    var c = document.createElement("option"); c.value = "custom"; c.textContent = "직접입력"; el.sigPreset.appendChild(c);
+  }
+  function applyPreset() { if (el.sigPreset.value === "custom") return; var p = el.sigPreset.value.split(","); el.sigMin.value = p[0]; el.sigMax.value = p[1]; }
+  function setSigType(u, keep) {
+    sigUnit = u; el.sigCur.setAttribute("aria-pressed", u === "mA"); el.sigVol.setAttribute("aria-pressed", u === "V");
+    rebuildPresets(u); if (!keep) { el.sigPreset.value = SIG_DEFAULT[u]; applyPreset(); } compute();
+  }
+  el.sigCur.addEventListener("click", function () { setSigType("mA"); });
+  el.sigVol.addEventListener("click", function () { setSigType("V"); });
+  el.sigPreset.addEventListener("change", function () { applyPreset(); compute(); });
+  el.countPreset.addEventListener("change", function () { if (this.value === "custom") return; var p = this.value.split(","); el.countMin.value = p[0]; el.countMax.value = p[1]; compute(); });
+  [el.countMin, el.countMax].forEach(function (e) { e.addEventListener("input", function () { el.countPreset.value = "custom"; }); });
+  [el.sigMin, el.sigMax].forEach(function (e) { e.addEventListener("input", function () { el.sigPreset.value = "custom"; }); });
+  ["countMin","countMax","sigMin","sigMax","euMin","euMax","euUnit","pv"].forEach(function (id) { el[id].addEventListener("input", compute); });
+
+  function num(e) { var v = parseFloat(e.value); return isFinite(v) ? v : NaN; }
+  function fmt4(v) { return isFinite(v) ? (Math.round(v * 10000) / 10000).toFixed(4) : "—"; }
+  function fmtAx(v) { var r = Math.round(v * 100) / 100; return (Object.is(r, -0) ? 0 : r).toString(); }
+  function within(v, a, b) { return v >= Math.min(a, b) && v <= Math.max(a, b); }
+
+  // 현재 계산 상태(그래프·드래그 공용)
+  var G = null;
+
+  function compute() {
+    var cMin = num(el.countMin), cMax = num(el.countMax);
+    var sMin = num(el.sigMin), sMax = num(el.sigMax);
+    var eMin = num(el.euMin), eMax = num(el.euMax), eUnit = el.euUnit.value.trim();
+    var pv = num(el.pv);
+    var sigOn = el.sigEnable.checked && isFinite(sMin) && isFinite(sMax);
+    el.sigOut.hidden = true;
+
+    var cSpan = cMax - cMin;
+    if (!isFinite(cSpan) || cSpan === 0 || !isFinite(eMin) || !isFinite(eMax) || eMax === eMin) {
+      el.resultBox.hidden = true; G = null; drawGraph(); return;
+    }
+    var SPANe = (eMax - eMin) / cSpan, OFFe = eMin - SPANe * cMin;
+    var SPANs = (sMax - sMin) / cSpan, OFFs = sMin - SPANs * cMin;
+
+    el.eqEu.innerHTML = (mode === "AD") ? "변환값 = SPAN_e &times; PV + OFFSET_e" : "분해능 = (PV &minus; OFFSET_e) / SPAN_e";
+    el.eqSig.hidden = !sigOn;
+    el.coef.innerHTML = "SPAN_e = " + fmt4(SPANe) + "&nbsp;&nbsp; OFFSET_e = " + fmt4(OFFe) + (sigOn ? "<br>SPAN_s = " + fmt4(SPANs) + "&nbsp;&nbsp; OFFSET_s = " + fmt4(OFFs) : "");
+
+    // 입력/출력 정의역 + 변환값
+    var inMin = (mode === "AD") ? cMin : eMin, inMax = (mode === "AD") ? cMax : eMax;
+    var outMin = (mode === "AD") ? eMin : cMin, outMax = (mode === "AD") ? eMax : cMax;
+    var inLabel = (mode === "AD") ? "분해능" : "공학값", outLabel = (mode === "AD") ? "공학값" : "분해능";
+    G = { inMin: inMin, inMax: inMax, outMin: outMin, outMax: outMax, inLabel: inLabel, outLabel: outLabel, pv: NaN, out: NaN, oor: false };
+
+    if (isFinite(pv)) {
+      var count = (mode === "AD") ? pv : (pv - OFFe) / SPANe;
+      var euVal = (mode === "AD") ? (SPANe * pv + OFFe) : pv;
+      var output = (mode === "AD") ? euVal : count;
+      var sigV = SPANs * count + OFFs;
+      var inRange = within(pv, inMin, inMax);
+      G.pv = pv; G.out = output; G.oor = !inRange;
+
+      el.resultBox.hidden = false;
+      el.resVal.textContent = fmt4(output) + ((mode === "AD" && eUnit) ? " " + eUnit : "");
+      el.resVal.className = "val" + (inRange ? "" : " out");
+      el.sigOut.hidden = !sigOn;
+      el.sigVal.textContent = fmt4(sigV) + " " + sigUnit; el.sigVal.className = "sv" + (inRange ? "" : " out");
+      el.badge.hidden = inRange;
+    } else {
+      el.resultBox.hidden = true;
+    }
+    drawGraph();
+  }
+
+  // ── XY 그래프 (X=분해능 10분할·Y=공학값 5분할, 각 ±1밴드) ──
+  var padL = 46, padR = 12, padT = 16, padB = 34;
+  function drawGraph() {
+    var c = el.graph, ctx = c.getContext("2d");
+    var dpr = window.devicePixelRatio || 1, W = c.clientWidth, H = c.clientHeight;
+    c.width = W * dpr; c.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
+    var cs = getComputedStyle(document.documentElement), col = function (n) { return cs.getPropertyValue(n).trim(); };
+    var plotW = W - padL - padR, plotH = H - padT - padB;
+    if (!G) { ctx.fillStyle = col("--muted"); ctx.font = "12px sans-serif"; ctx.textAlign = "center"; ctx.fillText("MIN = MAX — 직선 정의 불가", W / 2, H / 2); return; }
+
+    var xLo0 = Math.min(G.inMin, G.inMax), xHi0 = Math.max(G.inMin, G.inMax);
+    var yLo0 = Math.min(G.outMin, G.outMax), yHi0 = Math.max(G.outMin, G.outMax);
+    var xB = (xHi0 - xLo0) / 10, yB = (yHi0 - yLo0) / 5;
+    var xLo = xLo0 - xB, xHi = xHi0 + xB, yLo = yLo0 - yB, yHi = yHi0 + yB;
+    var X = function (v) { return padL + (v - xLo) / (xHi - xLo) * plotW; };
+    var Y = function (v) { return padT + plotH - (v - yLo) / (yHi - yLo) * plotH; };
+
+    ctx.font = "9px ui-monospace, monospace"; ctx.fillStyle = col("--muted");
+    // 가로 그리드(5분할 ±1밴드 = 8선)
+    ctx.strokeStyle = col("--line"); ctx.lineWidth = 1; ctx.textAlign = "right"; ctx.textBaseline = "middle";
+    for (var j = 0; j <= 7; j++) { var yv = yLo + yB * j, gy = Y(yv); ctx.beginPath(); ctx.moveTo(padL, gy); ctx.lineTo(padL + plotW, gy); ctx.stroke(); ctx.fillText(fmtAx(yv), padL - 5, gy); }
+    // 세로 그리드(10분할 ±1밴드 = 13선), X 라벨 홀수 분할점
+    ctx.textAlign = "center"; ctx.textBaseline = "top";
+    for (var i = 0; i <= 12; i++) { var xv = xLo + xB * i, gx = X(xv); ctx.beginPath(); ctx.moveTo(gx, padT); ctx.lineTo(gx, padT + plotH); ctx.stroke(); if (i % 2 === 1) ctx.fillText(fmtAx(xv), gx, padT + plotH + 3); }
+    // 축 제목
+    ctx.fillStyle = col("--muted"); ctx.font = "10px sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "bottom"; ctx.fillText(G.inLabel, padL + plotW / 2, H); ctx.textAlign = "left"; ctx.textBaseline = "top"; ctx.fillText(G.outLabel, 2, 0);
+
+    // 전달선 + 양 끝점
+    ctx.strokeStyle = col("--primary"); ctx.lineWidth = 3; ctx.lineCap = "round";
+    ctx.beginPath(); ctx.moveTo(X(G.inMin), Y(G.outMin)); ctx.lineTo(X(G.inMax), Y(G.outMax)); ctx.stroke();
+    ctx.fillStyle = col("--primary");
+    [[G.inMin, G.outMin], [G.inMax, G.outMax]].forEach(function (p) { ctx.beginPath(); ctx.arc(X(p[0]), Y(p[1]), 4, 0, 7); ctx.fill(); });
+
+    // 현재 PV 마커
+    if (isFinite(G.pv) && isFinite(G.out)) {
+      var mc = G.oor ? col("--warn") : col("--good");
+      var mx = Math.max(padL, Math.min(padL + plotW, X(G.pv))), my = Math.max(padT, Math.min(padT + plotH, Y(G.out)));
+      ctx.setLineDash([5, 4]); ctx.strokeStyle = mc; ctx.lineWidth = 1; ctx.globalAlpha = .6;
+      ctx.beginPath(); ctx.moveTo(mx, my); ctx.lineTo(mx, padT + plotH); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(mx, my); ctx.lineTo(padL, my); ctx.stroke();
+      ctx.globalAlpha = 1; ctx.setLineDash([]);
+      ctx.beginPath(); ctx.arc(mx, my, 7, 0, 7); ctx.fillStyle = mc; ctx.fill();
+      ctx.strokeStyle = col("--surface"); ctx.lineWidth = 2; ctx.stroke();
+    }
+    // 드래그 매핑 정보 저장
+    el.graph._map = { xLo: xLo, xHi: xHi, plotW: plotW };
+  }
+
+  // ── 그래프 드래그로 PV 조정 ──
+  function dragTo(clientX) {
+    if (!G || !el.graph._map) return;
+    var rect = el.graph.getBoundingClientRect();
+    var m = el.graph._map;
+    var frac = Math.max(0, Math.min(1, (clientX - rect.left - padL) / m.plotW));
+    var v = m.xLo + frac * (m.xHi - m.xLo);
+    var span = Math.abs(G.inMax - G.inMin);
+    var rounded = span >= 50 ? Math.round(v) : Math.round(v * 100) / 100;
+    el.pv.value = rounded; compute();
+  }
+  var dragging = false;
+  el.graph.addEventListener("pointerdown", function (e) { dragging = true; el.graph.setPointerCapture(e.pointerId); dragTo(e.clientX); });
+  el.graph.addEventListener("pointermove", function (e) { if (dragging) dragTo(e.clientX); });
+  el.graph.addEventListener("pointerup", function () { dragging = false; });
+  el.graph.addEventListener("pointercancel", function () { dragging = false; });
+
+  window.addEventListener("resize", drawGraph);
+  setSigType("mA", true); layout(); compute();
+})();
+</script>
+
+<script>
+(function(){
+  var KEY="plcmanjp-tool-theme", order=["","light","dark"], lbl={"":"시스템","light":"라이트","dark":"다크"};
+  var root=document.documentElement, btn=document.getElementById("themeBtn"), lblEl=document.getElementById("themeLbl");
+  var cur=root.getAttribute("data-theme")||"";
+  if(lblEl) lblEl.textContent=lbl[cur];
+  function apply(t){
+    if(t) root.setAttribute("data-theme",t); else root.removeAttribute("data-theme");
+    if(lblEl) lblEl.textContent=lbl[t];
+    try{ if(t) localStorage.setItem(KEY,t); else localStorage.removeItem(KEY); }catch(e){}
+    window.dispatchEvent(new Event("resize"));
+  }
+  if(btn) btn.addEventListener("click",function(){ cur=order[(order.indexOf(cur)+1)%order.length]; apply(cur); });
+})();
+</script>
+</body>
+</html>

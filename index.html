@@ -4,16 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PLCManJP — 제조·설비 현장 실용 도구</title>
-<meta name="description" content="현장 엔지니어를 위한 실용 도구를 만듭니다. PLC IO Check Helper(Android), JP's Codeless Macro Tool(Windows).">
+<meta name="description" content="현장 엔지니어를 위한 실용 도구를 만듭니다. PLC IO Check Helper(Android), JP's Codeless Macro Tool(Windows), 엔지니어 도구(웹).">
 <meta property="og:title" content="PLCManJP — 제조·설비 현장 실용 도구">
-<meta property="og:description" content="현장 엔지니어를 위한 실용 도구. PLC IO 점검 · 코드리스 매크로 자동화.">
+<meta property="og:description" content="현장 엔지니어를 위한 실용 도구. PLC IO 점검 · 코드리스 매크로 자동화 · 웹 계산 도구.">
 <link rel="canonical" href="https://plcmanjp.github.io">
 <style>
   :root{
     --bg:#0c1016; --bg2:#11161f; --card:#161c27; --card2:#1b2230;
     --line:#252e3d; --tx:#e7ecf3; --tx2:#9aa6b6; --tx3:#6b7689;
     --acc:#3b82f6; --acc2:#22d3ee; --ok:#34d399;
-    --android:#3ddc84; --windows:#48b0f7;
+    --android:#3ddc84; --windows:#48b0f7; --web:#22d3ee;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -45,6 +45,7 @@
 
   /* products */
   section{padding:56px 0}
+  section.tight{padding-top:0}
   .sec-h{font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;color:var(--tx3);font-weight:700;margin-bottom:22px;text-align:center}
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
   @media(max-width:680px){.grid{grid-template-columns:1fr}.hero h1{font-size:1.9rem}}
@@ -59,6 +60,7 @@
   .plat svg{width:13px;height:13px}
   .st{font-size:.72rem;font-weight:700;padding:4px 10px;border-radius:999px}
   .st-live{color:var(--ok);background:rgba(52,211,153,.12);border:1px solid rgba(52,211,153,.25)}
+  .st-free{color:var(--acc2);background:rgba(34,211,238,.10);border:1px solid rgba(34,211,238,.25)}
   .card h3{font-size:1.2rem;font-weight:750;letter-spacing:-.01em;margin-bottom:8px}
   .card .ver{font-size:.76rem;color:var(--tx3);font-weight:600;margin-left:8px}
   .card p{font-size:.92rem;color:var(--tx2);flex:1;margin-bottom:20px}
@@ -67,6 +69,16 @@
   .btn:hover{opacity:.9}
   .btn-primary{background:linear-gradient(92deg,var(--acc),#2f6fe0);color:#fff}
   .btn-ghost{background:rgba(255,255,255,.05);color:var(--tx);border:1px solid var(--line)}
+
+  /* wide tools card */
+  .card.wide{padding:24px 26px}
+  @media(min-width:681px){
+    .card.wide{flex-direction:row;align-items:center;gap:26px}
+    .card.wide .wbody{flex:1}
+    .card.wide p{margin-bottom:0}
+    .card.wide .cta{flex:0 0 auto}
+  }
+  .card.wide h3{margin-bottom:10px}
 
   /* upcoming */
   .soon{margin-top:18px;text-align:center;font-size:.85rem;color:var(--tx3)}
@@ -86,7 +98,7 @@
       <div class="brand">PLCManJP <span class="tt">· FIELD TOOLS</span></div>
       <h1>제조·설비 현장을 위한<br><span class="g">실용 도구</span>를 만듭니다</h1>
       <p>PLC 점검부터 반복 작업 자동화까지 — 현장 엔지니어가 일상에서 바로 켜서 쓰는 도구를 개발합니다.</p>
-      <div class="meta">출시 제품 <b>2종</b> · Android · Windows</div>
+      <div class="meta">출시 제품 <b>2종</b> · 웹 도구 <b>6종</b> · Android · Windows · Web</div>
     </div>
   </header>
 
@@ -124,6 +136,26 @@
         </article>
 
       </div>
+    </div>
+  </section>
+
+  <section class="tight">
+    <div class="wrap">
+      <div class="sec-h">Tools</div>
+      <!-- engineer-tool 웹 도구 허브 -->
+      <article class="card wide">
+        <div class="wbody">
+          <div class="badges">
+            <span class="plat"><svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/></svg>Web</span>
+            <span class="st st-free">설치 불필요 · 무료</span>
+          </div>
+          <h3>엔지니어 도구</h3>
+          <p>프로그래머 계산기 · 전자기어비 · 원둘레 · 삼각함수 · ASCII 코드표 · 아날로그 스케일 변환 등 현장 계산 도구 6종. 설치 없이 브라우저에서 바로 씁니다.</p>
+        </div>
+        <div class="cta">
+          <a class="btn btn-primary" href="https://plcmanjp.github.io/engineer-tool/">도구 열기</a>
+        </div>
+      </article>
       <div class="soon">현장 엔지니어를 위한 <b>새 도구</b>를 계속 준비하고 있습니다.</div>
     </div>
   </section>
@@ -132,6 +164,7 @@
     <div class="wrap">
       <div class="flinks">
         <a href="https://plcman.tistory.com">블로그</a>
+        <a href="https://plcmanjp.github.io/engineer-tool/">엔지니어 도구</a>
         <a href="https://play.google.com/store/apps/details?id=com.plciocheck.iocheck">Google Play</a>
         <a href="https://plcmanjp.github.io/plc-io-check-helper/privacy/">개인정보처리방침(PLC IO Check Helper)</a>
         <a href="https://plcmanjp.github.io/codeless-macro-tool/privacy/">개인정보처리방침(Codeless Macro Tool)</a>
