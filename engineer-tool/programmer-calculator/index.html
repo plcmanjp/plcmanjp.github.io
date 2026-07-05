@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>프로그래머 계산기 — 진법 변환·비트 연산 | 엔지니어 도구</title>
+<meta name="description" content="2·8·10·16진법 상호 변환과 AND·OR·XOR·시프트 비트 연산. 워드/더블워드 폭 지정. 설치 없이 브라우저에서 무료.">
+<meta property="og:title" content="프로그래머 계산기 | PLCManJP 엔지니어 도구">
+<meta property="og:description" content="진법 변환·비트 연산 계산기. 무료 웹 도구.">
+<link rel="canonical" href="https://plcmanjp.github.io/engineer-tool/programmer-calculator/">
+<script>try{var t=localStorage.getItem("plcmanjp-tool-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
+<style>
+  :root {
+    --bg: #e9edf1; --surface: #ffffff; --surface-2: #f3f6f9; --ink: #18222e;
+    --muted: #5c6772; --line: #d3dae1; --primary: #15629f; --primary-soft: #e4eef7;
+    --warn: #c9720a; --warn-soft: #fbeed6; --danger: #c2384c; --good: #2e7d32; --good-soft: #e7f5ea;
+    --signal: #7a3ea8; --signal-soft: #efe4f7; --readout: #0f1a26;
+    --mono: ui-monospace, "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+    --sans: -apple-system, "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #10161d; --surface: #19222c; --surface-2: #141c25; --ink: #e7edf3;
+      --muted: #93a1b0; --line: #2a3542; --primary: #4ea3e6; --primary-soft: #17303f;
+      --warn: #e6a13c; --warn-soft: #33270f; --danger: #e26374; --good: #7fc08a; --good-soft: #14241a;
+      --signal: #b088d8; --signal-soft: #2a1c3a; --readout: #dfe8f0;
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #e9edf1; --surface: #ffffff; --surface-2: #f3f6f9; --ink: #18222e;
+    --muted: #5c6772; --line: #d3dae1; --primary: #15629f; --primary-soft: #e4eef7;
+    --warn: #c9720a; --warn-soft: #fbeed6; --danger: #c2384c; --good: #2e7d32; --good-soft: #e7f5ea;
+    --signal: #7a3ea8; --signal-soft: #efe4f7; --readout: #0f1a26;
+  }
+  :root[data-theme="dark"] {
+    --bg: #10161d; --surface: #19222c; --surface-2: #141c25; --ink: #e7edf3;
+    --muted: #93a1b0; --line: #2a3542; --primary: #4ea3e6; --primary-soft: #17303f;
+    --warn: #e6a13c; --warn-soft: #33270f; --danger: #e26374; --good: #7fc08a; --good-soft: #14241a;
+    --signal: #b088d8; --signal-soft: #2a1c3a; --readout: #dfe8f0;
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 520px; margin: 0 auto; padding: 28px 16px 64px; }
+  .eyebrow { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--primary); font-weight: 700; margin: 0 0 6px; }
+  h1.page { font-size: clamp(20px, 3.4vw, 26px); margin: 0 0 8px; letter-spacing: -.01em; text-wrap: balance; }
+  p.lede { margin: 0 0 20px; color: var(--muted); }
+
+  .device { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; box-shadow: 0 8px 30px rgba(20,32,46,.12); overflow: hidden; }
+  .device-bar { padding: 10px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+  .device-bar .back { font-size: 18px; color: var(--ink); }
+  .device-bar h2 { font-size: 14.5px; margin: 0; font-weight: 600; flex: 1; min-width: 90px; }
+  .device-bar .chips { display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
+
+  .chip { appearance: none; cursor: pointer; border-radius: 8px; font-family: var(--sans); font-size: 10.5px; font-weight: 700; padding: 5px 9px; border: 1px solid var(--line); background: transparent; color: var(--muted); white-space: nowrap; }
+  .chip.active { border-color: transparent; background: var(--primary-soft); color: var(--primary); }
+  .chip.action { border: 1px solid var(--line); background: transparent; color: var(--muted); }
+
+  .screen { padding: 12px 12px 16px; display: flex; flex-direction: column; gap: 10px; }
+
+  .sticky-top { position: sticky; top: 0; z-index: 4; background: var(--surface); display: flex; flex-direction: column; gap: 8px; padding-bottom: 2px; }
+
+  .zone { border: 1px solid var(--line); border-radius: 14px; padding: 10px 11px 12px; display: flex; flex-direction: column; gap: 8px; }
+  .zone.radix { background: color-mix(in srgb, var(--primary-soft) 45%, var(--surface)); border-color: color-mix(in srgb, var(--primary) 35%, var(--line)); }
+  .zone.lamp { background: color-mix(in srgb, var(--good-soft) 55%, var(--surface)); border-color: color-mix(in srgb, var(--good) 35%, var(--line)); }
+  .zone.bcd { background: var(--surface-2); border-color: color-mix(in srgb, var(--signal) 30%, var(--line)); }
+  .zone.keys { background: var(--surface); }
+  .zone-head { font-size: 11px; font-weight: 800; letter-spacing: .02em; color: var(--muted); }
+  .zone.radix .zone-head { color: var(--primary); }
+  .zone.lamp .zone-head { color: var(--good); }
+  .zone.bcd .zone-head { color: var(--signal); }
+
+  /* 폭 5단 세그먼트 */
+  .widthseg { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; }
+  .widthseg button { appearance: none; border: 0; border-radius: 8px; background: var(--primary-soft); color: var(--primary); font-family: var(--sans); font-size: 11px; font-weight: 700; height: 34px; cursor: pointer; padding: 0; }
+  .widthseg button[aria-pressed="true"] { background: var(--primary); color: #fff; font-weight: 800; }
+
+  /* 4진법 라인 */
+  .radixline { display: flex; align-items: center; gap: 8px; padding: 7px 9px; border-radius: 8px; border: 2px solid transparent; cursor: pointer; }
+  .radixline.active { border-color: var(--primary); background: color-mix(in srgb, var(--primary) 14%, transparent); }
+  .radixline .badge2 { width: 18px; text-align: center; font-weight: 800; font-size: 12px; color: var(--muted); flex-shrink: 0; }
+  .radixline.active .badge2 { color: var(--primary); }
+  .radixline .val2 { font-family: var(--mono); font-size: 14.5px; color: var(--ink); flex: 1; word-break: break-all; }
+
+  /* 비트 램프 */
+  .lamphdr, .lamprow { display: flex; gap: 1px; }
+  .lamphdr span { flex: 1; text-align: center; font-size: 8px; font-family: var(--mono); color: var(--muted); }
+  .lampcell { flex: 1; height: 16px; border-radius: 2px; cursor: pointer; background: var(--line); }
+  .lampcell.on { background: #4caf50; }
+  .lampblock { display: flex; flex-direction: column; gap: 1px; margin-bottom: 3px; }
+  .lampblock:last-child { margin-bottom: 0; }
+
+  /* BCD 패널 */
+  .bcdrow { display: flex; gap: 4px; }
+  .bcdnibble { flex: 1; text-align: center; padding: 5px 0; border-radius: 5px; font-family: var(--mono); font-size: 13.5px; font-weight: 700; background: var(--surface); color: var(--ink); }
+  .bcdnibble.invalid { background: color-mix(in srgb, var(--danger) 22%, var(--surface)); color: var(--danger); }
+  .bcdbtns { display: flex; gap: 8px; }
+  .bcdbtns button { flex: 1; height: 34px; border-radius: 8px; border: 1px solid var(--line); background: transparent; color: var(--ink); font-family: var(--sans); font-size: 11.5px; font-weight: 600; cursor: pointer; }
+
+  /* 비트연산 8키 1행 */
+  .oprow { display: flex; gap: 3px; }
+  .oprow button { flex: 1; height: 38px; border-radius: 7px; border: 1px solid var(--line); background: var(--surface-2); color: var(--ink); font-family: var(--mono); font-size: 11px; font-weight: 700; cursor: pointer; padding: 0; }
+
+  /* 키패드 */
+  .keyboard { display: flex; flex-direction: column; gap: 4px; }
+  .keyrow { display: flex; gap: 4px; }
+  .keybtn { flex: 1; height: 46px; border-radius: 8px; border: 0; font-family: var(--mono); font-size: 16px; font-weight: 700; cursor: pointer; padding: 0; }
+  .keybtn.num { background: var(--surface-2); color: var(--ink); }
+  .keybtn.num:disabled { opacity: .3; cursor: default; }
+  .keybtn.op { background: var(--signal-soft); color: var(--signal); font-family: var(--sans); font-size: 15px; }
+  .keybtn.clear { background: color-mix(in srgb, var(--danger) 18%, var(--surface)); color: var(--danger); font-family: var(--sans); font-size: 13px; }
+  .keybtn.eq { background: var(--primary); color: #fff; font-family: var(--sans); font-size: 17px; }
+  .keybtn.zero { flex: 2; }
+
+  ul.notes { margin: 16px 2px 0; padding-left: 18px; color: var(--muted); font-size: 12.5px; }
+  ul.notes li { margin-bottom: 6px; } ul.notes b { color: var(--ink); }
+  footer.mock { margin-top: 22px; font-size: 12px; color: var(--muted); text-align: center; }
+
+  .toast { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%) translateY(8px); background: var(--ink); color: var(--surface); padding: 9px 16px; border-radius: 10px; font-size: 12.5px; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; z-index: 50; max-width: 90vw; text-align: center; }
+  .toast.show { opacity: .96; transform: translateX(-50%) translateY(0); }
+
+  /* ── 웹 셸 (엔지니어 도구 공용) ─────────────────────────── */
+  .topbar { border-bottom: 1px solid var(--line); background: var(--surface); }
+  .topbar .tw { max-width: 520px; margin: 0 auto; padding: 0 16px; height: 50px; display: flex; align-items: center; justify-content: space-between; }
+  .crumb { font-size: 13px; font-weight: 600; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .crumb a { color: var(--muted); text-decoration: none; } .crumb a:hover { color: var(--ink); }
+  .crumb .sep { margin: 0 6px; opacity: .5; } .crumb .cur { color: var(--ink); font-weight: 700; }
+  .themebtn { flex: 0 0 auto; appearance: none; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font-family: var(--sans); font-size: 12.5px; font-weight: 600; padding: 6px 11px; border-radius: 999px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; margin-left: 10px; }
+  .themebtn:hover { border-color: var(--primary); }
+  .device-bar .back { text-decoration: none; line-height: 1; }
+  .device-bar .back:hover { color: var(--primary); }
+  footer.site { border-top: 1px solid var(--line); margin-top: 30px; padding: 26px 16px 40px; text-align: center; color: var(--muted); font-size: 12.5px; }
+  footer.site .fl { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 12px; }
+  footer.site .fl a { color: var(--muted); font-weight: 600; text-decoration: none; } footer.site .fl a:hover { color: var(--ink); }
+  footer.site .note { font-size: 11.5px; line-height: 1.7; max-width: 460px; margin: 0 auto; }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="tw">
+      <div class="crumb"><a href="/">PLCManJP</a><span class="sep">/</span><a href="../">엔지니어 도구</a><span class="sep">/</span><span class="cur">프로그래머 계산기</span></div>
+      <button class="themebtn" id="themeBtn" type="button" aria-label="테마 전환">🌓 <span id="themeLbl">시스템</span></button>
+    </div>
+  </div>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">엔지니어 도구</p>
+    <h1 class="page">프로그래머 계산기</h1>
+    <p class="lede">GX Works의 K(10진)·H(16진) 표기와 Device Batch Monitor의 F~0 비트 램프를 그대로 옮겼다. 단일 정수 값(raw)이 HEX·DEC·OCT·BIN·비트램프·BCD 전부의 원본(SSOT)이며, 자릿수를 입력할 때마다 전부 실시간으로 동기 갱신된다.</p>
+  </header>
+
+  <section class="device">
+    <div class="device-bar">
+      <a class="back" href="../" aria-label="도구 목록으로">&larr;</a>
+      <h2>프로그래머 계산기</h2>
+      <div class="chips">
+        <button class="chip" id="chipSigned" type="button">부호</button>
+        <button class="chip" id="chipGroup" type="button">그룹</button>
+        <button class="chip action" id="chipSwap" type="button">&#8644; 스왑</button>
+      </div>
+    </div>
+    <div class="screen">
+      <div class="sticky-top">
+        <!-- 폭 5단 세그먼트 -->
+        <div class="widthseg" id="widthSeg">
+          <button type="button" data-width="NIBBLE4">4bit</button>
+          <button type="button" data-width="BYTE8">8bit</button>
+          <button type="button" data-width="WORD16">WORD</button>
+          <button type="button" data-width="DWORD32">DWORD</button>
+          <button type="button" data-width="QWORD64">QWORD</button>
+        </div>
+
+        <!-- 4진법 라인 (H/K/O/B) -->
+        <div class="zone radix">
+          <div id="radixLines"></div>
+        </div>
+      </div>
+
+      <!-- F~0 비트 램프 -->
+      <div class="zone lamp">
+        <div class="zone-head">F~0 비트 램프 (탭하여 토글)</div>
+        <div id="lampZone"></div>
+      </div>
+
+      <!-- BCD 패널 -->
+      <div class="zone bcd">
+        <div class="zone-head">BCD 패널</div>
+        <div class="bcdrow" id="bcdZone"></div>
+        <div class="bcdbtns">
+          <button type="button" id="binToBcdBtn">BIN &rarr; BCD</button>
+          <button type="button" id="bcdToBinBtn">BCD &rarr; BIN</button>
+        </div>
+      </div>
+
+      <!-- 비트연산 8키 -->
+      <div class="oprow">
+        <button type="button" id="opAnd">AND</button>
+        <button type="button" id="opOr">OR</button>
+        <button type="button" id="opXor">XOR</button>
+        <button type="button" id="opNot">NOT</button>
+        <button type="button" id="opShl">&lt;&lt;</button>
+        <button type="button" id="opShr">&gt;&gt;</button>
+        <button type="button" id="opRol">ROL</button>
+        <button type="button" id="opRor">ROR</button>
+      </div>
+
+      <!-- 키패드 -->
+      <div class="zone keys">
+        <div class="keyboard">
+          <div class="keyrow" id="rowAF"></div>
+          <div class="keyrow">
+            <button class="keybtn num" data-ch="7">7</button>
+            <button class="keybtn num" data-ch="8">8</button>
+            <button class="keybtn num" data-ch="9">9</button>
+            <button class="keybtn clear" id="backspaceBtn">&#9003;</button>
+            <button class="keybtn clear" id="acBtn">AC</button>
+          </div>
+          <div class="keyrow">
+            <button class="keybtn num" data-ch="4">4</button>
+            <button class="keybtn num" data-ch="5">5</button>
+            <button class="keybtn num" data-ch="6">6</button>
+            <button class="keybtn op" id="mulBtn">&times;</button>
+            <button class="keybtn op" id="divBtn">&divide;</button>
+          </div>
+          <div class="keyrow">
+            <button class="keybtn num" data-ch="1">1</button>
+            <button class="keybtn num" data-ch="2">2</button>
+            <button class="keybtn num" data-ch="3">3</button>
+            <button class="keybtn op" id="addBtn">+</button>
+            <button class="keybtn op" id="subBtn">&minus;</button>
+          </div>
+          <div class="keyrow">
+            <button class="keybtn num zero" data-ch="0">0</button>
+            <button class="keybtn op" id="negBtn">&plusmn;</button>
+            <button class="keybtn op" id="modBtn">MOD</button>
+            <button class="keybtn eq" id="eqBtn">=</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <ul class="notes">
+    <li><b>SSOT</b> — 단일 정수 값(raw 비트패턴)이 HEX(H)·DEC(K)·OCT(O)·BIN(B)·비트램프·BCD 전부의 원본이다. 클립보드(복사·붙여넣기) 기능은 없다 — 각 라인은 진법 배지 + 숫자만 표시.</li>
+    <li><b>실시간 반영</b> — 키패드 자릿수를 하나씩 누를 때마다 커밋 대기 없이 4진법 표시·비트램프·BCD가 즉시 동기 갱신된다.</li>
+    <li><b>폭 전환</b> — 4bit/8bit/WORD/DWORD/QWORD 5단. 축소 시 상위 비트 절단(토스트), 확대 시 부호 모드에 따라 부호확장(부호 있음) 또는 제로확장(부호 없음).</li>
+    <li><b>&gt;&gt; 단일 키</b> — 우시프트는 부호 모드를 추종한다(부호 있음=산술시프트 ASR·부호 없음=논리시프트 LSR). ROL/ROR은 폭 단위 회전.</li>
+    <li><b>BCD 무음오류 금지</b> — BCD&rarr;BIN 변환 중 A~F 니블 발견 시 변환을 거부하고 해당 니블을 빨강으로 강조한다.</li>
+  </ul>
+</div>
+
+<footer class="site">
+  <div class="fl">
+    <a href="/">PLCManJP 홈</a>
+    <a href="../">엔지니어 도구</a>
+    <a href="https://play.google.com/store/apps/details?id=com.plciocheck.iocheck">앱으로 (Android)</a>
+  </div>
+  <p class="note">본 도구는 특정 제조사와 무관한 독립 개발 소프트웨어입니다. 계산 결과는 참고용이며, 최종 확인은 사용자 책임입니다.</p>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ── 폭 정의 (S0017 §3 / BitWidth.kt) ──────────────────────────────────────
+  var WIDTHS = {
+    NIBBLE4: { bits: 4,  mask: 0xFn },
+    BYTE8:   { bits: 8,  mask: 0xFFn },
+    WORD16:  { bits: 16, mask: 0xFFFFn },
+    DWORD32: { bits: 32, mask: 0xFFFFFFFFn },
+    QWORD64: { bits: 64, mask: 0xFFFFFFFFFFFFFFFFn },
+  };
+  var WIDTH_ORDER = ["NIBBLE4", "BYTE8", "WORD16", "DWORD32", "QWORD64"];
+  var RADIX_ORDER = ["HEX", "DEC", "OCT", "BIN"];
+  var RADIX_INFO = { HEX: { base: 16, badge: "H" }, DEC: { base: 10, badge: "K" }, OCT: { base: 8, badge: "O" }, BIN: { base: 2, badge: "B" } };
+
+  function bitsOf(w) { return WIDTHS[w].bits; }
+  function maskOf(w) { return WIDTHS[w].mask; }
+
+  var STR = {
+    invalidChar: "허용되지 않는 자릿수입니다",
+    widthOverflow: "폭을 초과하는 값입니다",
+    negativeUnsigned: "부호 없음 모드에서 음수를 입력할 수 없습니다",
+    signedUnderflow: "음수 범위를 초과했습니다",
+    emptyInput: "입력값이 없습니다",
+    div0: "0으로 나눌 수 없습니다",
+    bcdOverflow: "BCD 변환 범위를 초과했습니다",
+    bcdInvalidNibble: "BCD invalid 니블 발견 (A~F)",
+    truncated: "상위 비트가 절단되었습니다",
+  };
+
+  // ── 상태 (S0017 §3 / ProgrammerCalcState.kt CalcState) ────────────────────
+  var S = {
+    raw: 0n,
+    width: "WORD16",
+    signed: true,
+    inputRadix: "HEX",
+    pendingOp: null,
+    operand: null,
+    grouping: true,
+    inputBuffer: "",
+  };
+  var UI = { bcdInvalid: new Set() };
+
+  // ── 진법 파싱/포맷 (RadixConverter.kt 이식) ────────────────────────────────
+  function parseDigit(ch, base) {
+    var idx = "0123456789ABCDEF".indexOf(ch.toUpperCase());
+    if (idx < 0 || idx >= base) return null;
+    return idx;
+  }
+
+  function maxDigits(width, radix) {
+    if (radix === "HEX") return Math.ceil(bitsOf(width) / 4);
+    if (radix === "BIN") return bitsOf(width);
+    if (radix === "OCT") {
+      return { NIBBLE4: 2, BYTE8: 3, WORD16: 6, DWORD32: 11, QWORD64: 22 }[width];
+    }
+    return { NIBBLE4: 2, BYTE8: 3, WORD16: 5, DWORD32: 10, QWORD64: 20 }[width]; // DEC
+  }
+
+  function parseBuffer(text, radix, width, signed) {
+    var stripped = text.split(" ").join("").split("_").join("").split(",").join("");
+    if (stripped === "" || stripped === "-") return { ok: true, value: 0n };
+    var isNeg = stripped.charAt(0) === "-";
+    var digitsStr = isNeg ? stripped.slice(1) : stripped;
+    if (digitsStr === "") return { ok: true, value: 0n };
+    var baseNum = RADIX_INFO[radix].base, base = BigInt(baseNum);
+    var acc = 0n;
+    for (var i = 0; i < digitsStr.length; i++) {
+      var dv = parseDigit(digitsStr[i], baseNum);
+      if (dv === null) return { ok: false, reason: "invalidChar" };
+      acc = acc * base + BigInt(dv);
+    }
+    var mask = maskOf(width), bits = bitsOf(width);
+    if (isNeg) {
+      if (!signed) return { ok: false, reason: "negativeUnsigned" };
+      var maxMagnitude = 1n << BigInt(bits - 1);
+      if (acc > maxMagnitude) return { ok: false, reason: "signedUnderflow" };
+      var negated = (acc === maxMagnitude) ? (maxMagnitude & mask) : ((-acc) & mask);
+      return { ok: true, value: negated };
+    }
+    if (acc > mask) return { ok: false, reason: "widthOverflow" };
+    return { ok: true, value: acc & mask };
+  }
+
+  function groupBy4(s) {
+    if (s.length <= 4) return s;
+    var sb = "", offset = s.length % 4, i = 0;
+    if (offset > 0) { sb += s.slice(0, offset); i = offset; }
+    while (i < s.length) { if (sb.length > 0) sb += " "; sb += s.slice(i, i + 4); i += 4; }
+    return sb;
+  }
+  function groupDec(str) {
+    var isNeg = str.charAt(0) === "-";
+    var digits = isNeg ? str.slice(1) : str;
+    var sb = "", offset = digits.length % 3, i = 0;
+    if (offset > 0) { sb += digits.slice(0, offset); i = offset; }
+    while (i < digits.length) { if (sb.length > 0) sb += ","; sb += digits.slice(i, i + 3); i += 3; }
+    return isNeg ? ("-" + sb) : sb;
+  }
+
+  function toSigned(a, width) {
+    var bits = bitsOf(width);
+    var msb = (a >> BigInt(bits - 1)) & 1n;
+    return msb === 1n ? a - (1n << BigInt(bits)) : a;
+  }
+
+  function formatHex(masked, width, grouping) {
+    var digits = Math.ceil(bitsOf(width) / 4);
+    var hex = masked.toString(16).toUpperCase().padStart(digits, "0");
+    return grouping ? groupBy4(hex) : hex;
+  }
+  function formatDec(masked, width, signed, grouping) {
+    var str;
+    if (!signed) {
+      str = masked.toString(10);
+    } else {
+      var bits = bitsOf(width);
+      var msb = (masked >> BigInt(bits - 1)) & 1n;
+      str = (msb === 1n) ? (masked - (1n << BigInt(bits))).toString(10) : masked.toString(10);
+    }
+    return grouping ? groupDec(str) : str;
+  }
+  function formatOct(masked) { return masked.toString(8); }
+  function formatBin(masked, width, grouping) {
+    var bin = masked.toString(2).padStart(bitsOf(width), "0");
+    return grouping ? groupBy4(bin) : bin;
+  }
+  function formatRadix(raw, radix, width, signed, grouping) {
+    var masked = raw & maskOf(width);
+    if (radix === "HEX") return formatHex(masked, width, grouping);
+    if (radix === "DEC") return formatDec(masked, width, signed, grouping);
+    if (radix === "OCT") return formatOct(masked);
+    return formatBin(masked, width, grouping);
+  }
+  function toRadixStrings(state) {
+    var out = {};
+    RADIX_ORDER.forEach(function (r) {
+      out[r] = formatRadix(state.raw, r, state.width, state.signed && r === "DEC", state.grouping);
+    });
+    return out;
+  }
+
+  // ── 비트연산 / 시프트 / 회전 / 산술 (BitwiseOps.kt 이식) ───────────────────
+  function notOp(a, width) { return (~a) & maskOf(width); }
+  function shl(a, n, width) { if (n >= bitsOf(width)) return 0n; return (a << BigInt(n)) & maskOf(width); }
+  function lsr(a, n, width) { if (n >= bitsOf(width)) return 0n; return ((a & maskOf(width)) >> BigInt(n)) & maskOf(width); }
+  function asr(a, n, width) {
+    var bits = bitsOf(width);
+    if (n >= bits) { var msb = (a >> BigInt(bits - 1)) & 1n; return msb === 1n ? maskOf(width) : 0n; }
+    return (toSigned(a, width) >> BigInt(n)) & maskOf(width);
+  }
+  function rol(a, amount, width) {
+    var bits = bitsOf(width), s = amount % bits, masked = a & maskOf(width);
+    if (s === 0) return masked;
+    return ((masked << BigInt(s)) | (masked >> BigInt(bits - s))) & maskOf(width);
+  }
+  function ror(a, amount, width) {
+    var bits = bitsOf(width), s = amount % bits, masked = a & maskOf(width);
+    if (s === 0) return masked;
+    return ((masked >> BigInt(s)) | (masked << BigInt(bits - s))) & maskOf(width);
+  }
+  function negateOp(raw, width) { return ((~raw) + 1n) & maskOf(width); }
+
+  function divOp(a, b, width, signed) {
+    if (!signed && width === "QWORD64") return a / b;
+    if (signed) { var sa = toSigned(a, width), sb = toSigned(b, width); return (sa / sb) & maskOf(width); }
+    return ((a & maskOf(width)) / (b & maskOf(width))) & maskOf(width);
+  }
+  function modOp(a, b, width, signed) {
+    if (!signed && width === "QWORD64") return a % b;
+    if (signed) { var sa = toSigned(a, width), sb = toSigned(b, width); return (sa % sb) & maskOf(width); }
+    return ((a & maskOf(width)) % (b & maskOf(width))) & maskOf(width);
+  }
+  function applyBinaryOp(a, b, op, width, signed) {
+    var mask = maskOf(width);
+    if (op === "AND") return { value: (a & b) & mask };
+    if (op === "OR")  return { value: (a | b) & mask };
+    if (op === "XOR") return { value: (a ^ b) & mask };
+    if (op === "ADD") return { value: (a + b) & mask };
+    if (op === "SUB") return { value: (a - b) & mask };
+    if (op === "MUL") return { value: (a * b) & mask };
+    if (op === "DIV") { if (b === 0n) return { error: "div0" }; return { value: divOp(a, b, width, signed) }; }
+    if (op === "MOD") { if (b === 0n) return { error: "div0" }; return { value: modOp(a, b, width, signed) }; }
+    return { error: "error" };
+  }
+
+  // ── 2의 보수 / 폭 전환 (TwosComplement.kt 이식) ────────────────────────────
+  function signExtendWiden(raw, fromWidth, toWidth) { return toSigned(raw, fromWidth) & maskOf(toWidth); }
+  function withWidth(state, newWidth) {
+    var oldBits = bitsOf(state.width), newBits = bitsOf(newWidth), newRaw;
+    if (newBits < oldBits) newRaw = state.raw & maskOf(newWidth);
+    else if (newBits > oldBits) newRaw = state.signed ? signExtendWiden(state.raw, state.width, newWidth) : (state.raw & maskOf(state.width));
+    else newRaw = state.raw & maskOf(newWidth);
+    return Object.assign({}, state, { raw: newRaw, width: newWidth, inputBuffer: "" });
+  }
+
+  // ── BCD (BcdCodec.kt 이식) ────────────────────────────────────────────────
+  function maxBcdDecimal(width) {
+    return { NIBBLE4: 9n, BYTE8: 99n, WORD16: 9999n, DWORD32: 99999999n, QWORD64: 9999999999999999n }[width];
+  }
+  function nibbleCount(width) { return bitsOf(width) / 4; }
+
+  // ── 바이트 스왑 (CalcProgrammerViewModel.kt swapBytes 이식) ────────────────
+  function swapBytes(raw, width) {
+    if (width === "NIBBLE4" || width === "BYTE8") return raw;
+    if (width === "WORD16") { var b0 = raw & 0xFFn, b1 = (raw >> 8n) & 0xFFn; return (b0 << 8n) | b1; }
+    if (width === "DWORD32") {
+      var c0 = raw & 0xFFn, c1 = (raw >> 8n) & 0xFFn, c2 = (raw >> 16n) & 0xFFn, c3 = (raw >> 24n) & 0xFFn;
+      return (c0 << 24n) | (c1 << 16n) | (c2 << 8n) | c3;
+    }
+    var result = 0n;
+    for (var i = 0; i < 8; i++) { var b = (raw >> BigInt(i * 8)) & 0xFFn; result |= b << BigInt((7 - i) * 8); }
+    return result;
+  }
+
+  // ── 토스트 ────────────────────────────────────────────────────────────────
+  var toastEl = document.getElementById("toast"), toastTimer = null;
+  function toast(msg) {
+    toastEl.textContent = msg; toastEl.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toastEl.classList.remove("show"); }, 1700);
+  }
+
+  // ── 커밋 헬퍼 (CalcProgrammerViewModel.kt 이식) ────────────────────────────
+  function withBuffer(state, newBuffer) {
+    var parsed = parseBuffer(newBuffer, state.inputRadix, state.width, state.signed);
+    var newRaw;
+    if (parsed.ok) newRaw = parsed.value & maskOf(state.width);
+    else newRaw = (newBuffer === "" || newBuffer === "-") ? 0n : state.raw;
+    return Object.assign({}, state, { inputBuffer: newBuffer, raw: newRaw });
+  }
+  function commitBufferIfNeeded(state) {
+    var buf = state.inputBuffer;
+    if (buf === "" || buf === "-") return state;
+    var parsed = parseBuffer(buf, state.inputRadix, state.width, state.signed);
+    if (parsed.ok) return Object.assign({}, state, { raw: parsed.value, inputBuffer: "" });
+    toast(STR[parsed.reason] || STR.invalidChar);
+    return Object.assign({}, state, { inputBuffer: "" });
+  }
+  function commitRaw(state, newRaw) {
+    return Object.assign({}, state, { raw: newRaw & maskOf(state.width), inputBuffer: "" });
+  }
+
+  // ── 액션 핸들러 ───────────────────────────────────────────────────────────
+  function onDigit(ch) {
+    var digitVal = parseDigit(ch, RADIX_INFO[S.inputRadix].base);
+    if (digitVal === null) return;
+    var maxLen = maxDigits(S.width, S.inputRadix);
+    var digitCount = S.inputBuffer.replace(/^-+/, "").length;
+    if (digitCount >= maxLen) return; // 실기 앱도 시각 피드백 없이 무반응(§9 폭 초과)
+    var newBuffer;
+    if (S.inputRadix === "DEC" && S.inputBuffer === "0" && ch !== "0") newBuffer = ch;
+    else newBuffer = S.inputBuffer + ch;
+    S = withBuffer(S, newBuffer);
+    render();
+  }
+  function onBackspace() {
+    var buf = S.inputBuffer;
+    if (buf.length > 0) {
+      S = withBuffer(S, buf.slice(0, -1));
+    } else {
+      var useSigned = S.signed && S.inputRadix === "DEC";
+      var formatted = formatRadix(S.raw, S.inputRadix, S.width, useSigned, false);
+      if (formatted === "" || formatted === "0" || formatted === "-") {
+        S = commitRaw(S, 0n);
+      } else {
+        var stripped = formatted.slice(0, -1);
+        if (stripped === "" || stripped === "-") stripped = "0";
+        var parsed = parseBuffer(stripped, S.inputRadix, S.width, useSigned);
+        S = commitRaw(S, parsed.ok ? parsed.value : 0n);
+      }
+    }
+    render();
+  }
+  function onClearAll() {
+    S = { raw: 0n, width: S.width, signed: S.signed, inputRadix: S.inputRadix, pendingOp: null, operand: null, grouping: S.grouping, inputBuffer: "" };
+    UI.bcdInvalid = new Set();
+    render();
+  }
+  function onSelectRadix(radix) {
+    if (S.inputRadix === radix) return;
+    S = commitBufferIfNeeded(S);
+    S = Object.assign({}, S, { inputRadix: radix, inputBuffer: "" });
+    render();
+  }
+  function onSelectWidth(width) {
+    if (S.width === width) return;
+    S = commitBufferIfNeeded(S);
+    var narrowing = bitsOf(width) < bitsOf(S.width);
+    var before = S.raw;
+    var next = withWidth(S, width);
+    S = next;
+    render();
+    if (narrowing && before !== S.raw) toast(STR.truncated);
+  }
+  function onToggleSigned() { S = commitBufferIfNeeded(S); S = Object.assign({}, S, { signed: !S.signed }); render(); }
+  function onToggleGrouping() { S = Object.assign({}, S, { grouping: !S.grouping }); render(); }
+  function onNot() { S = commitBufferIfNeeded(S); S = commitRaw(S, notOp(S.raw, S.width)); render(); }
+  function onNegate() { S = commitBufferIfNeeded(S); S = commitRaw(S, negateOp(S.raw, S.width)); render(); }
+  function onShl() { S = commitBufferIfNeeded(S); S = commitRaw(S, shl(S.raw, 1, S.width)); render(); }
+  function onShr() { S = commitBufferIfNeeded(S); var r = S.signed ? asr(S.raw, 1, S.width) : lsr(S.raw, 1, S.width); S = commitRaw(S, r); render(); }
+  function onRol() { S = commitBufferIfNeeded(S); S = commitRaw(S, rol(S.raw, 1, S.width)); render(); }
+  function onRor() { S = commitBufferIfNeeded(S); S = commitRaw(S, ror(S.raw, 1, S.width)); render(); }
+  function onBinaryOp(op) {
+    S = commitBufferIfNeeded(S);
+    var newRaw = S.raw;
+    if (S.pendingOp !== null && S.operand !== null) {
+      var r = applyBinaryOp(S.operand, S.raw, S.pendingOp, S.width, S.signed);
+      if (r.error) { toast(STR.div0); newRaw = S.raw; } else newRaw = r.value;
+    }
+    var mask = maskOf(S.width);
+    S = Object.assign({}, S, { raw: newRaw & mask, pendingOp: op, operand: newRaw & mask, inputBuffer: "" });
+    render();
+  }
+  function onEquals() {
+    S = commitBufferIfNeeded(S);
+    if (S.pendingOp === null || S.operand === null) return;
+    var r = applyBinaryOp(S.operand, S.raw, S.pendingOp, S.width, S.signed);
+    if (r.error) { toast(STR.div0); return; }
+    S = Object.assign({}, S, { raw: r.value, pendingOp: null, operand: null, inputBuffer: "" });
+    render();
+  }
+  function onToggleBit(bitIndex) {
+    S = commitBufferIfNeeded(S);
+    if (bitIndex < 0 || bitIndex >= bitsOf(S.width)) return;
+    var newRaw = (S.raw ^ (1n << BigInt(bitIndex))) & maskOf(S.width);
+    S = commitRaw(S, newRaw);
+    render();
+  }
+  function onBinToBcd() {
+    S = commitBufferIfNeeded(S);
+    var max = maxBcdDecimal(S.width);
+    if (S.raw > max) { toast(STR.bcdOverflow); return; }
+    var remaining = S.raw, bcd = 0n, shift = 0n;
+    while (remaining > 0n) { var d = remaining % 10n; bcd |= d << shift; remaining /= 10n; shift += 4n; }
+    S = commitRaw(S, bcd & maskOf(S.width));
+    UI.bcdInvalid = new Set();
+    render();
+  }
+  function onBcdToBin() {
+    S = commitBufferIfNeeded(S);
+    var n = nibbleCount(S.width), result = 0n, mult = 1n;
+    for (var i = 0; i < n; i++) {
+      var nib = (S.raw >> BigInt(i * 4)) & 0xFn;
+      if (nib > 9n) { toast(STR.bcdInvalidNibble); UI.bcdInvalid = new Set([i]); render(); return; }
+      result += nib * mult; mult *= 10n;
+    }
+    S = commitRaw(S, result);
+    UI.bcdInvalid = new Set();
+    render();
+  }
+  function onByteSwap() { S = commitBufferIfNeeded(S); S = commitRaw(S, swapBytes(S.raw, S.width)); render(); }
+
+  // ── 렌더 ──────────────────────────────────────────────────────────────────
+  var el = {
+    widthSeg: document.getElementById("widthSeg"),
+    radixLines: document.getElementById("radixLines"),
+    lampZone: document.getElementById("lampZone"),
+    bcdZone: document.getElementById("bcdZone"),
+    rowAF: document.getElementById("rowAF"),
+    chipSigned: document.getElementById("chipSigned"),
+    chipGroup: document.getElementById("chipGroup"),
+  };
+
+  function lampRowsFor(width) {
+    if (width === "NIBBLE4") return [[3, 0, false]];
+    if (width === "BYTE8")   return [[7, 0, false]];
+    if (width === "WORD16")  return [[15, 0, true]];
+    if (width === "DWORD32") return [[31, 16, true], [15, 0, true]];
+    return [[63, 48, true], [47, 32, true], [31, 16, true], [15, 0, true]]; // QWORD64
+  }
+
+  function buildLampZone() {
+    var blocks = lampRowsFor(S.width);
+    var html = "";
+    blocks.forEach(function (b) {
+      var hi = b[0], lo = b[1], showHdr = b[2];
+      html += '<div class="lampblock">';
+      if (showHdr) {
+        html += '<div class="lamphdr">';
+        for (var i = hi; i >= lo; i--) html += "<span>" + i.toString(16).toUpperCase() + "</span>";
+        html += "</div>";
+      }
+      html += '<div class="lamprow">';
+      for (var j = hi; j >= lo; j--) {
+        var on = ((S.raw >> BigInt(j)) & 1n) === 1n;
+        html += '<div class="lampcell' + (on ? " on" : "") + '" data-bit="' + j + '"></div>';
+      }
+      html += "</div></div>";
+    });
+    el.lampZone.innerHTML = html;
+  }
+
+  function buildBcdZone() {
+    var n = nibbleCount(S.width);
+    var html = "";
+    for (var i = n - 1; i >= 0; i--) {
+      var nibVal = Number((S.raw >> BigInt(i * 4)) & 0xFn);
+      var invalid = UI.bcdInvalid.has(i);
+      var text = invalid ? nibVal.toString(16).toUpperCase() : nibVal.toString(10);
+      html += '<div class="bcdnibble' + (invalid ? " invalid" : "") + '">' + text + "</div>";
+    }
+    el.bcdZone.innerHTML = html;
+  }
+
+  function buildRadixLines() {
+    var strs = toRadixStrings(S);
+    var html = "";
+    RADIX_ORDER.forEach(function (r) {
+      var active = S.inputRadix === r;
+      var display = (active && S.inputBuffer.length > 0) ? S.inputBuffer : strs[r];
+      html += '<div class="radixline' + (active ? " active" : "") + '" data-radix="' + r + '">' +
+        '<span class="badge2">' + RADIX_INFO[r].badge + '</span>' +
+        '<span class="val2">' + display + "</span></div>";
+    });
+    el.radixLines.innerHTML = html;
+  }
+
+  function buildRowAF() {
+    var html = "";
+    ["A", "B", "C", "D", "E", "F"].forEach(function (ch) {
+      html += '<button class="keybtn num" data-ch="' + ch + '">' + ch + "</button>";
+    });
+    el.rowAF.innerHTML = html;
+  }
+
+  function activeDigitsFor(radix) {
+    if (radix === "HEX") return "0123456789ABCDEF";
+    if (radix === "DEC") return "0123456789";
+    if (radix === "OCT") return "01234567";
+    return "01";
+  }
+
+  function render() {
+    // 폭 세그먼트
+    Array.prototype.forEach.call(el.widthSeg.querySelectorAll("button"), function (b) {
+      b.setAttribute("aria-pressed", b.dataset.width === S.width ? "true" : "false");
+    });
+    // 4진법 라인
+    buildRadixLines();
+    // 비트 램프
+    buildLampZone();
+    // BCD 패널
+    buildBcdZone();
+    // 키패드 활성 자릿수 (A~F + 숫자 전부 동일 로직으로 갱신)
+    var active = activeDigitsFor(S.inputRadix);
+    Array.prototype.forEach.call(document.querySelectorAll(".keybtn.num[data-ch]"), function (b) {
+      var ch = b.dataset.ch;
+      var enabled = active.indexOf(ch) >= 0;
+      b.disabled = !enabled;
+    });
+    // 상단 칩
+    el.chipSigned.classList.toggle("active", S.signed);
+    el.chipGroup.classList.toggle("active", S.grouping);
+  }
+
+  // ── 이벤트 바인딩 ─────────────────────────────────────────────────────────
+  buildRowAF();
+
+  el.widthSeg.addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-width]");
+    if (b) onSelectWidth(b.dataset.width);
+  });
+  el.radixLines.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-radix]");
+    if (b) onSelectRadix(b.dataset.radix);
+  });
+  el.lampZone.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-bit]");
+    if (b) onToggleBit(parseInt(b.dataset.bit, 10));
+  });
+  document.body.addEventListener("click", function (e) {
+    var b = e.target.closest(".keybtn.num[data-ch]");
+    if (b && !b.disabled) onDigit(b.dataset.ch);
+  });
+
+  document.getElementById("backspaceBtn").addEventListener("click", onBackspace);
+  document.getElementById("acBtn").addEventListener("click", onClearAll);
+  document.getElementById("mulBtn").addEventListener("click", function () { onBinaryOp("MUL"); });
+  document.getElementById("divBtn").addEventListener("click", function () { onBinaryOp("DIV"); });
+  document.getElementById("addBtn").addEventListener("click", function () { onBinaryOp("ADD"); });
+  document.getElementById("subBtn").addEventListener("click", function () { onBinaryOp("SUB"); });
+  document.getElementById("modBtn").addEventListener("click", function () { onBinaryOp("MOD"); });
+  document.getElementById("negBtn").addEventListener("click", onNegate);
+  document.getElementById("eqBtn").addEventListener("click", onEquals);
+
+  document.getElementById("opAnd").addEventListener("click", function () { onBinaryOp("AND"); });
+  document.getElementById("opOr").addEventListener("click", function () { onBinaryOp("OR"); });
+  document.getElementById("opXor").addEventListener("click", function () { onBinaryOp("XOR"); });
+  document.getElementById("opNot").addEventListener("click", onNot);
+  document.getElementById("opShl").addEventListener("click", onShl);
+  document.getElementById("opShr").addEventListener("click", onShr);
+  document.getElementById("opRol").addEventListener("click", onRol);
+  document.getElementById("opRor").addEventListener("click", onRor);
+
+  document.getElementById("binToBcdBtn").addEventListener("click", onBinToBcd);
+  document.getElementById("bcdToBinBtn").addEventListener("click", onBcdToBin);
+
+  el.chipSigned.addEventListener("click", onToggleSigned);
+  el.chipGroup.addEventListener("click", onToggleGrouping);
+  document.getElementById("chipSwap").addEventListener("click", onByteSwap);
+
+  render();
+})();
+</script>
+
+<script>
+(function(){
+  var KEY="plcmanjp-tool-theme", order=["","light","dark"], lbl={"":"시스템","light":"라이트","dark":"다크"};
+  var root=document.documentElement, btn=document.getElementById("themeBtn"), lblEl=document.getElementById("themeLbl");
+  var cur=root.getAttribute("data-theme")||"";
+  if(lblEl) lblEl.textContent=lbl[cur];
+  function apply(t){
+    if(t) root.setAttribute("data-theme",t); else root.removeAttribute("data-theme");
+    if(lblEl) lblEl.textContent=lbl[t];
+    try{ if(t) localStorage.setItem(KEY,t); else localStorage.removeItem(KEY); }catch(e){}
+    window.dispatchEvent(new Event("resize"));
+  }
+  if(btn) btn.addEventListener("click",function(){ cur=order[(order.indexOf(cur)+1)%order.length]; apply(cur); });
+})();
+</script>
+</body>
+</html>

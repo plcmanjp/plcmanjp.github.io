@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>삼각함수 계산기 — sin·cos·tan·역함수·각도 변환 | 엔지니어 도구</title>
+<meta name="description" content="sin·cos·tan 및 역함수, 도↔라디안 변환. 각도·거리 현장 산출. 설치 없이 브라우저에서 무료.">
+<meta property="og:title" content="삼각함수 계산기 | PLCManJP 엔지니어 도구">
+<meta property="og:description" content="삼각함수·역함수·각도 변환. 무료 웹 도구.">
+<link rel="canonical" href="https://plcmanjp.github.io/engineer-tool/trigonometry/">
+<script>try{var t=localStorage.getItem("plcmanjp-tool-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
+<style>
+  :root {
+    --bg: #e9edf1; --surface: #ffffff; --surface-2: #f3f6f9; --ink: #18222e;
+    --muted: #5c6772; --line: #d3dae1; --primary: #15629f; --primary-soft: #e4eef7;
+    --warn: #c9720a; --warn-soft: #fbeed6; --danger: #c2384c; --good: #2e7d32; --good-soft: #e7f5ea;
+    --signal: #7a3ea8; --signal-soft: #efe4f7; --readout: #0f1a26;
+    --mono: ui-monospace, "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+    --sans: -apple-system, "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #10161d; --surface: #19222c; --surface-2: #141c25; --ink: #e7edf3;
+      --muted: #93a1b0; --line: #2a3542; --primary: #4ea3e6; --primary-soft: #17303f;
+      --warn: #e6a13c; --warn-soft: #33270f; --danger: #e26374; --good: #7fc08a; --good-soft: #14241a;
+      --signal: #b088d8; --signal-soft: #2a1c3a; --readout: #dfe8f0;
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #e9edf1; --surface: #ffffff; --surface-2: #f3f6f9; --ink: #18222e;
+    --muted: #5c6772; --line: #d3dae1; --primary: #15629f; --primary-soft: #e4eef7;
+    --warn: #c9720a; --warn-soft: #fbeed6; --danger: #c2384c; --good: #2e7d32; --good-soft: #e7f5ea;
+    --signal: #7a3ea8; --signal-soft: #efe4f7; --readout: #0f1a26;
+  }
+  :root[data-theme="dark"] {
+    --bg: #10161d; --surface: #19222c; --surface-2: #141c25; --ink: #e7edf3;
+    --muted: #93a1b0; --line: #2a3542; --primary: #4ea3e6; --primary-soft: #17303f;
+    --warn: #e6a13c; --warn-soft: #33270f; --danger: #e26374; --good: #7fc08a; --good-soft: #14241a;
+    --signal: #b088d8; --signal-soft: #2a1c3a; --readout: #dfe8f0;
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 520px; margin: 0 auto; padding: 28px 16px 64px; }
+  .eyebrow { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--primary); font-weight: 700; margin: 0 0 6px; }
+  h1.page { font-size: clamp(20px, 3.4vw, 26px); margin: 0 0 8px; letter-spacing: -.01em; text-wrap: balance; }
+  p.lede { margin: 0 0 20px; color: var(--muted); }
+
+  .device { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; box-shadow: 0 8px 30px rgba(20,32,46,.12); overflow: hidden; }
+  .device-bar { padding: 13px 16px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--line); }
+  .device-bar .back { font-size: 18px; color: var(--ink); }
+  .device-bar h2 { font-size: 15px; margin: 0; font-weight: 600; flex: 1; }
+
+  .tabs { display: flex; border-bottom: 1px solid var(--line); }
+  .tab { flex: 1; appearance: none; border: 0; background: transparent; cursor: pointer; padding: 12px 8px 10px; font-family: var(--sans); font-size: 13.5px; font-weight: 700; color: var(--muted); border-bottom: 2.5px solid transparent; }
+  .tab[aria-selected="true"] { color: var(--primary); border-bottom-color: var(--primary); }
+
+  .screen { padding: 14px 14px 18px; }
+  .hint0 { font-size: 12px; color: var(--muted); margin: 0 0 10px; }
+
+  .tabpanel { display: flex; flex-direction: column; gap: 10px; }
+
+  .diagram-canvas { display: block; width: 100%; border-radius: 10px; background: var(--surface-2); touch-action: none; margin-bottom: 2px; }
+
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  label.f { display: flex; flex-direction: column; gap: 3px; font-size: 11px; color: var(--muted); }
+  label.f input, label.f select { font-family: var(--mono); font-size: 15px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 9px 10px; width: 100%; }
+  label.f input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-soft); }
+  label.f input.err { border-color: var(--danger); }
+  input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+  .fieldrow { display: flex; align-items: end; gap: 6px; margin-bottom: 8px; }
+  .fieldrow label.f { flex: 1; }
+  .fieldrow.tight { margin-bottom: 4px; }
+
+  .iconbtn { flex: none; width: 40px; height: 40px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--muted); font-size: 16px; font-family: var(--sans); cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; }
+  .iconbtn.txt { font-size: 11px; font-weight: 700; }
+  .iconbtn.sm { width: 34px; height: 34px; }
+  .iconbtn:active { background: var(--surface-2); }
+  .iconbtn:disabled { opacity: .35; cursor: default; }
+
+  .divider { border: 0; border-top: 1px solid var(--line); margin: 6px 0; }
+  .sectionhead { font-size: 12.5px; font-weight: 800; letter-spacing: .02em; color: var(--primary); margin: 0 0 4px; }
+  .subhead { font-size: 11px; font-weight: 700; color: var(--muted); margin: 2px 0 6px; }
+
+  .outrow { display: flex; align-items: center; gap: 8px; padding: 5px 0; }
+  .outrow .ol { flex: 0 0 78px; font-size: 12px; color: var(--muted); }
+  .outrow .ov { flex: 1; font-family: var(--mono); font-size: 16px; font-weight: 700; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .outrow .ov.err { color: var(--danger); font-family: var(--sans); font-weight: 600; font-size: 12.5px; white-space: normal; }
+
+  .invrow { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
+  .invtop { display: flex; align-items: center; gap: 6px; }
+  .invtop .il { flex: 0 0 40px; font-size: 12.5px; color: var(--muted); font-weight: 700; }
+  .invtop input { flex: 1; min-width: 0; font-family: var(--mono); font-size: 15px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 8px 9px; }
+  .invtop input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-soft); }
+  .invbot { display: flex; align-items: center; gap: 6px; padding-left: 46px; min-height: 20px; }
+  .invbot .ir { flex: 1; font-family: var(--mono); font-size: 13.5px; color: var(--ink); }
+  .invbot .ir.errtxt { font-family: var(--sans); color: var(--danger); font-size: 12px; }
+
+  .seg3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 8px; }
+  .seg3 button { appearance: none; border: 0; border-radius: 8px; background: var(--primary-soft); color: var(--primary); font-family: var(--sans); font-size: 12px; font-weight: 600; height: 38px; padding: 0 4px; cursor: pointer; white-space: nowrap; }
+  .seg3 button[aria-pressed="true"] { background: var(--primary); color: #fff; font-weight: 800; }
+
+  .errtext { font-size: 11.5px; color: var(--danger); margin: -4px 0 6px 2px; }
+
+  ul.notes { margin: 16px 2px 0; padding-left: 18px; color: var(--muted); font-size: 12.5px; }
+  ul.notes li { margin-bottom: 6px; } ul.notes b { color: var(--ink); }
+  footer.mock { margin-top: 22px; font-size: 12px; color: var(--muted); text-align: center; }
+
+  /* ── 웹 셸 (엔지니어 도구 공용) ─────────────────────────── */
+  .topbar { border-bottom: 1px solid var(--line); background: var(--surface); }
+  .topbar .tw { max-width: 520px; margin: 0 auto; padding: 0 16px; height: 50px; display: flex; align-items: center; justify-content: space-between; }
+  .crumb { font-size: 13px; font-weight: 600; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .crumb a { color: var(--muted); text-decoration: none; } .crumb a:hover { color: var(--ink); }
+  .crumb .sep { margin: 0 6px; opacity: .5; } .crumb .cur { color: var(--ink); font-weight: 700; }
+  .themebtn { flex: 0 0 auto; appearance: none; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font-family: var(--sans); font-size: 12.5px; font-weight: 600; padding: 6px 11px; border-radius: 999px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; margin-left: 10px; }
+  .themebtn:hover { border-color: var(--primary); }
+  footer.site { border-top: 1px solid var(--line); margin-top: 30px; padding: 26px 16px 40px; text-align: center; color: var(--muted); font-size: 12.5px; }
+  footer.site .fl { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 12px; }
+  footer.site .fl a { color: var(--muted); font-weight: 600; text-decoration: none; } footer.site .fl a:hover { color: var(--ink); }
+  footer.site .note { font-size: 11.5px; line-height: 1.7; max-width: 460px; margin: 0 auto; }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="tw">
+      <div class="crumb"><a href="/">PLCManJP</a><span class="sep">/</span><a href="../">엔지니어 도구</a><span class="sep">/</span><span class="cur">삼각함수 계산기</span></div>
+      <button class="themebtn" id="themeBtn" type="button" aria-label="테마 전환">🌓 <span id="themeLbl">시스템</span></button>
+    </div>
+  </div>
+
+  <div class="wrap">
+  <header>
+    <p class="eyebrow">엔지니어 도구</p>
+    <h1 class="page">삼각함수 계산기</h1>
+    <p class="lede">각도 ↔ 라디안 상호 변환과 sin·cos·tan·역삼각을 계산하고, <b>직각삼각형</b> 변 상호 역산과 <b>좌표</b> 두 점의 방향각·거리(ATAN2)까지 3개 탭으로 다룬다.</p>
+  </header>
+
+  <section class="device">
+    <div class="device-bar"><a class="back" href="../" aria-label="도구 목록으로">&larr;</a><h2>삼각함수 계산기</h2></div>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" id="tab-fn" aria-selected="true">삼각함수</button>
+      <button class="tab" role="tab" id="tab-tri" aria-selected="false">직각삼각형</button>
+      <button class="tab" role="tab" id="tab-co" aria-selected="false">좌표</button>
+    </div>
+
+    <div class="screen">
+
+      <!-- ── 탭1: 삼각함수 ── -->
+      <div class="tabpanel" id="panel-fn">
+        <p class="hint0">각도를 입력하면 sin·cos·tan 이 자동 산출됩니다 (각도 ↔ 라디안 상호 변환)</p>
+
+        <canvas id="circleCanvas" class="diagram-canvas" width="480" height="220" style="height:220px" aria-label="단위원 도식"></canvas>
+
+        <div class="fieldrow">
+          <label class="f">각도 (°)<input type="text" id="degInput" inputmode="decimal" placeholder="예: 30"></label>
+          <button class="iconbtn" id="degSign" title="부호 전환">&plusmn;</button>
+          <button class="iconbtn txt" id="degCopy" title="복사" disabled>복사</button>
+        </div>
+        <div class="fieldrow">
+          <label class="f">라디안 (rad)<input type="text" id="radInput" inputmode="decimal" placeholder="예: 0.5236"></label>
+          <button class="iconbtn" id="radSign" title="부호 전환">&plusmn;</button>
+          <button class="iconbtn txt" id="radCopy" title="복사" disabled>복사</button>
+        </div>
+
+        <hr class="divider">
+        <div class="sectionhead">정삼각 (각도 &rarr; 비)</div>
+        <div class="outrow"><span class="ol">sin</span><span class="ov" id="sinVal"></span><button class="iconbtn sm txt" id="sinCopy" disabled>복사</button></div>
+        <div class="outrow"><span class="ol">cos</span><span class="ov" id="cosVal"></span><button class="iconbtn sm txt" id="cosCopy" disabled>복사</button></div>
+        <div class="outrow"><span class="ol">tan</span><span class="ov" id="tanVal"></span><button class="iconbtn sm txt" id="tanCopy" disabled>복사</button></div>
+
+        <hr class="divider">
+        <div class="sectionhead">역삼각 (비 &rarr; 각도)</div>
+
+        <div class="invrow">
+          <div class="invtop">
+            <span class="il">asin</span>
+            <input type="text" id="asinIn" inputmode="decimal">
+            <button class="iconbtn sm" id="asinSign" title="부호 전환">&plusmn;</button>
+          </div>
+          <div class="invbot">
+            <span class="ir" id="asinResultText" hidden></span>
+            <span class="ir errtxt" id="asinErrText" hidden>입력 범위는 −1 ~ 1 입니다</span>
+            <button class="iconbtn sm txt" id="asinCopy" disabled>복사</button>
+          </div>
+        </div>
+
+        <div class="invrow">
+          <div class="invtop">
+            <span class="il">acos</span>
+            <input type="text" id="acosIn" inputmode="decimal">
+            <button class="iconbtn sm" id="acosSign" title="부호 전환">&plusmn;</button>
+          </div>
+          <div class="invbot">
+            <span class="ir" id="acosResultText" hidden></span>
+            <span class="ir errtxt" id="acosErrText" hidden>입력 범위는 −1 ~ 1 입니다</span>
+            <button class="iconbtn sm txt" id="acosCopy" disabled>복사</button>
+          </div>
+        </div>
+
+        <div class="invrow">
+          <div class="invtop">
+            <span class="il">atan</span>
+            <input type="text" id="atanIn" inputmode="decimal">
+            <button class="iconbtn sm" id="atanSign" title="부호 전환">&plusmn;</button>
+          </div>
+          <div class="invbot">
+            <span class="ir" id="atanResultText" hidden></span>
+            <button class="iconbtn sm txt" id="atanCopy" disabled>복사</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 탭2: 직각삼각형 ── -->
+      <div class="tabpanel" id="panel-tri" hidden>
+        <div class="sectionhead">직각삼각형</div>
+        <p class="hint0">각도와 기준변 1개를 입력하면 나머지 변이 산출됩니다</p>
+
+        <canvas id="triCanvas" class="diagram-canvas" width="480" height="200" style="height:200px" aria-label="직각삼각형 도식"></canvas>
+
+        <label class="f">각도 (θ)<input type="text" id="triAngle" inputmode="decimal" placeholder="0 ~ 90 사이"></label>
+        <div class="errtext" id="triAngleErr" hidden>각도는 0~90&deg; 사이여야 합니다</div>
+
+        <div class="subhead">기준변</div>
+        <div class="seg3" id="triRefSeg">
+          <button type="button" data-ref="HYPOTENUSE" aria-pressed="true">빗변 (c)</button>
+          <button type="button" data-ref="BASE" aria-pressed="false">밑변 (b)</button>
+          <button type="button" data-ref="HEIGHT" aria-pressed="false">높이 (a)</button>
+        </div>
+
+        <label class="f"><span id="triValueLabelText">빗변 (c)</span><input type="text" id="triValue" inputmode="decimal"></label>
+        <div class="errtext" id="triValueErr" hidden>0보다 큰 값을 입력하세요</div>
+
+        <div class="outrow"><span class="ol" id="triOut1Label">높이 (a)</span><span class="ov" id="triOut1"></span><button class="iconbtn sm txt" id="triOut1Copy" disabled>복사</button></div>
+        <div class="outrow"><span class="ol" id="triOut2Label">밑변 (b)</span><span class="ov" id="triOut2"></span><button class="iconbtn sm txt" id="triOut2Copy" disabled>복사</button></div>
+
+        <hr class="divider">
+        <div class="sectionhead">두 변 &rarr; 각도</div>
+        <p class="hint0">알고 있는 두 변을 선택하고 값을 입력하면 각도가 산출됩니다</p>
+
+        <div class="seg3" id="revPairSeg">
+          <button type="button" data-pair="BASE_HEIGHT" aria-pressed="true">밑변&middot;높이</button>
+          <button type="button" data-pair="HYP_HEIGHT" aria-pressed="false">빗변&middot;높이</button>
+          <button type="button" data-pair="HYP_BASE" aria-pressed="false">빗변&middot;밑변</button>
+        </div>
+
+        <label class="f" id="revHypWrap" hidden>빗변 (c)<input type="text" id="revHypInput" inputmode="decimal"></label>
+        <label class="f" id="revBaseWrap">밑변 (b)<input type="text" id="revBaseInput" inputmode="decimal"></label>
+        <label class="f" id="revHeightWrap">높이 (a)<input type="text" id="revHeightInput" inputmode="decimal"></label>
+
+        <div class="outrow" id="revAngleRow" hidden style="margin-top:6px"><span class="ol">각도 θ</span><span class="ov" id="revAngleVal"></span><button class="iconbtn sm txt" id="revAngleCopy" disabled>복사</button></div>
+        <div class="outrow" id="revMissingRow" hidden><span class="ol" id="revMissingLabel"></span><span class="ov" id="revMissingVal"></span><button class="iconbtn sm txt" id="revMissingCopy" disabled>복사</button></div>
+        <div class="errtext" id="revGeomErr" hidden>직각삼각형을 이룰 수 없습니다 (다리변은 빗변보다 작아야 합니다)</div>
+      </div>
+
+      <!-- ── 탭3: 좌표 ── -->
+      <div class="tabpanel" id="panel-co" hidden>
+        <p class="hint0">두 점의 좌표로 방향 각도와 거리를 구합니다 (ATAN2 — 0 나눗셈 없음&middot;전 사분면 자동)</p>
+
+        <canvas id="coordCanvas" class="diagram-canvas" width="480" height="220" style="height:220px" aria-label="좌표 방향 도식"></canvas>
+
+        <div class="subhead">시작점 P1</div>
+        <div class="row">
+          <div class="fieldrow tight">
+            <label class="f">X1<input type="text" id="coordX1" inputmode="decimal"></label>
+            <button class="iconbtn sm" data-sign="coordX1" title="부호 전환">&plusmn;</button>
+          </div>
+          <div class="fieldrow tight">
+            <label class="f">Y1<input type="text" id="coordY1" inputmode="decimal"></label>
+            <button class="iconbtn sm" data-sign="coordY1" title="부호 전환">&plusmn;</button>
+          </div>
+        </div>
+
+        <div class="subhead">목표점 P2</div>
+        <div class="row">
+          <div class="fieldrow tight">
+            <label class="f">X2<input type="text" id="coordX2" inputmode="decimal"></label>
+            <button class="iconbtn sm" data-sign="coordX2" title="부호 전환">&plusmn;</button>
+          </div>
+          <div class="fieldrow tight">
+            <label class="f">Y2<input type="text" id="coordY2" inputmode="decimal"></label>
+            <button class="iconbtn sm" data-sign="coordY2" title="부호 전환">&plusmn;</button>
+          </div>
+        </div>
+
+        <hr class="divider">
+        <div class="outrow"><span class="ol">&Delta;X</span><span class="ov" id="coordDX"></span><button class="iconbtn sm txt" id="coordDXCopy" disabled>복사</button></div>
+        <div class="outrow"><span class="ol">&Delta;Y</span><span class="ov" id="coordDY"></span><button class="iconbtn sm txt" id="coordDYCopy" disabled>복사</button></div>
+        <div class="outrow"><span class="ol">θ(&minus;180~180)</span><span class="ov" id="coordAngle"></span><button class="iconbtn sm txt" id="coordAngleCopy" disabled>복사</button></div>
+        <div class="outrow"><span class="ol">θ(0~360)</span><span class="ov" id="coordAngle360"></span><button class="iconbtn sm txt" id="coordAngle360Copy" disabled>복사</button></div>
+        <div class="outrow"><span class="ol">거리</span><span class="ov" id="coordDist"></span><button class="iconbtn sm txt" id="coordDistCopy" disabled>복사</button></div>
+      </div>
+
+    </div>
+  </section>
+
+  <ul class="notes">
+    <li><b>3탭</b> — <b>삼각함수</b>(각도↔라디안·정삼각·역삼각) / <b>직각삼각형</b>(각도+기준변→변, 두 변→각도) / <b>좌표</b>(두 점→방향각·거리, ATAN2). 각 탭은 독립 계산 — 서로 값을 되먹임하지 않는다.</li>
+    <li><b>부호 전환(&plusmn;)</b> — 각도·라디안·좌표는 음수가 정상 입력이라 키보드 마이너스 키에 의존하지 않고 버튼으로 부호를 뒤집는다. 각도&harr;라디안은 내부에 raw 값을 보존해 반올림 재입력에 의한 정밀도 손실이 없다.</li>
+    <li><b>tan 특이점</b> — 90&deg;+k&middot;180&deg;에서는 <code>|cos|&lt;1e-10</code> 판정으로 "정의되지 않음"을 표시한다(거대 유한값 노출 금지). asin/acos 는 |x|&gt;1 이면 도메인 오류.</li>
+    <li><b>직각삼각형 정의역</b> — 각도는 0&deg;&lt;θ&lt;90&deg; 엄격(경계·범위 밖=오류), 기준변 값은 0보다 커야 한다. 역방향(두 변→각도)은 다리변이 빗변보다 작아야 성립한다.</li>
+    <li><b>좌표 zero-vector</b> — P1과 P2가 같으면 거리는 0이지만 방향각은 정의되지 않아 "두 점이 같음" 으로 표시한다(0&deg; 오표시 방지).</li>
+  </ul>
+</div>
+
+<footer class="site">
+  <div class="fl">
+    <a href="/">PLCManJP 홈</a>
+    <a href="../">엔지니어 도구</a>
+    <a href="https://play.google.com/store/apps/details?id=com.plciocheck.iocheck">앱으로 (Android)</a>
+  </div>
+  <p class="note">본 도구는 특정 제조사와 무관한 독립 개발 소프트웨어입니다. 계산 결과는 참고용이며, 최종 확인은 사용자 책임입니다.</p>
+</footer>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  function col(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+
+  // ── 복사 유틸 ──────────────────────────────────────────────────────────────
+  function copyText(text) {
+    if (!text) return;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).catch(function () { fallbackCopy(text); });
+    } else {
+      fallbackCopy(text);
+    }
+  }
+  function fallbackCopy(text) {
+    var ta = document.createElement("textarea");
+    ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); } catch (e) { /* no-op */ }
+    document.body.removeChild(ta);
+  }
+  function parseNum(text) {
+    var t = (text || "").trim();
+    if (t === "") return null;
+    var v = parseFloat(t);
+    return isFinite(v) ? v : null;
+  }
+  function toggleSignText(text) {
+    if (text === "") return "-";
+    return text.charAt(0) === "-" ? text.substring(1) : "-" + text;
+  }
+
+  // ── 포매터 (S0020 §3.4 계약 — BigDecimal.valueOf 경유 반올림을 JS toFixed 로 근사) ──
+  function fmtRatio(x) {
+    if (!isFinite(x)) return "";
+    var s = x.toFixed(6);
+    if (parseFloat(s) === 0) return "0.000000";
+    return s;
+  }
+  function fmtAngle(x) {
+    if (!isFinite(x)) return "";
+    var s = x.toFixed(4);
+    var n = parseFloat(s);
+    if (n === 0) return "0";
+    return String(n);
+  }
+  function fmtMeasure(x) {
+    if (!isFinite(x)) return "";
+    var s = x.toFixed(4);
+    var n = parseFloat(s);
+    if (n !== 0) return String(n);
+    if (x === 0) return "0";
+    return String(parseFloat(x.toPrecision(4)));
+  }
+
+  // ── 도메인 (Trigonometry / RightTriangle / CoordinateAngle 이식) ────────────
+  var Trig = {
+    degToRad: function (d) { return d * Math.PI / 180; },
+    radToDeg: function (r) { return r * 180 / Math.PI; },
+    forward: function (rad) {
+      var s = Math.sin(rad), c = Math.cos(rad);
+      var t = Math.abs(c) < 1e-10 ? null : Math.tan(rad);
+      return { sin: s, cos: c, tan: t };
+    },
+    asin: function (x) { if (!isFinite(x) || Math.abs(x) > 1) return { domainError: true }; var r = Math.asin(x); return { rad: r, deg: this.radToDeg(r) }; },
+    acos: function (x) { if (!isFinite(x) || Math.abs(x) > 1) return { domainError: true }; var r = Math.acos(x); return { rad: r, deg: this.radToDeg(r) }; },
+    atan: function (x) { var r = Math.atan(x); return { rad: r, deg: this.radToDeg(r) }; }
+  };
+  var RightTri = {
+    solve: function (angleDeg, ref, value) {
+      if (value <= 0) return { err: "value" };
+      if (angleDeg <= 0 || angleDeg >= 90) return { err: "angle" };
+      var rad = Trig.degToRad(angleDeg);
+      var s = Math.sin(rad), c = Math.cos(rad), t = Math.tan(rad);
+      var hyp, base, height;
+      if (ref === "HYPOTENUSE") { hyp = value; base = value * c; height = value * s; }
+      else if (ref === "BASE") { hyp = value / c; base = value; height = value * t; }
+      else { hyp = value / s; base = value / t; height = value; }
+      return { hyp: hyp, base: base, height: height };
+    },
+    solveAngle: function (hyp, base, height) {
+      var present = [hyp, base, height].filter(function (v) { return v !== null; });
+      if (present.length !== 2) return { needTwo: true };
+      if ([hyp, base, height].some(function (v) { return v !== null && v <= 0; })) return { geomErr: true };
+      if (base !== null && height !== null) {
+        var c = Math.sqrt(base * base + height * height);
+        return { angleDeg: Trig.radToDeg(Math.atan2(height, base)), hyp: c, base: base, height: height, missing: "HYPOTENUSE" };
+      }
+      if (height !== null && hyp !== null) {
+        if (height >= hyp) return { geomErr: true };
+        var b = Math.sqrt(hyp * hyp - height * height);
+        return { angleDeg: Trig.radToDeg(Math.asin(height / hyp)), hyp: hyp, base: b, height: height, missing: "BASE" };
+      }
+      if (base !== null && hyp !== null) {
+        if (base >= hyp) return { geomErr: true };
+        var a = Math.sqrt(hyp * hyp - base * base);
+        return { angleDeg: Trig.radToDeg(Math.acos(base / hyp)), hyp: hyp, base: base, height: a, missing: "HEIGHT" };
+      }
+      return { needTwo: true };
+    }
+  };
+  var CoordAngle = {
+    fromTwoPoints: function (x1, y1, x2, y2) {
+      var dx = x2 - x1, dy = y2 - y1;
+      if (dx === 0 && dy === 0) return { zero: true };
+      var deg = Trig.radToDeg(Math.atan2(dy, dx));
+      var deg360 = ((deg % 360) + 360) % 360;
+      return { dx: dx, dy: dy, deg: deg, deg360: deg360, dist: Math.hypot(dx, dy) };
+    }
+  };
+
+  // ── 요소 참조 ────────────────────────────────────────────────────────────
+  var el = {};
+  ["degInput", "radInput", "degSign", "radSign", "degCopy", "radCopy",
+   "sinVal", "cosVal", "tanVal", "sinCopy", "cosCopy", "tanCopy",
+   "asinIn", "acosIn", "atanIn", "asinSign", "acosSign", "atanSign",
+   "asinResultText", "acosResultText", "atanResultText",
+   "asinErrText", "acosErrText", "asinCopy", "acosCopy", "atanCopy",
+   "circleCanvas", "triCanvas", "coordCanvas",
+   "triAngle", "triAngleErr", "triValue", "triValueErr", "triValueLabelText",
+   "triOut1Label", "triOut2Label", "triOut1", "triOut2", "triOut1Copy", "triOut2Copy",
+   "revHypWrap", "revBaseWrap", "revHeightWrap", "revHypInput", "revBaseInput", "revHeightInput",
+   "revAngleRow", "revMissingRow", "revAngleVal", "revMissingLabel", "revMissingVal",
+   "revAngleCopy", "revMissingCopy", "revGeomErr",
+   "coordX1", "coordY1", "coordX2", "coordY2",
+   "coordDX", "coordDY", "coordAngle", "coordAngle360", "coordDist",
+   "coordDXCopy", "coordDYCopy", "coordAngleCopy", "coordAngle360Copy", "coordDistCopy"
+  ].forEach(function (id) { el[id] = $(id); });
+
+  // ── 탭 전환 ──────────────────────────────────────────────────────────────
+  function selectTab(name) {
+    ["fn", "tri", "co"].forEach(function (t) {
+      $("tab-" + t).setAttribute("aria-selected", String(t === name));
+      $("panel-" + t).hidden = (t !== name);
+    });
+    if (name === "fn") drawCircle();
+    if (name === "tri") drawTriangle();
+    if (name === "co") drawCoord();
+  }
+  $("tab-fn").addEventListener("click", function () { selectTab("fn"); });
+  $("tab-tri").addEventListener("click", function () { selectTab("tri"); });
+  $("tab-co").addEventListener("click", function () { selectTab("co"); });
+
+  // ── 탭1: 각도/라디안 + 정삼각 ────────────────────────────────────────────
+  var rawRadians = null;
+
+  function applyForward(rad) {
+    var f = Trig.forward(rad);
+    el.sinVal.textContent = fmtRatio(f.sin);
+    el.cosVal.textContent = fmtRatio(f.cos);
+    el.sinCopy.disabled = el.sinVal.textContent === "";
+    el.cosCopy.disabled = el.cosVal.textContent === "";
+    if (f.tan === null) {
+      el.tanVal.textContent = "정의되지 않음";
+      el.tanVal.classList.add("err");
+      el.tanCopy.disabled = true;
+    } else {
+      el.tanVal.textContent = fmtRatio(f.tan);
+      el.tanVal.classList.remove("err");
+      el.tanCopy.disabled = false;
+    }
+    drawCircle();
+  }
+  function clearForward() {
+    el.sinVal.textContent = ""; el.cosVal.textContent = ""; el.tanVal.textContent = "";
+    el.tanVal.classList.remove("err");
+    el.sinCopy.disabled = true; el.cosCopy.disabled = true; el.tanCopy.disabled = true;
+    drawCircle();
+  }
+  function onDegreeChange(text) {
+    var deg = parseNum(text);
+    el.degCopy.disabled = text.trim() === "";
+    if (deg === null) {
+      rawRadians = null;
+      el.radInput.value = ""; el.radCopy.disabled = true;
+      clearForward();
+      return;
+    }
+    var rad = Trig.degToRad(deg);
+    rawRadians = rad;
+    el.radInput.value = fmtAngle(rad);
+    el.radCopy.disabled = el.radInput.value === "";
+    applyForward(rad);
+  }
+  function onRadianChange(text) {
+    var rad = parseNum(text);
+    el.radCopy.disabled = text.trim() === "";
+    if (rad === null) {
+      rawRadians = null;
+      el.degInput.value = ""; el.degCopy.disabled = true;
+      clearForward();
+      return;
+    }
+    rawRadians = rad;
+    el.degInput.value = fmtAngle(Trig.radToDeg(rad));
+    el.degCopy.disabled = el.degInput.value === "";
+    applyForward(rad);
+  }
+  el.degInput.addEventListener("input", function () { onDegreeChange(this.value); });
+  el.radInput.addEventListener("input", function () { onRadianChange(this.value); });
+
+  el.degSign.addEventListener("click", function () {
+    if (rawRadians !== null) {
+      rawRadians = -rawRadians;
+      el.degInput.value = fmtAngle(Trig.radToDeg(rawRadians));
+      el.radInput.value = fmtAngle(rawRadians);
+      el.degCopy.disabled = el.degInput.value === ""; el.radCopy.disabled = el.radInput.value === "";
+      applyForward(rawRadians);
+    } else {
+      var t = toggleSignText(el.degInput.value);
+      el.degInput.value = t;
+      onDegreeChange(t);
+    }
+  });
+  el.radSign.addEventListener("click", function () {
+    if (rawRadians !== null) {
+      rawRadians = -rawRadians;
+      el.degInput.value = fmtAngle(Trig.radToDeg(rawRadians));
+      el.radInput.value = fmtAngle(rawRadians);
+      el.degCopy.disabled = el.degInput.value === ""; el.radCopy.disabled = el.radInput.value === "";
+      applyForward(rawRadians);
+    } else {
+      var t = toggleSignText(el.radInput.value);
+      el.radInput.value = t;
+      onRadianChange(t);
+    }
+  });
+  el.degCopy.addEventListener("click", function () { copyText(el.degInput.value); });
+  el.radCopy.addEventListener("click", function () { copyText(el.radInput.value); });
+  el.sinCopy.addEventListener("click", function () { copyText(el.sinVal.textContent); });
+  el.cosCopy.addEventListener("click", function () { copyText(el.cosVal.textContent); });
+  el.tanCopy.addEventListener("click", function () { copyText(el.tanVal.textContent); });
+
+  // ── 탭1: 역삼각 (asin/acos/atan) ─────────────────────────────────────────
+  function onAsinAcosChange(kind, text) {
+    var x = parseNum(text);
+    var resultEl = $(kind + "ResultText"), errEl = $(kind + "ErrText"), copyBtn = $(kind + "Copy");
+    if (x === null) {
+      resultEl.hidden = true; errEl.hidden = true; copyBtn.disabled = true;
+      return;
+    }
+    var r = kind === "asin" ? Trig.asin(x) : Trig.acos(x);
+    if (r.domainError) {
+      resultEl.hidden = true; errEl.hidden = false; copyBtn.disabled = true;
+    } else {
+      errEl.hidden = true; resultEl.hidden = false;
+      resultEl.textContent = "= " + fmtAngle(r.deg) + "° / " + fmtAngle(r.rad) + " rad";
+      copyBtn.disabled = false;
+      copyBtn.dataset.copy = fmtAngle(r.deg) + "° / " + fmtAngle(r.rad) + " rad";
+    }
+  }
+  function onAtanChange(text) {
+    var x = parseNum(text);
+    var resultEl = $("atanResultText"), copyBtn = $("atanCopy");
+    if (x === null) {
+      resultEl.hidden = true; copyBtn.disabled = true;
+      return;
+    }
+    var r = Trig.atan(x);
+    resultEl.hidden = false;
+    resultEl.textContent = "= " + fmtAngle(r.deg) + "° / " + fmtAngle(r.rad) + " rad";
+    copyBtn.disabled = false;
+    copyBtn.dataset.copy = fmtAngle(r.deg) + "° / " + fmtAngle(r.rad) + " rad";
+  }
+  el.asinIn.addEventListener("input", function () { onAsinAcosChange("asin", this.value); });
+  el.acosIn.addEventListener("input", function () { onAsinAcosChange("acos", this.value); });
+  el.atanIn.addEventListener("input", function () { onAtanChange(this.value); });
+  el.asinSign.addEventListener("click", function () { el.asinIn.value = toggleSignText(el.asinIn.value); onAsinAcosChange("asin", el.asinIn.value); });
+  el.acosSign.addEventListener("click", function () { el.acosIn.value = toggleSignText(el.acosIn.value); onAsinAcosChange("acos", el.acosIn.value); });
+  el.atanSign.addEventListener("click", function () { el.atanIn.value = toggleSignText(el.atanIn.value); onAtanChange(el.atanIn.value); });
+  el.asinCopy.addEventListener("click", function () { copyText(this.dataset.copy); });
+  el.acosCopy.addEventListener("click", function () { copyText(this.dataset.copy); });
+  el.atanCopy.addEventListener("click", function () { copyText(this.dataset.copy); });
+
+  // ── 탭2: 직각삼각형 솔버 ─────────────────────────────────────────────────
+  var triRef = "HYPOTENUSE";
+  var TRI_LABEL = { HYPOTENUSE: "빗변 (c)", BASE: "밑변 (b)", HEIGHT: "높이 (a)" };
+
+  function clearTriOutputs() {
+    el.triOut1.textContent = ""; el.triOut2.textContent = "";
+    el.triOut1Copy.disabled = true; el.triOut2Copy.disabled = true;
+  }
+  function updateTriOutputs(r) {
+    var l1, v1, l2, v2;
+    if (triRef === "HYPOTENUSE") { l1 = "높이 (a)"; v1 = r.height; l2 = "밑변 (b)"; v2 = r.base; }
+    else if (triRef === "BASE") { l1 = "높이 (a)"; v1 = r.height; l2 = "빗변 (c)"; v2 = r.hyp; }
+    else { l1 = "밑변 (b)"; v1 = r.base; l2 = "빗변 (c)"; v2 = r.hyp; }
+    el.triOut1Label.textContent = l1; el.triOut2Label.textContent = l2;
+    el.triOut1.textContent = fmtMeasure(v1); el.triOut2.textContent = fmtMeasure(v2);
+    el.triOut1Copy.disabled = false; el.triOut2Copy.disabled = false;
+  }
+  function recomputeTriangle() {
+    var angle = parseNum(el.triAngle.value);
+    var value = parseNum(el.triValue.value);
+    if (angle === null || value === null) { clearTriOutputs(); return; }
+    var r = RightTri.solve(angle, triRef, value);
+    if (r.err === "value") {
+      el.triValueErr.hidden = false; el.triAngleErr.hidden = true;
+      clearTriOutputs();
+      return;
+    }
+    if (r.err === "angle") {
+      el.triAngleErr.hidden = false; el.triValueErr.hidden = true;
+      clearTriOutputs();
+      return;
+    }
+    el.triAngleErr.hidden = true; el.triValueErr.hidden = true;
+    updateTriOutputs(r);
+  }
+  el.triAngle.addEventListener("input", function () { recomputeTriangle(); drawTriangle(); });
+  el.triValue.addEventListener("input", function () { recomputeTriangle(); });
+  el.triOut1Copy.addEventListener("click", function () { copyText(el.triOut1.textContent); });
+  el.triOut2Copy.addEventListener("click", function () { copyText(el.triOut2.textContent); });
+
+  document.querySelectorAll("#triRefSeg button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      document.querySelectorAll("#triRefSeg button").forEach(function (x) { x.setAttribute("aria-pressed", "false"); });
+      b.setAttribute("aria-pressed", "true");
+      triRef = b.dataset.ref;
+      el.triValueLabelText.textContent = TRI_LABEL[triRef];
+      recomputeTriangle();
+    });
+  });
+
+  // ── 탭2: 두 변 → 각도 (역방향) ───────────────────────────────────────────
+  var revPair = "BASE_HEIGHT";
+  function showPair(pair) {
+    el.revHypWrap.hidden = (pair === "BASE_HEIGHT");
+    el.revBaseWrap.hidden = (pair === "HYP_HEIGHT");
+    el.revHeightWrap.hidden = (pair === "HYP_BASE");
+  }
+  function recomputeReverse() {
+    var hyp = (revPair === "HYP_HEIGHT" || revPair === "HYP_BASE") ? parseNum(el.revHypInput.value) : null;
+    var base = (revPair === "BASE_HEIGHT" || revPair === "HYP_BASE") ? parseNum(el.revBaseInput.value) : null;
+    var height = (revPair === "BASE_HEIGHT" || revPair === "HYP_HEIGHT") ? parseNum(el.revHeightInput.value) : null;
+
+    var r = RightTri.solveAngle(hyp, base, height);
+    if (r.needTwo) {
+      el.revAngleRow.hidden = true; el.revMissingRow.hidden = true; el.revGeomErr.hidden = true;
+      return;
+    }
+    if (r.geomErr) {
+      el.revAngleRow.hidden = true; el.revMissingRow.hidden = true; el.revGeomErr.hidden = false;
+      return;
+    }
+    el.revGeomErr.hidden = true;
+    el.revAngleRow.hidden = false;
+    el.revAngleVal.textContent = fmtMeasure(r.angleDeg) + "°";
+    el.revAngleCopy.disabled = false;
+    el.revAngleCopy.dataset.copy = fmtMeasure(r.angleDeg);
+
+    var missingVal = r.missing === "HYPOTENUSE" ? r.hyp : (r.missing === "BASE" ? r.base : r.height);
+    el.revMissingLabel.textContent = TRI_LABEL[r.missing];
+    el.revMissingVal.textContent = fmtMeasure(missingVal);
+    el.revMissingRow.hidden = false;
+    el.revMissingCopy.disabled = false;
+  }
+  document.querySelectorAll("#revPairSeg button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      document.querySelectorAll("#revPairSeg button").forEach(function (x) { x.setAttribute("aria-pressed", "false"); });
+      b.setAttribute("aria-pressed", "true");
+      revPair = b.dataset.pair;
+      showPair(revPair);
+      recomputeReverse();
+    });
+  });
+  [el.revHypInput, el.revBaseInput, el.revHeightInput].forEach(function (inp) {
+    inp.addEventListener("input", recomputeReverse);
+  });
+  el.revAngleCopy.addEventListener("click", function () { copyText(this.dataset.copy); });
+  el.revMissingCopy.addEventListener("click", function () { copyText(el.revMissingVal.textContent); });
+
+  // ── 탭3: 좌표 → 각도·거리 ────────────────────────────────────────────────
+  var lastDx = null, lastDy = null;
+  function clearCoordOutputs() {
+    el.coordDX.textContent = ""; el.coordDY.textContent = "";
+    el.coordAngle.textContent = ""; el.coordAngle360.textContent = ""; el.coordDist.textContent = "";
+    el.coordAngle.classList.remove("err");
+    [el.coordDXCopy, el.coordDYCopy, el.coordAngleCopy, el.coordAngle360Copy, el.coordDistCopy].forEach(function (b) { b.disabled = true; });
+  }
+  function recomputeCoord() {
+    var x1 = parseNum(el.coordX1.value), y1 = parseNum(el.coordY1.value);
+    var x2 = parseNum(el.coordX2.value), y2 = parseNum(el.coordY2.value);
+    if (x1 === null || y1 === null || x2 === null || y2 === null) {
+      clearCoordOutputs(); lastDx = null; lastDy = null; drawCoord();
+      return;
+    }
+    var r = CoordAngle.fromTwoPoints(x1, y1, x2, y2);
+    if (r.zero) {
+      el.coordDX.textContent = "0"; el.coordDY.textContent = "0"; el.coordDist.textContent = "0";
+      el.coordAngle.textContent = "두 점이 같음 — 각도 정의 안 됨";
+      el.coordAngle.classList.add("err");
+      el.coordAngle360.textContent = "";
+      el.coordDXCopy.disabled = false; el.coordDYCopy.disabled = false; el.coordDistCopy.disabled = false;
+      el.coordAngleCopy.disabled = true; el.coordAngle360Copy.disabled = true;
+      lastDx = 0; lastDy = 0;
+    } else {
+      el.coordDX.textContent = fmtMeasure(r.dx);
+      el.coordDY.textContent = fmtMeasure(r.dy);
+      el.coordAngle.textContent = fmtMeasure(r.deg) + "°";
+      el.coordAngle.classList.remove("err");
+      el.coordAngle360.textContent = fmtMeasure(r.deg360) + "°";
+      el.coordDist.textContent = fmtMeasure(r.dist);
+      [el.coordDXCopy, el.coordDYCopy, el.coordAngleCopy, el.coordAngle360Copy, el.coordDistCopy].forEach(function (b) { b.disabled = false; });
+      el.coordAngleCopy.dataset.copy = fmtMeasure(r.deg);
+      el.coordAngle360Copy.dataset.copy = fmtMeasure(r.deg360);
+      lastDx = r.dx; lastDy = r.dy;
+    }
+    drawCoord();
+  }
+  [el.coordX1, el.coordY1, el.coordX2, el.coordY2].forEach(function (inp) {
+    inp.addEventListener("input", recomputeCoord);
+  });
+  document.querySelectorAll("[data-sign]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var input = $(this.dataset.sign);
+      input.value = toggleSignText(input.value);
+      recomputeCoord();
+    });
+  });
+  el.coordDXCopy.addEventListener("click", function () { copyText(el.coordDX.textContent); });
+  el.coordDYCopy.addEventListener("click", function () { copyText(el.coordDY.textContent); });
+  el.coordAngleCopy.addEventListener("click", function () { copyText(this.dataset.copy); });
+  el.coordAngle360Copy.addEventListener("click", function () { copyText(this.dataset.copy); });
+  el.coordDistCopy.addEventListener("click", function () { copyText(el.coordDist.textContent); });
+
+  // ── 캔버스 도식 ──────────────────────────────────────────────────────────
+  function prepCanvas(c) {
+    var dpr = window.devicePixelRatio || 1;
+    var w = c.clientWidth, h = c.clientHeight;
+    c.width = w * dpr; c.height = h * dpr;
+    var ctx = c.getContext("2d");
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+    return { ctx: ctx, w: w, h: h };
+  }
+
+  function drawCircle() {
+    var p = prepCanvas(el.circleCanvas), ctx = p.ctx, W = p.w, H = p.h;
+    var thetaDeg = parseFloat(el.degInput.value);
+    if (!isFinite(thetaDeg)) thetaDeg = 38;
+    var thetaRad = thetaDeg * Math.PI / 180;
+    var cx = W / 2, cy = H / 2, r = Math.min(W, H) * 0.34;
+    var px = cx + r * Math.cos(thetaRad), py = cy - r * Math.sin(thetaRad);
+    var fx = px, fy = cy;
+
+    ctx.strokeStyle = col("--line"); ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(cx - r - 16, cy); ctx.lineTo(cx + r + 16, cy); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx, cy + r + 16); ctx.lineTo(cx, cy - r - 16); ctx.stroke();
+
+    ctx.strokeStyle = col("--muted"); ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke();
+
+    ctx.strokeStyle = col("--good"); ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(fx, fy); ctx.stroke();
+    ctx.setLineDash([6, 6]); ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(fx, fy); ctx.lineTo(px, py); ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.strokeStyle = col("--signal"); ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(px, py); ctx.stroke();
+
+    ctx.strokeStyle = col("--primary"); ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.arc(cx, cy, 24, 0, -thetaRad, thetaRad > 0); ctx.stroke();
+
+    ctx.fillStyle = col("--good"); ctx.font = "13px sans-serif";
+    ctx.textAlign = "center"; ctx.textBaseline = (py >= cy ? "top" : "bottom");
+    ctx.fillText("cos", (cx + fx) / 2, cy + (py >= cy ? 6 : -6));
+    ctx.textAlign = (px >= cx ? "left" : "right"); ctx.textBaseline = "middle";
+    ctx.fillText("sin", fx + (px >= cx ? 6 : -6), (fy + py) / 2);
+
+    ctx.fillStyle = col("--signal"); ctx.font = "13px sans-serif";
+    ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.fillText("1", (cx + px) / 2, (cy + py) / 2 - 14);
+
+    ctx.fillStyle = col("--primary"); ctx.font = "bold 15px sans-serif";
+    var midAngle = thetaRad / 2;
+    ctx.fillText("θ", cx + 40 * Math.cos(midAngle), cy - 40 * Math.sin(midAngle));
+
+    ctx.fillStyle = col("--primary");
+    ctx.beginPath(); ctx.arc(px, py, 4, 0, Math.PI * 2); ctx.fill();
+  }
+
+  function drawTriangle() {
+    var p = prepCanvas(el.triCanvas), ctx = p.ctx, W = p.w, H = p.h;
+    var padV = H * 0.16, baseY = H - padV, triH = H - 2 * padV;
+    var maxBase = W * 0.74, base = Math.min(triH * 1.45, maxBase);
+    var cx = W / 2;
+    var left = { x: cx - base / 2, y: baseY };
+    var right = { x: cx + base / 2, y: baseY };
+    var top = { x: cx + base / 2, y: baseY - triH };
+
+    ctx.lineWidth = 2; ctx.strokeStyle = col("--good");
+    ctx.beginPath(); ctx.moveTo(left.x, left.y); ctx.lineTo(right.x, right.y); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(right.x, right.y); ctx.lineTo(top.x, top.y); ctx.stroke();
+
+    ctx.lineWidth = 2.5; ctx.strokeStyle = col("--signal");
+    ctx.beginPath(); ctx.moveTo(left.x, left.y); ctx.lineTo(top.x, top.y); ctx.stroke();
+
+    var sq = 11;
+    ctx.strokeStyle = col("--primary"); ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(right.x - sq, right.y);
+    ctx.lineTo(right.x - sq, right.y - sq);
+    ctx.lineTo(right.x, right.y - sq);
+    ctx.stroke();
+
+    var hypAngle = Math.atan2(top.y - left.y, top.x - left.x);
+    ctx.strokeStyle = col("--primary"); ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.arc(left.x, left.y, 24, 0, hypAngle, hypAngle < 0); ctx.stroke();
+
+    ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.fillStyle = col("--signal"); ctx.font = "bold 14px sans-serif";
+    ctx.fillText("c", (left.x + top.x) / 2 - 18, (left.y + top.y) / 2 - 6);
+
+    ctx.fillStyle = col("--ink"); ctx.font = "14px sans-serif";
+    ctx.fillText("b", (left.x + right.x) / 2, right.y + 16);
+    ctx.fillText("a", right.x + 16, (right.y + top.y) / 2);
+
+    ctx.fillStyle = col("--primary"); ctx.font = "bold 15px sans-serif";
+    var thetaMid = hypAngle / 2;
+    ctx.fillText("θ", left.x + 38 * Math.cos(thetaMid), left.y + 38 * Math.sin(thetaMid));
+  }
+
+  function drawCoord() {
+    var p = prepCanvas(el.coordCanvas), ctx = p.ctx, W = p.w, H = p.h;
+    var hasInput = (lastDx !== null && lastDy !== null && !(lastDx === 0 && lastDy === 0));
+    var vx = hasInput ? lastDx : 1.0;
+    var vy = hasInput ? lastDy : 0.62;
+    var maxMag = Math.max(Math.abs(vx), Math.abs(vy), 1e-9);
+    var scale = Math.min(W, H) * 0.56 / maxMag;
+    var sdx = vx * scale, sdyUp = vy * scale;
+    var cx = W / 2, cy = H / 2;
+    var p1 = { x: cx - sdx / 2, y: cy + sdyUp / 2 };
+    var p2 = { x: p1.x + sdx, y: p1.y - sdyUp };
+    var corner = { x: p2.x, y: p1.y };
+
+    ctx.strokeStyle = col("--ink"); ctx.globalAlpha = 0.3; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(p1.x, p1.y); ctx.lineTo(p1.x + 40, p1.y); ctx.stroke();
+    ctx.globalAlpha = 1;
+
+    ctx.strokeStyle = col("--good"); ctx.lineWidth = 2; ctx.setLineDash([9, 9]);
+    ctx.beginPath(); ctx.moveTo(p1.x, p1.y); ctx.lineTo(corner.x, corner.y); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(corner.x, corner.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.strokeStyle = col("--signal"); ctx.lineWidth = 3; ctx.lineCap = "round";
+    ctx.beginPath(); ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
+
+    var vdx = p2.x - p1.x, vdy = p2.y - p1.y;
+    var vlen = Math.max(Math.hypot(vdx, vdy), 1);
+    var ux = vdx / vlen, uy = vdy / vlen, ah = 14;
+    var back = { x: p2.x - ah * ux, y: p2.y - ah * uy };
+    var perpX = -uy * ah * 0.6, perpY = ux * ah * 0.6;
+    ctx.beginPath(); ctx.moveTo(p2.x, p2.y); ctx.lineTo(back.x + perpX, back.y + perpY); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(p2.x, p2.y); ctx.lineTo(back.x - perpX, back.y - perpY); ctx.stroke();
+
+    var vecAngle = Math.atan2(vdy, vdx);
+    ctx.strokeStyle = col("--primary"); ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.arc(p1.x, p1.y, 30, 0, vecAngle, vecAngle < 0); ctx.stroke();
+
+    ctx.fillStyle = col("--primary");
+    ctx.beginPath(); ctx.arc(p1.x, p1.y, 5, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(p2.x, p2.y, 5, 0, Math.PI * 2); ctx.fill();
+
+    ctx.fillStyle = col("--ink"); ctx.font = "bold 13px sans-serif";
+    ctx.textAlign = (sdx >= 0 ? "right" : "left"); ctx.textBaseline = (sdyUp >= 0 ? "top" : "bottom");
+    ctx.fillText("P1", p1.x + (sdx >= 0 ? -8 : 8), p1.y + (sdyUp >= 0 ? 6 : -6));
+    ctx.textAlign = (sdx >= 0 ? "left" : "right"); ctx.textBaseline = (sdyUp >= 0 ? "bottom" : "top");
+    ctx.fillText("P2", p2.x + (sdx >= 0 ? 8 : -8), p2.y + (sdyUp >= 0 ? -6 : 6));
+
+    ctx.fillStyle = col("--good"); ctx.font = "12px sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    if (Math.abs(sdx) > 12) ctx.fillText("ΔX", (p1.x + corner.x) / 2, (sdyUp >= 0 ? p1.y + 10 : p1.y - 10));
+    if (Math.abs(sdyUp) > 12) ctx.fillText("ΔY", (sdx >= 0 ? corner.x + 14 : corner.x - 14), (corner.y + p2.y) / 2);
+
+    ctx.fillStyle = col("--primary"); ctx.font = "bold 15px sans-serif";
+    var thetaMid = vecAngle / 2;
+    ctx.fillText("θ", p1.x + 42 * Math.cos(thetaMid), p1.y + 42 * Math.sin(thetaMid));
+  }
+
+  window.addEventListener("resize", function () {
+    if (!$("panel-fn").hidden) drawCircle();
+    if (!$("panel-tri").hidden) drawTriangle();
+    if (!$("panel-co").hidden) drawCoord();
+  });
+
+  // ── 초기화 ──────────────────────────────────────────────────────────────
+  showPair(revPair);
+  selectTab("fn");
+})();
+</script>
+
+<script>
+(function(){
+  var KEY="plcmanjp-tool-theme", order=["","light","dark"], lbl={"":"시스템","light":"라이트","dark":"다크"};
+  var root=document.documentElement, btn=document.getElementById("themeBtn"), lblEl=document.getElementById("themeLbl");
+  var cur=root.getAttribute("data-theme")||"";
+  if(lblEl) lblEl.textContent=lbl[cur];
+  function apply(t){
+    if(t) root.setAttribute("data-theme",t); else root.removeAttribute("data-theme");
+    if(lblEl) lblEl.textContent=lbl[t];
+    try{ if(t) localStorage.setItem(KEY,t); else localStorage.removeItem(KEY); }catch(e){}
+    window.dispatchEvent(new Event("resize"));
+  }
+  if(btn) btn.addEventListener("click",function(){ cur=order[(order.indexOf(cur)+1)%order.length]; apply(cur); });
+})();
+</script>
+</body>
+</html>
