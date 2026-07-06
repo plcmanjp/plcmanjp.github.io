@@ -331,7 +331,7 @@
 
   <ul class="notes">
     <li><b>공식</b> — CMX/CDV = (Pe &times; &Delta;l &times; Rm) / (L_load &times; Rl), 이후 <b>GCD 기약분수</b>. Rm=감속 모터측&times;기어 구동잇수(역변환), Rl=감속 출력측&times;기어 부하잇수(총 감속 결합). <b>지령펄스(Ap) 모드</b>는 CMX/CDV = Pe / Ap로 직접 산출하고, 지령단위는 Al/Ap로 역산 표시한다.</li>
-    <li><b>정확성</b> — 볼스크류·회전 테이블은 유한소수 + 정수 분할이라 <b>항상 정확 유리수</b>(무손실). 원주(&pi;) 개입 기구(벨트·풀리·컨베이어·랙&amp;피니언)는 폐기(미지원).</li>
+    <li><b>정확성</b> — 볼스크류·회전 테이블은 유한소수 + 정수 분할이라 <b>항상 정확 유리수</b>(무손실). 원주(&pi;) 개입 기구(벨트·풀리·컨베이어·랙&amp;피니언)는 미지원(차기 확장에서 근사·오차 정책과 함께 도입 예정).</li>
     <li><b>범위 검증</b> — 기약 후 CMX 또는 CDV가 서보 시리즈 파라미터 상한을 넘으면 <b>범위 초과</b> 경고(무음 통과 금지). 상한: MR-J2S 65,535 · MR-J3/J4 1,048,576 · MR-J5·수동 16,777,216.</li>
     <li><b>위치결정 모듈</b> — 모듈 최대 pps 기준 최고 모터속도(rpm)·최고 기계속도, 목표 속도(미입력 시 정격 회전수 대체) 대비 <b>가능/불가</b> + 필요 pps.</li>
   </ul>
@@ -703,7 +703,7 @@
         var feasible = reqPps <= Number(m.maxPps);
         m.badge.hidden = false; m.badge.textContent = feasible ? "가능" : "불가";
         m.badge.className = "badge " + (feasible ? "good" : "bad");
-        m.pps.hidden = false; m.pps.textContent = "필요 " + fmtInt(Math.round(reqPps)) + " pps";
+        m.pps.hidden = false; m.pps.textContent = "필요 " + fmtInt(Math.trunc(reqPps)) + " pps";
       } else { m.badge.hidden = true; m.pps.hidden = true; }
     });
   }
