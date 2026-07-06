@@ -492,6 +492,7 @@
 
   // ── 커밋 헬퍼 (CalcProgrammerViewModel.kt 이식) ────────────────────────────
   function withBuffer(state, newBuffer) {
+    UI.bcdInvalid = new Set();
     var parsed = parseBuffer(newBuffer, state.inputRadix, state.width, state.signed);
     var newRaw;
     if (parsed.ok) newRaw = parsed.value & maskOf(state.width);
@@ -510,6 +511,7 @@
     return false;
   }
   function commitRaw(state, newRaw) {
+    UI.bcdInvalid = new Set();
     return Object.assign({}, state, { raw: newRaw & maskOf(state.width), inputBuffer: "" });
   }
 
@@ -552,12 +554,14 @@
   function onSelectRadix(radix) {
     if (S.inputRadix === radix) return;
     if (!commitBufferIfNeeded()) return;
+    UI.bcdInvalid = new Set();
     S = Object.assign({}, S, { inputRadix: radix, inputBuffer: "" });
     render();
   }
   function onSelectWidth(width) {
     if (S.width === width) return;
     if (!commitBufferIfNeeded()) return;
+    UI.bcdInvalid = new Set();
     var narrowing = bitsOf(width) < bitsOf(S.width);
     var before = S.raw;
     var next = withWidth(S, width);
@@ -565,7 +569,7 @@
     render();
     if (narrowing && before !== S.raw) toast(STR.truncated);
   }
-  function onToggleSigned() { if (!commitBufferIfNeeded()) return; S = Object.assign({}, S, { signed: !S.signed }); render(); }
+  function onToggleSigned() { if (!commitBufferIfNeeded()) return; UI.bcdInvalid = new Set(); S = Object.assign({}, S, { signed: !S.signed }); render(); }
   function onToggleGrouping() { S = Object.assign({}, S, { grouping: !S.grouping }); render(); }
   function onNot() { if (!commitBufferIfNeeded()) return; S = commitRaw(S, notOp(S.raw, S.width)); render(); }
   function onNegate() { if (!commitBufferIfNeeded()) return; S = commitRaw(S, negateOp(S.raw, S.width)); render(); }
@@ -575,6 +579,7 @@
   function onRor() { if (!commitBufferIfNeeded()) return; S = commitRaw(S, ror(S.raw, 1, S.width)); render(); }
   function onBinaryOp(op) {
     if (!commitBufferIfNeeded()) return;
+    UI.bcdInvalid = new Set();
     var newRaw = S.raw;
     var hasOverflow = false;
     if (S.pendingOp !== null && S.operand !== null) {
@@ -597,6 +602,7 @@
   function onEquals() {
     if (!commitBufferIfNeeded()) return;
     if (S.pendingOp === null || S.operand === null) return;
+    UI.bcdInvalid = new Set();
     var r = applyBinaryOp(S.operand, S.raw, S.pendingOp, S.width, S.signed);
     if (r.error) {
       toast(STR.div0);
@@ -684,8 +690,8 @@
     var html = "";
     for (var i = n - 1; i >= 0; i--) {
       var nibVal = Number((S.raw >> BigInt(i * 4)) & 0xFn);
+      var text = nibVal <= 9 ? nibVal.toString(10) : nibVal.toString(16).toUpperCase();
       var invalid = UI.bcdInvalid.has(i);
-      var text = invalid ? nibVal.toString(16).toUpperCase() : nibVal.toString(10);
       html += '<div class="bcdnibble' + (invalid ? " invalid" : "") + '">' + text + "</div>";
     }
     el.bcdZone.innerHTML = html;
