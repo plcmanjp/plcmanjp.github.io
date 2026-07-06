@@ -290,6 +290,7 @@
     bcdOverflow: "BCD 변환 범위를 초과했습니다",
     bcdInvalidNibble: "BCD invalid 니블 발견 (A~F)",
     truncated: "상위 비트가 절단되었습니다",
+    overflow: "오버플로: 폭 범위를 벗어나 wrap됨",
   };
 
   // ── 상태 (S0017 §3 / ProgrammerCalcState.kt CalcState) ────────────────────
@@ -440,7 +441,11 @@
     if (op === "AND") return { value: (a & b) & mask };
     if (op === "OR")  return { value: (a | b) & mask };
     if (op === "XOR") return { value: (a ^ b) & mask };
-    if (op === "ADD") return { value: (a + b) & mask };
+    if (op === "ADD") {
+      var sum = a + b;
+      var overflow = sum > mask;
+      return { value: sum & mask, overflow: overflow };
+    }
     if (op === "SUB") return { value: (a - b) & mask };
     if (op === "MUL") return { value: (a * b) & mask };
     if (op === "DIV") { if (b === 0n) return { error: "div0" }; return { value: divOp(a, b, width, signed) }; }
@@ -493,13 +498,16 @@
     else newRaw = (newBuffer === "" || newBuffer === "-") ? 0n : state.raw;
     return Object.assign({}, state, { inputBuffer: newBuffer, raw: newRaw });
   }
-  function commitBufferIfNeeded(state) {
-    var buf = state.inputBuffer;
-    if (buf === "" || buf === "-") return state;
-    var parsed = parseBuffer(buf, state.inputRadix, state.width, state.signed);
-    if (parsed.ok) return Object.assign({}, state, { raw: parsed.value, inputBuffer: "" });
+  function commitBufferIfNeeded() {
+    var buf = S.inputBuffer;
+    if (buf === "" || buf === "-") return true;
+    var parsed = parseBuffer(buf, S.inputRadix, S.width, S.signed);
+    if (parsed.ok) {
+      S = Object.assign({}, S, { raw: parsed.value, inputBuffer: "" });
+      return true;
+    }
     toast(STR[parsed.reason] || STR.invalidChar);
-    return Object.assign({}, state, { inputBuffer: "" });
+    return false;
   }
   function commitRaw(state, newRaw) {
     return Object.assign({}, state, { raw: newRaw & maskOf(state.width), inputBuffer: "" });
@@ -543,13 +551,13 @@
   }
   function onSelectRadix(radix) {
     if (S.inputRadix === radix) return;
-    S = commitBufferIfNeeded(S);
+    if (!commitBufferIfNeeded()) return;
     S = Object.assign({}, S, { inputRadix: radix, inputBuffer: "" });
     render();
   }
   function onSelectWidth(width) {
     if (S.width === width) return;
-    S = commitBufferIfNeeded(S);
+    if (!commitBufferIfNeeded()) return;
     var narrowing = bitsOf(width) < bitsOf(S.width);
     var before = S.raw;
     var next = withWidth(S, width);
@@ -557,42 +565,58 @@
     render();
     if (narrowing && before !== S.raw) toast(STR.truncated);
   }
-  function onToggleSigned() { S = commitBufferIfNeeded(S); S = Object.assign({}, S, { signed: !S.signed }); render(); }
+  function onToggleSigned() { if (!commitBufferIfNeeded()) return; S = Object.assign({}, S, { signed: !S.signed }); render(); }
   function onToggleGrouping() { S = Object.assign({}, S, { grouping: !S.grouping }); render(); }
-  function onNot() { S = commitBufferIfNeeded(S); S = commitRaw(S, notOp(S.raw, S.width)); render(); }
-  function onNegate() { S = commitBufferIfNeeded(S); S = commitRaw(S, negateOp(S.raw, S.width)); render(); }
-  function onShl() { S = commitBufferIfNeeded(S); S = commitRaw(S, shl(S.raw, 1, S.width)); render(); }
-  function onShr() { S = commitBufferIfNeeded(S); var r = S.signed ? asr(S.raw, 1, S.width) : lsr(S.raw, 1, S.width); S = commitRaw(S, r); render(); }
-  function onRol() { S = commitBufferIfNeeded(S); S = commitRaw(S, rol(S.raw, 1, S.width)); render(); }
-  function onRor() { S = commitBufferIfNeeded(S); S = commitRaw(S, ror(S.raw, 1, S.width)); render(); }
+  function onNot() { if (!commitBufferIfNeeded()) return; S = commitRaw(S, notOp(S.raw, S.width)); render(); }
+  function onNegate() { if (!commitBufferIfNeeded()) return; S = commitRaw(S, negateOp(S.raw, S.width)); render(); }
+  function onShl() { if (!commitBufferIfNeeded()) return; S = commitRaw(S, shl(S.raw, 1, S.width)); render(); }
+  function onShr() { if (!commitBufferIfNeeded()) return; var r = S.signed ? asr(S.raw, 1, S.width) : lsr(S.raw, 1, S.width); S = commitRaw(S, r); render(); }
+  function onRol() { if (!commitBufferIfNeeded()) return; S = commitRaw(S, rol(S.raw, 1, S.width)); render(); }
+  function onRor() { if (!commitBufferIfNeeded()) return; S = commitRaw(S, ror(S.raw, 1, S.width)); render(); }
   function onBinaryOp(op) {
-    S = commitBufferIfNeeded(S);
+    if (!commitBufferIfNeeded()) return;
     var newRaw = S.raw;
+    var hasOverflow = false;
     if (S.pendingOp !== null && S.operand !== null) {
       var r = applyBinaryOp(S.operand, S.raw, S.pendingOp, S.width, S.signed);
-      if (r.error) { toast(STR.div0); newRaw = S.raw; } else newRaw = r.value;
+      if (r.error) {
+        toast(STR.div0);
+        newRaw = S.operand; // 피연산자(a) 원래값 복귀
+        S.pendingOp = null; // pending 클리어
+        S.operand = null;
+      } else {
+        newRaw = r.value;
+        if (r.overflow) hasOverflow = true;
+      }
     }
     var mask = maskOf(S.width);
     S = Object.assign({}, S, { raw: newRaw & mask, pendingOp: op, operand: newRaw & mask, inputBuffer: "" });
     render();
+    if (hasOverflow) toast(STR.overflow);
   }
   function onEquals() {
-    S = commitBufferIfNeeded(S);
+    if (!commitBufferIfNeeded()) return;
     if (S.pendingOp === null || S.operand === null) return;
     var r = applyBinaryOp(S.operand, S.raw, S.pendingOp, S.width, S.signed);
-    if (r.error) { toast(STR.div0); return; }
+    if (r.error) {
+      toast(STR.div0);
+      S = Object.assign({}, S, { raw: S.operand, pendingOp: null, operand: null, inputBuffer: "" }); // 원래값 복귀 + pending 클리어
+      render();
+      return;
+    }
     S = Object.assign({}, S, { raw: r.value, pendingOp: null, operand: null, inputBuffer: "" });
     render();
+    if (r.overflow) toast(STR.overflow);
   }
   function onToggleBit(bitIndex) {
-    S = commitBufferIfNeeded(S);
+    if (!commitBufferIfNeeded()) return;
     if (bitIndex < 0 || bitIndex >= bitsOf(S.width)) return;
     var newRaw = (S.raw ^ (1n << BigInt(bitIndex))) & maskOf(S.width);
     S = commitRaw(S, newRaw);
     render();
   }
   function onBinToBcd() {
-    S = commitBufferIfNeeded(S);
+    if (!commitBufferIfNeeded()) return;
     var max = maxBcdDecimal(S.width);
     if (S.raw > max) { toast(STR.bcdOverflow); return; }
     var remaining = S.raw, bcd = 0n, shift = 0n;
@@ -602,7 +626,7 @@
     render();
   }
   function onBcdToBin() {
-    S = commitBufferIfNeeded(S);
+    if (!commitBufferIfNeeded()) return;
     var n = nibbleCount(S.width), result = 0n, mult = 1n;
     for (var i = 0; i < n; i++) {
       var nib = (S.raw >> BigInt(i * 4)) & 0xFn;
@@ -613,7 +637,7 @@
     UI.bcdInvalid = new Set();
     render();
   }
-  function onByteSwap() { S = commitBufferIfNeeded(S); S = commitRaw(S, swapBytes(S.raw, S.width)); render(); }
+  function onByteSwap() { if (!commitBufferIfNeeded()) return; S = commitRaw(S, swapBytes(S.raw, S.width)); render(); }
 
   // ── 렌더 ──────────────────────────────────────────────────────────────────
   var el = {
