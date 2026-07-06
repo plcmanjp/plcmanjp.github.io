@@ -437,9 +437,20 @@
     renderSection1and2();
   });
 
-  elCopyCode.addEventListener("click", function () { copyText(elCodeOutput.textContent, null); });
-  elCopyWord.addEventListener("click", function () { copyText(elWordOutput.textContent, null); });
-  elCopyDecoded.addEventListener("click", function () { copyText(elDecodedOutput.textContent, null); });
+  // copy confirm: the app shows a Snackbar on copy. Flash the button to a check mark briefly
+  // so the 3 input output-boxes give the same copy feedback the app gives.
+  function copyWithFeedback(boxEl, btn) {
+    var t = boxEl.textContent;
+    if (!t) return;
+    copyText(t, null);
+    if (btn._label === undefined) btn._label = btn.textContent;
+    if (btn._restore) clearTimeout(btn._restore);
+    btn.textContent = "✓";
+    btn._restore = setTimeout(function () { btn.textContent = btn._label; }, 1200);
+  }
+  elCopyCode.addEventListener("click", function () { copyWithFeedback(elCodeOutput, elCopyCode); });
+  elCopyWord.addEventListener("click", function () { copyWithFeedback(elWordOutput, elCopyWord); });
+  elCopyDecoded.addEventListener("click", function () { copyWithFeedback(elDecodedOutput, elCopyDecoded); });
 
   elHexInput.addEventListener("input", function () {
     var clean = sanitizeHexInput(this.value);

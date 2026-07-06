@@ -327,7 +327,9 @@
     el.sigOut.hidden = true;
 
     var cSpan = cMax - cMin;
-    if (!isFinite(cSpan) || cSpan === 0 || !isFinite(eMin) || !isFinite(eMax) || eMax === eMin) {
+    // count MIN=MAX -> both directions invalid. EU MIN=MAX(SPAN_e=0): only reverse(D/A) invalid(div0);
+    // A/D transform stays valid because EU is a constant(OFFSET_e). AnalogScale.kt F3 directional asymmetry.
+    if (!isFinite(cSpan) || cSpan === 0 || !isFinite(eMin) || !isFinite(eMax) || (mode === "DA" && eMax === eMin)) {
       el.resultBox.hidden = true; G = null; drawGraph(); return;
     }
     var SPANe = (eMax - eMin) / cSpan, OFFe = eMin - SPANe * cMin;
@@ -376,6 +378,7 @@
     var xLo0 = Math.min(G.inMin, G.inMax), xHi0 = Math.max(G.inMin, G.inMax);
     var yLo0 = Math.min(G.outMin, G.outMax), yHi0 = Math.max(G.outMin, G.outMax);
     var xB = (xHi0 - xLo0) / 10, yB = (yHi0 - yLo0) / 5;
+    if (yB === 0) yB = (Math.abs(yLo0) || 1) / 5;   // EU MIN=MAX(A/D constant): horizontal line, Y-band div0 guard
     var xLo = xLo0 - xB, xHi = xHi0 + xB, yLo = yLo0 - yB, yHi = yHi0 + yB;
     var X = function (v) { return padL + (v - xLo) / (xHi - xLo) * plotW; };
     var Y = function (v) { return padT + plotH - (v - yLo) / (yHi - yLo) * plotH; };
