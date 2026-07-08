@@ -218,8 +218,8 @@
       </select>
     </label>
     <div class="row">
-      <label class="f">분해능 MIN<input type="number" id="countMin" value="0" inputmode="numeric"></label>
-      <label class="f">분해능 MAX<input type="number" id="countMax" value="4000" inputmode="numeric"></label>
+      <label class="f">분해능 MIN<input type="number" id="countMin" value="0" placeholder="분해능 MIN 입력 (예시:0)" inputmode="numeric"></label>
+      <label class="f">분해능 MAX<input type="number" id="countMax" value="4000" placeholder="분해능 MAX 입력 (예시:4000)" inputmode="numeric"></label>
     </div>
   </div>
 </template>
@@ -236,8 +236,8 @@
         </div>
       </div>
       <div class="row">
-        <label class="f">신호 MIN<input type="number" id="sigMin" value="4" inputmode="decimal"></label>
-        <label class="f">신호 MAX<input type="number" id="sigMax" value="20" inputmode="decimal"></label>
+        <label class="f">신호 MIN<input type="number" id="sigMin" value="4" placeholder="신호 MIN 입력 (예시:4)" inputmode="decimal"></label>
+        <label class="f">신호 MAX<input type="number" id="sigMax" value="20" placeholder="신호 MAX 입력 (예시:20)" inputmode="decimal"></label>
       </div>
     </div>
   </div>
@@ -246,9 +246,9 @@
 <template id="tpl-eu">
   <div data-blk="eu">
     <div class="row three">
-      <label class="f">변환값 MIN<input type="number" id="euMin" value="0" inputmode="decimal"></label>
-      <label class="f">변환값 MAX<input type="number" id="euMax" value="100" inputmode="decimal"></label>
-      <label class="f">단위<input type="text" id="euUnit" list="unitList" value="kPa" placeholder="단위"></label>
+      <label class="f">변환값 MIN<input type="number" id="euMin" value="0" placeholder="변환값 MIN 입력 (예시:0)" inputmode="decimal"></label>
+      <label class="f">변환값 MAX<input type="number" id="euMax" value="100" placeholder="변환값 MAX 입력 (예시:100)" inputmode="decimal"></label>
+      <label class="f">단위<input type="text" id="euUnit" list="unitList" value="kPa" placeholder="단위 입력 (예시:kPa)"></label>
     </div>
     <datalist id="unitList">
       <option value="kPa"></option><option value="MPa"></option><option value="bar"></option>
@@ -294,6 +294,10 @@
 
   var PRESETS = { mA: [["4,20","4~20 mA"],["0,20","0~20 mA"]], V: [["0,5","0~5 V"],["1,5","1~5 V"],["0,10","0~10 V"],["-10,10","-10~10 V"]] };
   var SIG_DEFAULT = { mA: "4,20", V: "1,5" };
+  var SIG_PLACEHOLDER = {
+    mA: ["신호 MIN 입력 (예시:4)", "신호 MAX 입력 (예시:20)"],
+    V: ["신호 MIN 입력 (예시:1)", "신호 MAX 입력 (예시:5)"],
+  };
   function rebuildPresets(u) {
     el.sigPreset.innerHTML = "";
     PRESETS[u].forEach(function (o) { var p = document.createElement("option"); p.value = o[0]; p.textContent = o[1]; el.sigPreset.appendChild(p); });
@@ -302,6 +306,7 @@
   function applyPreset() { if (el.sigPreset.value === "custom") return; var p = el.sigPreset.value.split(","); el.sigMin.value = p[0]; el.sigMax.value = p[1]; }
   function setSigType(u, keep) {
     sigUnit = u; el.sigCur.setAttribute("aria-pressed", u === "mA"); el.sigVol.setAttribute("aria-pressed", u === "V");
+    el.sigMin.placeholder = SIG_PLACEHOLDER[u][0]; el.sigMax.placeholder = SIG_PLACEHOLDER[u][1];
     rebuildPresets(u); if (!keep) { el.sigPreset.value = SIG_DEFAULT[u]; applyPreset(); } compute();
   }
   el.sigCur.addEventListener("click", function () { setSigType("mA"); });

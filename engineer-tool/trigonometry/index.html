@@ -153,12 +153,12 @@
         <canvas id="circleCanvas" class="diagram-canvas" width="480" height="220" style="height:220px" aria-label="단위원 도식"></canvas>
 
         <div class="fieldrow">
-          <label class="f">각도 (°)<input type="text" id="degInput" inputmode="decimal" placeholder="예: 30"></label>
+          <label class="f">각도 (°)<input type="text" id="degInput" inputmode="decimal" placeholder="각도 입력 (예시:30)"></label>
           <button class="iconbtn" id="degSign" title="부호 전환">&plusmn;</button>
           <button class="iconbtn txt" id="degCopy" title="복사" disabled>복사</button>
         </div>
         <div class="fieldrow">
-          <label class="f">라디안 (rad)<input type="text" id="radInput" inputmode="decimal" placeholder="예: 0.5236"></label>
+          <label class="f">라디안 (rad)<input type="text" id="radInput" inputmode="decimal" placeholder="라디안 입력 (예시:0.5236)"></label>
           <button class="iconbtn" id="radSign" title="부호 전환">&plusmn;</button>
           <button class="iconbtn txt" id="radCopy" title="복사" disabled>복사</button>
         </div>
@@ -175,7 +175,7 @@
         <div class="invrow">
           <div class="invtop">
             <span class="il">asin</span>
-            <input type="text" id="asinIn" inputmode="decimal">
+            <input type="text" id="asinIn" inputmode="decimal" placeholder="asin 비율 입력 (예시:0.5)">
             <button class="iconbtn sm" id="asinSign" title="부호 전환">&plusmn;</button>
           </div>
           <div class="invbot">
@@ -188,7 +188,7 @@
         <div class="invrow">
           <div class="invtop">
             <span class="il">acos</span>
-            <input type="text" id="acosIn" inputmode="decimal">
+            <input type="text" id="acosIn" inputmode="decimal" placeholder="acos 비율 입력 (예시:0.5)">
             <button class="iconbtn sm" id="acosSign" title="부호 전환">&plusmn;</button>
           </div>
           <div class="invbot">
@@ -201,7 +201,7 @@
         <div class="invrow">
           <div class="invtop">
             <span class="il">atan</span>
-            <input type="text" id="atanIn" inputmode="decimal">
+            <input type="text" id="atanIn" inputmode="decimal" placeholder="atan 비율 입력 (예시:1)">
             <button class="iconbtn sm" id="atanSign" title="부호 전환">&plusmn;</button>
           </div>
           <div class="invbot">
@@ -218,7 +218,7 @@
 
         <canvas id="triCanvas" class="diagram-canvas" width="480" height="200" style="height:200px" aria-label="직각삼각형 도식"></canvas>
 
-        <label class="f">각도 (θ)<input type="text" id="triAngle" inputmode="decimal" placeholder="0 ~ 90 사이"></label>
+        <label class="f">각도 (θ)<input type="text" id="triAngle" inputmode="decimal" placeholder="각도 입력 (예시:30)"></label>
         <div class="errtext" id="triAngleErr" hidden>각도는 0~90&deg; 사이여야 합니다</div>
 
         <div class="subhead">기준변</div>
@@ -228,7 +228,7 @@
           <button type="button" data-ref="HEIGHT" aria-pressed="false">높이 (a)</button>
         </div>
 
-        <label class="f"><span id="triValueLabelText">빗변 (c)</span><input type="text" id="triValue" inputmode="decimal"></label>
+        <label class="f"><span id="triValueLabelText">빗변 (c)</span><input type="text" id="triValue" inputmode="decimal" placeholder="빗변 입력 (예시:5)"></label>
         <div class="errtext" id="triValueErr" hidden>0보다 큰 값을 입력하세요</div>
 
         <div class="outrow"><span class="ol" id="triOut1Label">높이 (a)</span><span class="ov" id="triOut1"></span><button class="iconbtn sm txt" id="triOut1Copy" disabled>복사</button></div>
@@ -244,9 +244,9 @@
           <button type="button" data-pair="HYP_BASE" aria-pressed="false">빗변&middot;밑변</button>
         </div>
 
-        <label class="f" id="revHypWrap" hidden>빗변 (c)<input type="text" id="revHypInput" inputmode="decimal"></label>
-        <label class="f" id="revBaseWrap">밑변 (b)<input type="text" id="revBaseInput" inputmode="decimal"></label>
-        <label class="f" id="revHeightWrap">높이 (a)<input type="text" id="revHeightInput" inputmode="decimal"></label>
+        <label class="f" id="revHypWrap" hidden>빗변 (c)<input type="text" id="revHypInput" inputmode="decimal" placeholder="빗변 입력 (예시:5)"></label>
+        <label class="f" id="revBaseWrap">밑변 (b)<input type="text" id="revBaseInput" inputmode="decimal" placeholder="밑변 입력 (예시:3)"></label>
+        <label class="f" id="revHeightWrap">높이 (a)<input type="text" id="revHeightInput" inputmode="decimal" placeholder="높이 입력 (예시:4)"></label>
 
         <div class="outrow" id="revAngleRow" hidden style="margin-top:6px"><span class="ol">각도 θ</span><span class="ov" id="revAngleVal"></span><button class="iconbtn sm txt" id="revAngleCopy" disabled>복사</button></div>
         <div class="outrow" id="revMissingRow" hidden><span class="ol" id="revMissingLabel"></span><span class="ov" id="revMissingVal"></span><button class="iconbtn sm txt" id="revMissingCopy" disabled>복사</button></div>
@@ -262,11 +262,11 @@
         <div class="subhead">시작점 P1</div>
         <div class="row">
           <div class="fieldrow tight">
-            <label class="f">X1<input type="text" id="coordX1" inputmode="decimal"></label>
+            <label class="f">X1<input type="text" id="coordX1" inputmode="decimal" placeholder="X1 입력 (예시:0)"></label>
             <button class="iconbtn sm" data-sign="coordX1" title="부호 전환">&plusmn;</button>
           </div>
           <div class="fieldrow tight">
-            <label class="f">Y1<input type="text" id="coordY1" inputmode="decimal"></label>
+            <label class="f">Y1<input type="text" id="coordY1" inputmode="decimal" placeholder="Y1 입력 (예시:0)"></label>
             <button class="iconbtn sm" data-sign="coordY1" title="부호 전환">&plusmn;</button>
           </div>
         </div>
@@ -274,11 +274,11 @@
         <div class="subhead">목표점 P2</div>
         <div class="row">
           <div class="fieldrow tight">
-            <label class="f">X2<input type="text" id="coordX2" inputmode="decimal"></label>
+            <label class="f">X2<input type="text" id="coordX2" inputmode="decimal" placeholder="X2 입력 (예시:3)"></label>
             <button class="iconbtn sm" data-sign="coordX2" title="부호 전환">&plusmn;</button>
           </div>
           <div class="fieldrow tight">
-            <label class="f">Y2<input type="text" id="coordY2" inputmode="decimal"></label>
+            <label class="f">Y2<input type="text" id="coordY2" inputmode="decimal" placeholder="Y2 입력 (예시:4)"></label>
             <button class="iconbtn sm" data-sign="coordY2" title="부호 전환">&plusmn;</button>
           </div>
         </div>
@@ -589,6 +589,7 @@
   // ── 탭2: 직각삼각형 솔버 ─────────────────────────────────────────────────
   var triRef = "HYPOTENUSE";
   var TRI_LABEL = { HYPOTENUSE: "빗변 (c)", BASE: "밑변 (b)", HEIGHT: "높이 (a)" };
+  var TRI_PLACEHOLDER = { HYPOTENUSE: "빗변 입력 (예시:5)", BASE: "밑변 입력 (예시:3)", HEIGHT: "높이 입력 (예시:4)" };
 
   function clearTriOutputs() {
     el.triOut1.textContent = ""; el.triOut2.textContent = "";
@@ -632,6 +633,7 @@
       b.setAttribute("aria-pressed", "true");
       triRef = b.dataset.ref;
       el.triValueLabelText.textContent = TRI_LABEL[triRef];
+      el.triValue.placeholder = TRI_PLACEHOLDER[triRef];
       recomputeTriangle();
     });
   });
