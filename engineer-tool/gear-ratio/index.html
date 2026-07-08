@@ -72,6 +72,8 @@
   .row.three { grid-template-columns: 1fr 1fr 1fr; }
   .row.row-single { grid-template-columns: 1fr; }
   label.f, div.f { display: flex; flex-direction: column; gap: 3px; font-size: 11px; color: var(--muted); }
+  /* [hidden] 이 .f 의 display:flex·개별 인라인 style 에 밀려 무시되던 버그 수정 — !important 로 항상 우선 */
+  [hidden] { display: none !important; }
   label.f input, label.f select { font-family: var(--mono); font-size: 15px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 9px 10px; width: 100%; }
   label.f select { font-family: var(--sans); font-size: 13.5px; cursor: pointer; background: transparent; height: 40px; }
   label.f input:focus, label.f select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-soft); }
@@ -179,7 +181,7 @@
           <div class="f" id="encoderReadoutWrap"><span>인코더 분해능</span><div class="kv-static" id="encoderReadout">4,194,304 pulse/rev</div></div>
         </div>
         <label class="f" id="manualEncoderRow" hidden>인코더 분해능 (수동, pulse/rev)
-          <input type="number" id="manualEncoderInput" placeholder="67108864" inputmode="numeric">
+          <input type="number" id="manualEncoderInput" placeholder="인코더 분해능 입력 (예시:4194304)" inputmode="numeric">
         </label>
 
         <label class="f">기구 유형
@@ -190,7 +192,7 @@
         </label>
 
         <label class="f" id="ballRow">볼스크류 리드 (Pb)
-          <input type="number" id="leadInput" placeholder="10" inputmode="decimal">
+          <input type="number" id="leadInput" placeholder="볼스크류 리드를 입력하세요 (예시:10)" inputmode="decimal">
         </label>
         <div id="rotaryRow" hidden style="display:flex;flex-direction:column;gap:8px;">
           <div class="row">
@@ -227,7 +229,7 @@
         </label>
 
         <label class="f">목표 모터 속도 (선택, rpm)
-          <input type="number" id="targetRpmInput" placeholder="3000" inputmode="numeric">
+          <input type="number" id="targetRpmInput" value="3000" placeholder="목표 모터 회전수 (예시:3000)" inputmode="numeric">
         </label>
         <div class="hint0">미입력 시 정격 회전수 기준으로 각 출력원 가능 여부를 판정합니다</div>
 
