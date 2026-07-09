@@ -106,7 +106,8 @@
   .toggle-slot { margin-left: auto; width: 168px; }
   .kv-static { font-family: var(--mono); font-size: 15px; color: var(--ink); padding: 9px 0 0; }
   .unit-hint { font-family: var(--mono); font-size: 13px; color: var(--muted); padding-top: 9px; }
-  .divhint { font-size: 11.5px; color: var(--muted); margin-top: -2px; }
+  /* 인덱스 분할수 하단 힌트 — 음수 margin 금지(입력창과 겹침 방지) */
+  .divhint { font-size: 11.5px; color: var(--muted); margin-top: 0; line-height: 1.35; }
   .cmxcdv-row { display: flex; align-items: center; justify-content: center; gap: 6px; }
   .cmxcdv-col { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 3px; }
   .cmxcdv-col .lab { font-size: 11px; color: var(--muted); }
