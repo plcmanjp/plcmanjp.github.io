@@ -101,7 +101,8 @@
   .seg3 button { appearance: none; border: 0; border-radius: 8px; background: var(--primary-soft); color: var(--primary); font-family: var(--sans); font-size: 12px; font-weight: 600; height: 38px; padding: 0 4px; cursor: pointer; white-space: nowrap; }
   .seg3 button[aria-pressed="true"] { background: var(--primary); color: #fff; font-weight: 800; }
 
-  .errtext { font-size: 11.5px; color: var(--danger); margin: -4px 0 6px 2px; }
+  /* 필드 하단 오류문 — 음수 top margin 금지(입력창 테두리와 겹침 방지) */
+  .errtext { font-size: 11.5px; color: var(--danger); margin: 4px 0 6px 2px; line-height: 1.35; }
 
   ul.notes { margin: 16px 2px 0; padding-left: 18px; color: var(--muted); font-size: 12.5px; }
   ul.notes li { margin-bottom: 6px; } ul.notes b { color: var(--ink); }
