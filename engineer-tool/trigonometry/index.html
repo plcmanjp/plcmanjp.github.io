@@ -59,8 +59,9 @@
   .hint0 { font-size: 12px; color: var(--muted); margin: 0 0 10px; }
 
   .tabpanel { display: flex; flex-direction: column; gap: 10px; }
-  /* author display:flex 가 [hidden] UA 스타일(display:none)을 덮어 탭 전환이 안 되던 버그 차단 */
-  .tabpanel[hidden] { display: none !important; }
+  /* author display:flex(label.f·.tabpanel·.outrow 등)가 [hidden] UA 스타일을 덮어
+     탭/두변→각도 입력쌍 전환이 안 되던 버그 — 전역 강제 (gear-ratio 동일 패턴) */
+  [hidden] { display: none !important; }
 
   .diagram-canvas { display: block; width: 100%; border-radius: 10px; background: var(--surface-2); touch-action: none; margin-bottom: 2px; }
 
