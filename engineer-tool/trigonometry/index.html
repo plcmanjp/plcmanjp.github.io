@@ -239,7 +239,7 @@
 
         <div class="outrow"><span class="ol" id="triOut1Label">높이 (a)</span><span class="ov" id="triOut1"></span><button class="iconbtn sm txt" id="triOut1Copy" disabled>복사</button></div>
         <div class="outrow"><span class="ol" id="triOut2Label">밑변 (b)</span><span class="ov" id="triOut2"></span><button class="iconbtn sm txt" id="triOut2Copy" disabled>복사</button></div>
-        <div class="formula" id="triFormula">a = c&middot;sin&theta;  &middot;  b = c&middot;cos&theta;</div>
+        <div class="formula" id="triFormula">높이(a) = 빗변(c)&middot;sin&theta;  &middot;  밑변(b) = 빗변(c)&middot;cos&theta;</div>
 
         <hr class="divider">
         <div class="sectionhead">두 변 &rarr; 각도</div>
@@ -258,7 +258,7 @@
         <div class="outrow" id="revAngleRow" hidden style="margin-top:6px"><span class="ol">각도 θ</span><span class="ov" id="revAngleVal"></span><button class="iconbtn sm txt" id="revAngleCopy" disabled>복사</button></div>
         <div class="outrow" id="revMissingRow" hidden><span class="ol" id="revMissingLabel"></span><span class="ov" id="revMissingVal"></span><button class="iconbtn sm txt" id="revMissingCopy" disabled>복사</button></div>
         <div class="errtext" id="revGeomErr" hidden>직각삼각형을 이룰 수 없습니다 (다리변은 빗변보다 작아야 합니다)</div>
-        <div class="formula" id="revFormula">&theta; = atan(a/b)  &middot;  c = &radic;(a&sup2;+b&sup2;)</div>
+        <div class="formula" id="revFormula">&theta; = atan(높이(a)/밑변(b))  &middot;  빗변(c) = &radic;(높이(a)&sup2;+밑변(b)&sup2;)</div>
       </div>
 
       <!-- ── 탭3: 좌표 ── -->
@@ -599,14 +599,14 @@
   var TRI_LABEL = { HYPOTENUSE: "빗변 (c)", BASE: "밑변 (b)", HEIGHT: "높이 (a)" };
   var TRI_PLACEHOLDER = { HYPOTENUSE: "빗변 입력 (예시:5)", BASE: "밑변 입력 (예시:3)", HEIGHT: "높이 입력 (예시:4)" };
   var TRI_FORMULA = {
-    HYPOTENUSE: "a = c·sinθ  ·  b = c·cosθ",
-    BASE: "a = b·tanθ  ·  c = b / cosθ",
-    HEIGHT: "b = a / tanθ  ·  c = a / sinθ"
+    HYPOTENUSE: "높이(a) = 빗변(c)·sinθ  ·  밑변(b) = 빗변(c)·cosθ",
+    BASE: "높이(a) = 밑변(b)·tanθ  ·  빗변(c) = 밑변(b) / cosθ",
+    HEIGHT: "밑변(b) = 높이(a) / tanθ  ·  빗변(c) = 높이(a) / sinθ"
   };
   var REV_FORMULA = {
-    BASE_HEIGHT: "θ = atan(a/b)  ·  c = √(a²+b²)",
-    HYP_HEIGHT: "θ = asin(a/c)  ·  b = √(c²−a²)",
-    HYP_BASE: "θ = acos(b/c)  ·  a = √(c²−b²)"
+    BASE_HEIGHT: "θ = atan(높이(a)/밑변(b))  ·  빗변(c) = √(높이(a)²+밑변(b)²)",
+    HYP_HEIGHT: "θ = asin(높이(a)/빗변(c))  ·  밑변(b) = √(빗변(c)²−높이(a)²)",
+    HYP_BASE: "θ = acos(밑변(b)/빗변(c))  ·  높이(a) = √(빗변(c)²−밑변(b)²)"
   };
 
   function clearTriOutputs() {
