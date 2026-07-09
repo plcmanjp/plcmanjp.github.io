@@ -106,6 +106,8 @@
 
   /* 필드 하단 오류문 — 음수 top margin 금지(입력창 테두리와 겹침 방지) */
   .errtext { font-size: 11.5px; color: var(--danger); margin: 4px 0 6px 2px; line-height: 1.35; }
+  /* 결과 하단 공식 (원둘레 .formula 패턴 — 입력창과 겹치지 않게 양수 간격) */
+  .formula { font-family: var(--mono); font-size: 11px; color: var(--muted); padding-left: 2px; margin: 4px 0 2px; line-height: 1.35; }
 
   ul.notes { margin: 16px 2px 0; padding-left: 18px; color: var(--muted); font-size: 12.5px; }
   ul.notes li { margin-bottom: 6px; } ul.notes b { color: var(--ink); }
@@ -237,6 +239,7 @@
 
         <div class="outrow"><span class="ol" id="triOut1Label">높이 (a)</span><span class="ov" id="triOut1"></span><button class="iconbtn sm txt" id="triOut1Copy" disabled>복사</button></div>
         <div class="outrow"><span class="ol" id="triOut2Label">밑변 (b)</span><span class="ov" id="triOut2"></span><button class="iconbtn sm txt" id="triOut2Copy" disabled>복사</button></div>
+        <div class="formula" id="triFormula">a = c&middot;sin&theta;  &middot;  b = c&middot;cos&theta;</div>
 
         <hr class="divider">
         <div class="sectionhead">두 변 &rarr; 각도</div>
@@ -255,6 +258,7 @@
         <div class="outrow" id="revAngleRow" hidden style="margin-top:6px"><span class="ol">각도 θ</span><span class="ov" id="revAngleVal"></span><button class="iconbtn sm txt" id="revAngleCopy" disabled>복사</button></div>
         <div class="outrow" id="revMissingRow" hidden><span class="ol" id="revMissingLabel"></span><span class="ov" id="revMissingVal"></span><button class="iconbtn sm txt" id="revMissingCopy" disabled>복사</button></div>
         <div class="errtext" id="revGeomErr" hidden>직각삼각형을 이룰 수 없습니다 (다리변은 빗변보다 작아야 합니다)</div>
+        <div class="formula" id="revFormula">&theta; = atan(a/b)  &middot;  c = &radic;(a&sup2;+b&sup2;)</div>
       </div>
 
       <!-- ── 탭3: 좌표 ── -->
@@ -436,10 +440,10 @@
    "asinErrText", "acosErrText", "asinCopy", "acosCopy", "atanCopy",
    "circleCanvas", "triCanvas", "coordCanvas",
    "triAngle", "triAngleErr", "triValue", "triValueErr", "triValueLabelText",
-   "triOut1Label", "triOut2Label", "triOut1", "triOut2", "triOut1Copy", "triOut2Copy",
+   "triOut1Label", "triOut2Label", "triOut1", "triOut2", "triOut1Copy", "triOut2Copy", "triFormula",
    "revHypWrap", "revBaseWrap", "revHeightWrap", "revHypInput", "revBaseInput", "revHeightInput",
    "revAngleRow", "revMissingRow", "revAngleVal", "revMissingLabel", "revMissingVal",
-   "revAngleCopy", "revMissingCopy", "revGeomErr",
+   "revAngleCopy", "revMissingCopy", "revGeomErr", "revFormula",
    "coordX1", "coordY1", "coordX2", "coordY2",
    "coordDX", "coordDY", "coordAngle", "coordAngle360", "coordDist",
    "coordDXCopy", "coordDYCopy", "coordAngleCopy", "coordAngle360Copy", "coordDistCopy"
@@ -594,6 +598,16 @@
   var triRef = "HYPOTENUSE";
   var TRI_LABEL = { HYPOTENUSE: "빗변 (c)", BASE: "밑변 (b)", HEIGHT: "높이 (a)" };
   var TRI_PLACEHOLDER = { HYPOTENUSE: "빗변 입력 (예시:5)", BASE: "밑변 입력 (예시:3)", HEIGHT: "높이 입력 (예시:4)" };
+  var TRI_FORMULA = {
+    HYPOTENUSE: "a = c·sinθ  ·  b = c·cosθ",
+    BASE: "a = b·tanθ  ·  c = b / cosθ",
+    HEIGHT: "b = a / tanθ  ·  c = a / sinθ"
+  };
+  var REV_FORMULA = {
+    BASE_HEIGHT: "θ = atan(a/b)  ·  c = √(a²+b²)",
+    HYP_HEIGHT: "θ = asin(a/c)  ·  b = √(c²−a²)",
+    HYP_BASE: "θ = acos(b/c)  ·  a = √(c²−b²)"
+  };
 
   function clearTriOutputs() {
     el.triOut1.textContent = ""; el.triOut2.textContent = "";
@@ -638,9 +652,11 @@
       triRef = b.dataset.ref;
       el.triValueLabelText.textContent = TRI_LABEL[triRef];
       el.triValue.placeholder = TRI_PLACEHOLDER[triRef];
+      el.triFormula.textContent = TRI_FORMULA[triRef];
       recomputeTriangle();
     });
   });
+  el.triFormula.textContent = TRI_FORMULA[triRef];
 
   // ── 탭2: 두 변 → 각도 (역방향) ───────────────────────────────────────────
   var revPair = "BASE_HEIGHT";
@@ -648,6 +664,7 @@
     el.revHypWrap.hidden = (pair === "BASE_HEIGHT");
     el.revBaseWrap.hidden = (pair === "HYP_HEIGHT");
     el.revHeightWrap.hidden = (pair === "HYP_BASE");
+    el.revFormula.textContent = REV_FORMULA[pair];
   }
   function recomputeReverse() {
     var hyp = (revPair === "HYP_HEIGHT" || revPair === "HYP_BASE") ? parseNum(el.revHypInput.value) : null;
