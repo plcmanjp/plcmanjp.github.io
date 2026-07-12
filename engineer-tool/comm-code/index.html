@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>통신 코드 계산기 — 체크섬·CRC-16 생성·검산 | 엔지니어 도구</title>
+<meta name="description" content="HEX·ASCII 바이트의 SUM8·SUM16·XOR8·LRC와 CRC-16/Modbus·CCITT-FALSE·XMODEM·ARC를 계산하고 검산하는 무료 웹 도구.">
+<meta property="og:title" content="통신 코드 계산기 | PLCManJP 엔지니어 도구">
+<meta property="og:description" content="체크섬 4종과 CRC-16 프리셋·직접 파라미터 계산 및 검산. 무료 웹 도구.">
+<link rel="canonical" href="https://plcmanjp.github.io/engineer-tool/comm-code/">
+<script>try{var t=localStorage.getItem("plcmanjp-tool-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
+<style>
+  :root {
+    --bg: #e9edf1; --surface: #ffffff; --surface-2: #f3f6f9; --ink: #18222e;
+    --muted: #5c6772; --line: #d3dae1; --primary: #15629f; --primary-soft: #e4eef7;
+    --warn: #c9720a; --warn-soft: #fbeed6; --danger: #c2384c; --good: #2e7d32; --good-soft: #e7f5ea;
+    --signal: #7a3ea8; --signal-soft: #efe4f7; --readout: #0f1a26;
+    --mono: ui-monospace, "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+    --sans: -apple-system, "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #10161d; --surface: #19222c; --surface-2: #141c25; --ink: #e7edf3;
+      --muted: #93a1b0; --line: #2a3542; --primary: #4ea3e6; --primary-soft: #17303f;
+      --warn: #e6a13c; --warn-soft: #33270f; --danger: #e26374; --good: #7fc08a; --good-soft: #14241a;
+      --signal: #b088d8; --signal-soft: #2a1c3a; --readout: #dfe8f0;
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #e9edf1; --surface: #ffffff; --surface-2: #f3f6f9; --ink: #18222e;
+    --muted: #5c6772; --line: #d3dae1; --primary: #15629f; --primary-soft: #e4eef7;
+    --warn: #c9720a; --warn-soft: #fbeed6; --danger: #c2384c; --good: #2e7d32; --good-soft: #e7f5ea;
+    --signal: #7a3ea8; --signal-soft: #efe4f7; --readout: #0f1a26;
+  }
+  :root[data-theme="dark"] {
+    --bg: #10161d; --surface: #19222c; --surface-2: #141c25; --ink: #e7edf3;
+    --muted: #93a1b0; --line: #2a3542; --primary: #4ea3e6; --primary-soft: #17303f;
+    --warn: #e6a13c; --warn-soft: #33270f; --danger: #e26374; --good: #7fc08a; --good-soft: #14241a;
+    --signal: #b088d8; --signal-soft: #2a1c3a; --readout: #dfe8f0;
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 520px; margin: 0 auto; padding: 28px 16px 64px; }
+  .eyebrow { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--primary); font-weight: 700; margin: 0 0 6px; }
+  h1.page { font-size: clamp(20px, 3.4vw, 26px); margin: 0 0 8px; letter-spacing: -.01em; text-wrap: balance; }
+  p.lede { margin: 0 0 20px; color: var(--muted); }
+
+  .device { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; box-shadow: 0 8px 30px rgba(20,32,46,.12); overflow: hidden; }
+  .device-bar { padding: 13px 16px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--line); }
+  .device-bar .back { font-size: 18px; color: var(--ink); }
+  .device-bar h2 { font-size: 15px; margin: 0; font-weight: 600; flex: 1; }
+
+  .screen { padding: 14px 14px 18px; display: flex; flex-direction: column; gap: 12px; }
+  .hint0 { font-size: 12px; color: var(--muted); }
+
+  .zone { border: 1px solid var(--line); border-radius: 14px; padding: 12px 13px 14px; display: flex; flex-direction: column; gap: 10px; }
+  .zone.input { background: color-mix(in srgb, var(--primary-soft) 45%, var(--surface)); border-color: color-mix(in srgb, var(--primary) 35%, var(--line)); }
+  .zone.output { background: color-mix(in srgb, var(--good-soft) 70%, var(--surface)); border-color: color-mix(in srgb, var(--good) 35%, var(--line)); }
+  .zone.params { background: var(--surface-2); }
+  .zone-head .h { font-size: 12px; font-weight: 800; letter-spacing: .02em; color: var(--primary); }
+  .zone.output .zone-head .h { color: var(--good); }
+  .zone.params .zone-head .h { color: var(--signal); }
+  .zone-head .sub { font-size: 10.5px; color: var(--muted); margin-top: 2px; }
+
+  .chiprow { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chiprow button {
+    appearance: none; border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+    border-radius: 999px; padding: 6px 11px; font-size: 12px; font-weight: 600; font-family: var(--sans); cursor: pointer;
+  }
+  .chiprow button[aria-pressed="true"] { background: var(--primary); border-color: var(--primary); color: #fff; font-weight: 800; }
+  .chiprow.cs button[aria-pressed="true"] { background: var(--signal); border-color: var(--signal); }
+  .group-label { font-size: 11px; font-weight: 700; color: var(--muted); margin: 2px 0 0; }
+
+  .seg-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .seg-toggle.cols3 { grid-template-columns: 1fr 1fr 1fr; }
+  .seg-toggle button {
+    appearance: none; border: 0; border-radius: 8px; background: var(--primary-soft); color: var(--primary);
+    font-family: var(--sans); font-size: 12.5px; font-weight: 600; height: 40px; cursor: pointer;
+  }
+  .seg-toggle button[aria-pressed="true"] { background: var(--primary); color: #fff; font-weight: 800; }
+  .seg-toggle button:disabled { opacity: .4; cursor: default; }
+
+  label.f { display: flex; flex-direction: column; gap: 3px; font-size: 11px; color: var(--muted); }
+  label.f input, label.f textarea {
+    font-family: var(--mono); font-size: 14px; color: var(--ink); background: var(--surface);
+    border: 1px solid var(--line); border-radius: 8px; padding: 9px 10px; width: 100%;
+  }
+  label.f textarea { min-height: 88px; resize: vertical; line-height: 1.4; }
+  label.f input:focus, label.f textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-soft); }
+  label.f input:disabled, label.f input[readonly] {
+    background: color-mix(in srgb, var(--surface-2) 80%, var(--surface)); color: var(--muted); opacity: .95;
+  }
+
+  .params-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .params-grid .full { grid-column: 1 / -1; }
+  .ref-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .ref-toggle {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; background: var(--surface); font-size: 12px; font-weight: 600;
+  }
+  .ref-toggle button {
+    appearance: none; border: 0; border-radius: 6px; min-width: 48px; height: 28px;
+    font-size: 11.5px; font-weight: 800; font-family: var(--sans); cursor: pointer;
+    background: var(--surface-2); color: var(--muted);
+  }
+  .ref-toggle button[aria-pressed="true"] { background: var(--primary); color: #fff; }
+  .ref-toggle button:disabled { opacity: .7; cursor: default; }
+  .lock-badge {
+    align-self: flex-start; font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius: 6px;
+    background: var(--primary-soft); color: var(--primary);
+  }
+  .lock-badge.edit { background: var(--signal-soft); color: var(--signal); }
+
+  .result-main { font-family: var(--mono); font-size: 26px; font-weight: 800; color: var(--good); letter-spacing: .04em; word-break: break-all; }
+  .result-main.empty { color: var(--muted); font-size: 15px; font-weight: 600; letter-spacing: 0; }
+  .result-sub { font-family: var(--mono); font-size: 12.5px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 10px; }
+  .meta-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--muted); }
+  .meta-row b { color: var(--ink); font-family: var(--mono); }
+
+  .outbox { display: flex; align-items: flex-start; gap: 8px; }
+  .outbox .box { flex: 1; min-height: 44px; }
+  .outbox button.copy {
+    appearance: none; border: 1px solid var(--line); background: var(--surface); border-radius: 10px;
+    width: 44px; height: 44px; flex: none; cursor: pointer; font-size: 11px; font-weight: 700; color: var(--muted); font-family: var(--sans);
+  }
+  .outbox button.copy:hover { color: var(--primary); border-color: var(--primary); }
+
+  .badge { align-self: flex-start; font-size: 11.5px; font-weight: 700; padding: 5px 10px; border-radius: 8px; }
+  .badge.warn { background: color-mix(in srgb, var(--warn) 16%, transparent); color: var(--warn); }
+  .badge.err { background: color-mix(in srgb, var(--danger) 14%, transparent); color: var(--danger); }
+  .badge.ok { background: color-mix(in srgb, var(--good) 16%, transparent); color: var(--good); }
+  .badge[hidden] { display: none !important; }
+  .params[hidden], .zone[hidden] { display: none !important; }
+
+  .verify-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: end; }
+  .verify-status { font-size: 12.5px; font-weight: 800; padding: 10px 12px; border-radius: 8px; min-width: 88px; text-align: center; }
+  .verify-status.idle { background: var(--surface-2); color: var(--muted); }
+  .verify-status.match { background: var(--good-soft); color: var(--good); }
+  .verify-status.mismatch { background: color-mix(in srgb, var(--danger) 12%, transparent); color: var(--danger); }
+
+  ul.notes { margin: 16px 2px 0; padding-left: 18px; color: var(--muted); font-size: 12.5px; }
+  ul.notes li { margin-bottom: 6px; } ul.notes b { color: var(--ink); }
+  footer.mock { margin-top: 22px; font-size: 12px; color: var(--muted); text-align: center; }
+  .theme-bar { display: flex; gap: 8px; margin-bottom: 14px; }
+  .theme-bar button {
+    appearance: none; border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+    border-radius: 8px; padding: 6px 10px; font-size: 12px; cursor: pointer; font-family: var(--sans);
+  }
+  /* ── 웹 셸 (엔지니어 도구 공용) ─────────────────────────── */
+  .topbar { border-bottom: 1px solid var(--line); background: var(--surface); }
+  .topbar .tw { max-width: 520px; margin: 0 auto; padding: 0 16px; height: 50px; display: flex; align-items: center; justify-content: space-between; }
+  .crumb { font-size: 13px; font-weight: 600; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .crumb a { color: var(--muted); text-decoration: none; }
+  .crumb a:hover { color: var(--ink); }
+  .crumb .sep { margin: 0 6px; opacity: .5; }
+  .crumb .cur { color: var(--ink); font-weight: 700; }
+  .themebtn { flex: 0 0 auto; appearance: none; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font-family: var(--sans); font-size: 12.5px; font-weight: 600; padding: 6px 11px; border-radius: 999px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; margin-left: 10px; }
+  .themebtn:hover { border-color: var(--primary); }
+  .device-bar .back { text-decoration: none; line-height: 1; }
+  .device-bar .back:hover { color: var(--primary); }
+  footer.site { border-top: 1px solid var(--line); margin-top: 30px; padding: 26px 16px 40px; text-align: center; color: var(--muted); font-size: 12.5px; }
+  footer.site .fl { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 12px; }
+  footer.site .fl a { color: var(--muted); font-weight: 600; text-decoration: none; }
+  footer.site .fl a:hover { color: var(--ink); }
+  footer.site .note { font-size: 11.5px; line-height: 1.7; max-width: 460px; margin: 0 auto; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+    <div class="tw">
+      <div class="crumb"><a href="/">PLCManJP</a><span class="sep">/</span><a href="../">엔지니어 도구</a><span class="sep">/</span><span class="cur">통신 코드</span></div>
+      <button class="themebtn" id="themeBtn" type="button" aria-label="테마 전환">🌓 <span id="themeLbl">시스템</span></button>
+    </div>
+  </div>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">엔지니어 도구</p>
+    <h1 class="page">통신 코드 계산기</h1>
+    <p class="lede">HEX 바이트 또는 ASCII 문자열로 <b>체크섬 · CRC-16</b>을 계산하고 기대 코드와 검산합니다. Modbus를 포함한 프리셋 4종과 직접 입력 파라미터를 지원합니다.</p>
+  </header>
+
+  <section class="device">
+    <div class="device-bar"><a class="back" href="../" aria-label="도구 목록으로">&larr;</a><h2>통신 코드 계산기</h2></div>
+    <div class="screen">
+      <p class="hint0">CRC를 붙이기 <b>전</b> 바이트만 입력하세요. 결과는 보통 낮은 바이트 먼저(LE)로 붙입니다.</p>
+
+      <!-- 알고리즘 -->
+      <div class="zone input">
+        <div class="zone-head">
+          <div class="h">▶ 알고리즘</div>
+          <div class="sub">체크섬 4종 · CRC-16 프리셋 4종 · 직접 입력</div>
+        </div>
+        <p class="group-label">체크섬</p>
+        <div class="chiprow cs" id="csChips">
+          <button type="button" data-algo="SUM8">합산 8</button>
+          <button type="button" data-algo="SUM16">합산 16</button>
+          <button type="button" data-algo="XOR8">XOR 8</button>
+          <button type="button" data-algo="LRC8">LRC</button>
+        </div>
+        <p class="group-label">CRC-16</p>
+        <div class="chiprow" id="crcChips">
+          <button type="button" data-algo="MODBUS" aria-pressed="true">Modbus</button>
+          <button type="button" data-algo="CCITT_FALSE">CCITT-FALSE</button>
+          <button type="button" data-algo="XMODEM">XMODEM</button>
+          <button type="button" data-algo="ARC">ARC</button>
+          <button type="button" data-algo="CUSTOM">직접 입력</button>
+        </div>
+      </div>
+
+      <!-- 파라미터 패널 -->
+      <div class="zone params" id="paramsZone">
+        <div class="zone-head">
+          <div class="h">◆ CRC 파라미터</div>
+          <div class="sub">프리셋 = 잠금 표시 / 직접 입력 = 편집</div>
+        </div>
+        <span class="lock-badge" id="lockBadge">잠금 · 프리셋 값</span>
+        <div class="params-grid">
+          <label class="f">Poly (hex)
+            <input id="poly" value="8005" maxlength="4" spellcheck="false" readonly>
+          </label>
+          <label class="f">Init (hex)
+            <input id="init" value="FFFF" maxlength="4" spellcheck="false" readonly>
+          </label>
+          <label class="f">XorOut (hex)
+            <input id="xorout" value="0000" maxlength="4" spellcheck="false" readonly>
+          </label>
+          <div class="full ref-row">
+            <div class="ref-toggle">RefIn
+              <button type="button" id="refin" aria-pressed="true" disabled>ON</button>
+            </div>
+            <div class="ref-toggle">RefOut
+              <button type="button" id="refout" aria-pressed="true" disabled>ON</button>
+            </div>
+          </div>
+        </div>
+        <span class="badge err" id="paramErr" hidden>Poly가 비었거나 0입니다. 1~FFFF hex를 넣으세요.</span>
+      </div>
+
+      <!-- 입력 -->
+      <div class="zone input">
+        <div class="zone-head">
+          <div class="h">▶ 바이트 입력</div>
+        </div>
+        <div class="seg-toggle">
+          <button type="button" id="modeHex" aria-pressed="true">HEX</button>
+          <button type="button" id="modeAscii" aria-pressed="false">ASCII</button>
+        </div>
+        <label class="f" id="inputLabel">HEX 바이트 (공백·콤마 OK)
+          <textarea id="payload" spellcheck="false" placeholder="01 03 00 00 00 0A">01 03 00 00 00 0A</textarea>
+        </label>
+        <div class="meta-row"><span>파싱 결과</span><b id="byteMeta">0 bytes</b></div>
+        <span class="badge warn" id="parseWarn" hidden></span>
+      </div>
+
+      <!-- 결과 -->
+      <div class="zone output">
+        <div class="zone-head">
+          <div class="h">▼ 결과</div>
+        </div>
+        <div class="seg-toggle" id="orderSeg">
+          <button type="button" id="orderLe" aria-pressed="true">LE (저→고)</button>
+          <button type="button" id="orderBe" aria-pressed="false">BE (고→저)</button>
+        </div>
+        <div class="outbox">
+          <div class="box">
+            <div class="result-main empty" id="resultTokens">—</div>
+            <div class="result-sub">
+              <span id="resultWord">WORD=—</span>
+              <span id="resultDec">DEC=—</span>
+            </div>
+          </div>
+          <button type="button" class="copy" id="btnCopy" title="복사">복사</button>
+        </div>
+        <div class="meta-row"><span>공식/프리셋</span><b id="resultHint" style="font-weight:600;font-family:var(--sans)">—</b></div>
+      </div>
+
+      <!-- 검산 -->
+      <div class="zone input">
+        <div class="zone-head">
+          <div class="h">▶ 검산 (선택)</div>
+          <div class="sub">기대 코드를 넣으면 일치 여부를 봅니다</div>
+        </div>
+        <div class="verify-row">
+          <label class="f">기대 코드 (hex)
+            <input id="expected" spellcheck="false" placeholder="예: C5 CD 또는 CDC5">
+          </label>
+          <div class="verify-status idle" id="verifyStatus">대기</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <ul class="notes">
+    <li><b>기본 CRC</b>: Modbus (poly 8005, init FFFF, refin/refout ON, xorout 0000).</li>
+    <li><b>직접 입력</b>: 직전 프리셋 값으로 열고 수정. 다시 프리셋 선택 시 잠금·값 덮어씀(확인창 없음).</li>
+    <li><b>LE</b>: 2바이트 결과 저바이트 먼저 — Modbus RTU 전송 순서. WORD는 항상 고→저 표기.</li>
+    <li><b>골든</b>: ASCII <code>123456789</code> + CRC-16/Modbus → WORD <code>4B37</code> (LE <code>37 4B</code>).</li>
+    <li><b>입력 상한</b>: HEX·ASCII 모두 최대 4096 bytes까지 계산하며 초과분은 무시하고 경고합니다.</li>
+  </ul>
+</div>
+
+<footer class="site">
+  <div class="fl">
+    <a href="/">PLCManJP 홈</a>
+    <a href="../">엔지니어 도구</a>
+    <a href="https://play.google.com/store/apps/details?id=com.plciocheck.iocheck">앱으로 (Android)</a>
+  </div>
+  <p class="note">본 도구는 특정 제조사와 무관한 독립 개발 소프트웨어입니다. 계산 결과는 참고용이며, 최종 확인은 사용자 책임입니다.</p>
+</footer>
+
+<script>
+(function () {
+  const MAX_BYTES = 4096;
+  const PRESETS = {
+    MODBUS:       { poly: 0x8005, init: 0xFFFF, refin: true,  refout: true,  xorout: 0x0000, label: "CRC-16/Modbus" },
+    CCITT_FALSE:  { poly: 0x1021, init: 0xFFFF, refin: false, refout: false, xorout: 0x0000, label: "CRC-16/CCITT-FALSE" },
+    XMODEM:       { poly: 0x1021, init: 0x0000, refin: false, refout: false, xorout: 0x0000, label: "CRC-16/XMODEM" },
+    ARC:          { poly: 0x8005, init: 0x0000, refin: true,  refout: true,  xorout: 0x0000, label: "CRC-16/ARC" }
+  };
+  const CS = new Set(["SUM8", "SUM16", "XOR8", "LRC8"]);
+
+  let algo = "MODBUS";
+  let inputMode = "HEX"; // HEX | ASCII
+  let orderLe = true;
+  let custom = { poly: 0x8005, init: 0xFFFF, refin: true, refout: true, xorout: 0x0000 };
+
+  const $ = (id) => document.getElementById(id);
+  const polyEl = $("poly"), initEl = $("init"), xorEl = $("xorout");
+  const refinBtn = $("refin"), refoutBtn = $("refout");
+  const payloadEl = $("payload"), expectedEl = $("expected");
+
+  function pad4(n) { return (n & 0xFFFF).toString(16).toUpperCase().padStart(4, "0"); }
+  function pad2(n) { return (n & 0xFF).toString(16).toUpperCase().padStart(2, "0"); }
+
+  function parseHexNibble(s) {
+    const cleaned = s.replace(/[^0-9a-fA-F]/g, "");
+    const skipped = s.replace(/[\s,]/g, "").replace(/[0-9a-fA-F]/g, "");
+    const bytes = [];
+    const fullBytes = Math.floor(cleaned.length / 2);
+    const truncated = fullBytes > MAX_BYTES;
+    const usableBytes = Math.min(fullBytes, MAX_BYTES);
+    for (let i = 0; i < usableBytes * 2; i += 2) {
+      bytes.push(parseInt(cleaned.slice(i, i + 2), 16));
+    }
+    const odd = cleaned.length % 2 === 1;
+    return { bytes, skipped: [...new Set(skipped.split(""))].filter(Boolean), odd, truncated };
+  }
+
+  function parsePayload() {
+    if (inputMode === "ASCII") {
+      const text = payloadEl.value;
+      const full = Array.from(new TextEncoder().encode(text));
+      const truncated = full.length > MAX_BYTES;
+      const bytes = truncated ? full.slice(0, MAX_BYTES) : full;
+      return { bytes, warn: truncated ? "4096 bytes 초과분 무시" : "" };
+    }
+    const { bytes, skipped, odd, truncated } = parseHexNibble(payloadEl.value);
+    let warn = "";
+    if (skipped.length) warn += "무시된 문자: " + skipped.join(" ");
+    if (odd) warn += (warn ? " · " : "") + "끝 홀수 니블 무시";
+    if (truncated) warn += (warn ? " · " : "") + "4096 bytes 초과분 무시";
+    return { bytes, warn };
+  }
+
+  function reflectBits(val, width) {
+    let x = val >>> 0, y = 0;
+    for (let i = 0; i < width; i++) {
+      y = (y << 1) | (x & 1);
+      x >>>= 1;
+    }
+    return y >>> 0;
+  }
+
+  /** 카탈로그 호환: refin/refout 대칭 시 LSB/MSB 알고리즘, 불일치 시 최종 reflect */
+  function crc16(bytes, p) {
+    let crc = p.init & 0xFFFF;
+    if (p.refin) {
+      const polyRef = reflectBits(p.poly & 0xFFFF, 16);
+      for (let i = 0; i < bytes.length; i++) {
+        crc ^= (bytes[i] & 0xFF);
+        for (let k = 0; k < 8; k++) {
+          if (crc & 1) crc = (crc >>> 1) ^ polyRef;
+          else crc >>>= 1;
+        }
+      }
+      if (!p.refout) crc = reflectBits(crc, 16);
+    } else {
+      for (let i = 0; i < bytes.length; i++) {
+        crc ^= ((bytes[i] & 0xFF) << 8) & 0xFFFF;
+        for (let k = 0; k < 8; k++) {
+          if (crc & 0x8000) crc = ((crc << 1) ^ (p.poly & 0xFFFF)) & 0xFFFF;
+          else crc = (crc << 1) & 0xFFFF;
+        }
+      }
+      if (p.refout) crc = reflectBits(crc, 16);
+    }
+    return (crc ^ (p.xorout & 0xFFFF)) & 0xFFFF;
+  }
+
+  function checksum(bytes, kind) {
+    if (kind === "XOR8") {
+      let x = 0;
+      for (const b of bytes) x ^= b & 0xFF;
+      return { value: x & 0xFF, width: 1 };
+    }
+    let sum = 0;
+    for (const b of bytes) sum += b & 0xFF;
+    if (kind === "SUM8") return { value: sum & 0xFF, width: 1 };
+    if (kind === "SUM16") return { value: sum & 0xFFFF, width: 2 };
+    if (kind === "LRC8") return { value: (-sum) & 0xFF, width: 1 };
+    return { value: 0, width: 1 };
+  }
+
+  function currentParams() {
+    if (CS.has(algo)) return null;
+    if (algo === "CUSTOM") return { ...custom, label: "CRC-16/직접 입력" };
+    return { ...PRESETS[algo] };
+  }
+
+  function readCustomFromUi() {
+    const poly = parseInt((polyEl.value || "").replace(/[^0-9a-fA-F]/g, "") || "0", 16);
+    const init = parseInt((initEl.value || "").replace(/[^0-9a-fA-F]/g, "") || "0", 16);
+    const xorout = parseInt((xorEl.value || "").replace(/[^0-9a-fA-F]/g, "") || "0", 16);
+    custom = {
+      poly: poly & 0xFFFF,
+      init: init & 0xFFFF,
+      refin: refinBtn.getAttribute("aria-pressed") === "true",
+      refout: refoutBtn.getAttribute("aria-pressed") === "true",
+      xorout: xorout & 0xFFFF,
+      label: "CRC-16/직접 입력"
+    };
+  }
+
+  function setParamsUi(p, locked) {
+    polyEl.value = pad4(p.poly);
+    initEl.value = pad4(p.init);
+    xorEl.value = pad4(p.xorout);
+    refinBtn.setAttribute("aria-pressed", p.refin ? "true" : "false");
+    refinBtn.textContent = p.refin ? "ON" : "OFF";
+    refoutBtn.setAttribute("aria-pressed", p.refout ? "true" : "false");
+    refoutBtn.textContent = p.refout ? "ON" : "OFF";
+
+    polyEl.readOnly = locked;
+    initEl.readOnly = locked;
+    xorEl.readOnly = locked;
+    refinBtn.disabled = locked;
+    refoutBtn.disabled = locked;
+
+    const badge = $("lockBadge");
+    if (locked) {
+      badge.textContent = "잠금 · 프리셋 값";
+      badge.classList.remove("edit");
+    } else {
+      badge.textContent = "편집 · 직접 입력";
+      badge.classList.add("edit");
+    }
+  }
+
+  function applyAlgoUi() {
+    document.querySelectorAll("#csChips button, #crcChips button").forEach((btn) => {
+      btn.setAttribute("aria-pressed", btn.dataset.algo === algo ? "true" : "false");
+    });
+    const isCs = CS.has(algo);
+    $("paramsZone").hidden = isCs;
+    if (!isCs) {
+      if (algo === "CUSTOM") {
+        setParamsUi(custom, false);
+      } else {
+        const p = PRESETS[algo];
+        custom = { ...p }; // next custom starts from last preset
+        setParamsUi(p, true);
+      }
+    }
+    const twoByte = !isCs || algo === "SUM16";
+    $("orderLe").disabled = !twoByte;
+    $("orderBe").disabled = !twoByte;
+  }
+
+  function formatResult(value, width) {
+    if (width === 1) {
+      const t = pad2(value);
+      return { tokens: t, word: t, dec: String(value & 0xFF) };
+    }
+    const hi = (value >> 8) & 0xFF;
+    const lo = value & 0xFF;
+    const tokens = orderLe ? (pad2(lo) + " " + pad2(hi)) : (pad2(hi) + " " + pad2(lo));
+    return { tokens, word: pad4(value), dec: String(value & 0xFFFF) };
+  }
+
+  function setOrderEnabled(enabled) {
+    $("orderLe").disabled = !enabled;
+    $("orderBe").disabled = !enabled;
+  }
+
+  function recompute() {
+    if (algo === "CUSTOM") readCustomFromUi();
+    const { bytes, warn } = parsePayload();
+    $("byteMeta").textContent = bytes.length + " bytes";
+    const pw = $("parseWarn");
+    if (warn) { pw.hidden = false; pw.textContent = warn; }
+    else pw.hidden = true;
+
+    const pe = $("paramErr");
+    let value = null, width = 1, hint = "—";
+
+    if (bytes.length === 0) {
+      setOrderEnabled(false);
+      $("resultTokens").textContent = "바이트를 입력하세요";
+      $("resultTokens").className = "result-main empty";
+      $("resultWord").textContent = "WORD=—";
+      $("resultDec").textContent = "DEC=—";
+      $("resultHint").textContent = "—";
+      updateVerify(null, 0);
+      pe.hidden = true;
+      return;
+    }
+
+    if (CS.has(algo)) {
+      const r = checksum(bytes, algo);
+      value = r.value; width = r.width;
+      hint = algo;
+      pe.hidden = true;
+    } else {
+      const p = currentParams();
+      if (!p.poly) {
+        setOrderEnabled(false);
+        pe.hidden = false;
+        $("resultTokens").textContent = "파라미터 오류";
+        $("resultTokens").className = "result-main empty";
+        updateVerify(null, 0);
+        return;
+      }
+      pe.hidden = true;
+      value = crc16(bytes, p);
+      width = 2;
+      hint = p.label + " · poly " + pad4(p.poly);
+    }
+
+    const fmt = formatResult(value, width);
+    setOrderEnabled(width === 2);
+    $("resultTokens").textContent = fmt.tokens;
+    $("resultTokens").className = "result-main";
+    $("resultWord").textContent = "WORD=" + fmt.word;
+    $("resultDec").textContent = "DEC=" + fmt.dec;
+    $("resultHint").textContent = hint;
+    updateVerify(value, width);
+  }
+
+  function updateVerify(value, width) {
+    const st = $("verifyStatus");
+    const expRaw = expectedEl.value.trim();
+    if (value == null || !expRaw) {
+      st.className = "verify-status idle";
+      st.textContent = "대기";
+      return;
+    }
+    const cleaned = expRaw.replace(/[^0-9a-fA-F]/g, "");
+    // 폭을 넘는 hex(초과분 조용히 무시 금지) 또는 빈 입력·1바이트 미달은 형식 오류 (앱 parseExpected 동형).
+    const maxHex = width === 1 ? 2 : 4;
+    if (cleaned.length === 0 || cleaned.length > maxHex || (width === 1 && cleaned.length !== 2)) {
+      st.className = "verify-status mismatch";
+      st.textContent = "불일치";
+      return;
+    }
+    let expVal = null;
+    if (width === 1) {
+      expVal = parseInt(cleaned, 16) & 0xFF;
+    } else {
+      // 구분자(공백·콤마)로 나뉜 토큰 수로 바이트 스트림 vs WORD 판별 (앱 CommCode.parseExpected 동형).
+      const tokenCount = expRaw.split(/[\s,]+/).filter((t) => t.length > 0).length;
+      if (tokenCount <= 1) {
+        // 붙여쓴 입력 → WORD 직접 비교 (토글 무관, 예: 4B37)
+        expVal = parseInt(cleaned, 16) & 0xFFFF;
+      } else {
+        // 구분자로 나뉜 바이트 스트림 → LE/BE 토글대로 조합 (예: LE 37 4B → 4B37)
+        const parsed = parseHexNibble(expRaw);
+        if (parsed.bytes.length >= 2) {
+          expVal = orderLe
+            ? ((parsed.bytes[0] & 0xFF) | ((parsed.bytes[1] & 0xFF) << 8))
+            : ((parsed.bytes[1] & 0xFF) | ((parsed.bytes[0] & 0xFF) << 8));
+        } else if (parsed.bytes.length === 1) {
+          expVal = parsed.bytes[0] & 0xFF;
+        }
+      }
+    }
+    if (expVal == null || Number.isNaN(expVal)) {
+      st.className = "verify-status mismatch";
+      st.textContent = "불일치";
+      return;
+    }
+    const mask = width === 1 ? 0xFF : 0xFFFF;
+    const ok = (value & mask) === (expVal & mask);
+    st.className = ok ? "verify-status match" : "verify-status mismatch";
+    st.textContent = ok ? "일치" : "불일치";
+  }
+
+  // chips
+  document.querySelectorAll("#csChips button, #crcChips button").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      algo = btn.dataset.algo;
+      applyAlgoUi();
+      recompute();
+    });
+  });
+
+  // mode
+  $("modeHex").addEventListener("click", () => {
+    inputMode = "HEX";
+    $("modeHex").setAttribute("aria-pressed", "true");
+    $("modeAscii").setAttribute("aria-pressed", "false");
+    $("inputLabel").firstChild.textContent = "HEX 바이트 (공백·콤마 OK)";
+    recompute();
+  });
+  $("modeAscii").addEventListener("click", () => {
+    inputMode = "ASCII";
+    $("modeHex").setAttribute("aria-pressed", "false");
+    $("modeAscii").setAttribute("aria-pressed", "true");
+    $("inputLabel").firstChild.textContent = "ASCII 텍스트 (UTF-8 바이트)";
+    recompute();
+  });
+
+  // order
+  $("orderLe").addEventListener("click", () => {
+    orderLe = true;
+    $("orderLe").setAttribute("aria-pressed", "true");
+    $("orderBe").setAttribute("aria-pressed", "false");
+    recompute();
+  });
+  $("orderBe").addEventListener("click", () => {
+    orderLe = false;
+    $("orderLe").setAttribute("aria-pressed", "false");
+    $("orderBe").setAttribute("aria-pressed", "true");
+    recompute();
+  });
+
+  // ref toggles
+  function wireRef(btn) {
+    btn.addEventListener("click", () => {
+      if (btn.disabled) return;
+      const on = btn.getAttribute("aria-pressed") !== "true";
+      btn.setAttribute("aria-pressed", on ? "true" : "false");
+      btn.textContent = on ? "ON" : "OFF";
+      recompute();
+    });
+  }
+  wireRef(refinBtn); wireRef(refoutBtn);
+
+  [polyEl, initEl, xorEl, payloadEl, expectedEl].forEach((el) => {
+    el.addEventListener("input", recompute);
+  });
+
+  $("btnCopy").addEventListener("click", async () => {
+    const t = $("resultTokens").textContent;
+    if (!t || t === "—" || t.includes("입력") || t.includes("오류")) return;
+    try { await navigator.clipboard.writeText(t); } catch (_) {}
+  });
+
+  document.querySelectorAll("[data-theme-set]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const v = btn.getAttribute("data-theme-set");
+      if (v === "auto") document.documentElement.removeAttribute("data-theme");
+      else document.documentElement.setAttribute("data-theme", v);
+    });
+  });
+
+  applyAlgoUi();
+  recompute();
+})();
+</script>
+<script>
+(function(){
+  var KEY="plcmanjp-tool-theme", order=["","light","dark"], lbl={"":"시스템","light":"라이트","dark":"다크"};
+  var root=document.documentElement, btn=document.getElementById("themeBtn"), lblEl=document.getElementById("themeLbl");
+  var cur=root.getAttribute("data-theme")||"";
+  if(lblEl) lblEl.textContent=lbl[cur];
+  function apply(t){
+    if(t) root.setAttribute("data-theme",t); else root.removeAttribute("data-theme");
+    if(lblEl) lblEl.textContent=lbl[t];
+    try{ if(t) localStorage.setItem(KEY,t); else localStorage.removeItem(KEY); }catch(e){}
+    window.dispatchEvent(new Event("resize"));
+  }
+  if(btn) btn.addEventListener("click",function(){ cur=order[(order.indexOf(cur)+1)%order.length]; apply(cur); });
+})();
+</script>
+</body>
+</html>
