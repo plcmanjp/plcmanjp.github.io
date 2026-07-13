@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>삼각함수 계산기 — sin·cos·tan·역함수·각도 변환 | 엔지니어 도구</title>
-<meta name="description" content="sin·cos·tan 및 역함수, 도↔라디안 변환. 각도·거리 현장 산출. 설치 없이 브라우저에서 무료.">
+<title>삼각함수 계산기 — sin·cos·tan·직각삼각형·좌표 | 엔지니어 도구</title>
+<meta name="description" content="sin·cos·tan·역함수와 도↔라디안 변환, 직각삼각형 변·각도, 두 점 좌표의 ATAN2 방향각·거리를 계산하는 무료 웹 도구.">
 <meta property="og:title" content="삼각함수 계산기 | PLCManJP 엔지니어 도구">
-<meta property="og:description" content="삼각함수·역함수·각도 변환. 무료 웹 도구.">
+<meta property="og:description" content="삼각함수·역함수·직각삼각형·좌표 방향각과 거리를 계산하는 무료 웹 도구.">
 <link rel="canonical" href="https://plcmanjp.github.io/engineer-tool/trigonometry/">
 <script>try{var t=localStorage.getItem("plcmanjp-tool-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <style>
@@ -293,10 +293,15 @@
 
         <hr class="divider">
         <div class="outrow"><span class="ol">&Delta;X</span><span class="ov" id="coordDX"></span><button class="iconbtn sm txt" id="coordDXCopy" disabled>복사</button></div>
+        <div class="formula">&Delta;X = X2 &minus; X1</div>
         <div class="outrow"><span class="ol">&Delta;Y</span><span class="ov" id="coordDY"></span><button class="iconbtn sm txt" id="coordDYCopy" disabled>복사</button></div>
+        <div class="formula">&Delta;Y = Y2 &minus; Y1</div>
         <div class="outrow"><span class="ol">각도 θ (&minus;180~180)</span><span class="ov" id="coordAngle"></span><button class="iconbtn sm txt" id="coordAngleCopy" disabled>복사</button></div>
+        <div class="formula">θ = atan2(&Delta;Y, &Delta;X)</div>
         <div class="outrow"><span class="ol">각도 (0~360)</span><span class="ov" id="coordAngle360"></span><button class="iconbtn sm txt" id="coordAngle360Copy" disabled>복사</button></div>
+        <div class="formula">θ₃₆₀ = ((θ mod 360) + 360) mod 360</div>
         <div class="outrow"><span class="ol">거리</span><span class="ov" id="coordDist"></span><button class="iconbtn sm txt" id="coordDistCopy" disabled>복사</button></div>
+        <div class="formula">d = hypot(&Delta;X, &Delta;Y) = &radic;(&Delta;X² + &Delta;Y²)</div>
       </div>
 
     </div>
