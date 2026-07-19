@@ -242,11 +242,9 @@
   </section>
 
   <ul class="notes">
-    <li><b>SSOT</b> — 단일 정수 값(raw 비트패턴)이 HEX(H)·DEC(K)·OCT(O)·BIN(B)·비트램프·BCD 전부의 원본이다. 클립보드(복사·붙여넣기) 기능은 없다 — 각 라인은 진법 배지 + 숫자만 표시.</li>
-    <li><b>실시간 반영</b> — 키패드 자릿수를 하나씩 누를 때마다 커밋 대기 없이 4진법 표시·비트램프·BCD가 즉시 동기 갱신된다.</li>
-    <li><b>폭 전환</b> — 4bit/8bit/WORD/DWORD/QWORD 5단. 축소 시 상위 비트 절단(토스트), 확대 시 부호 모드에 따라 부호확장(부호 있음) 또는 제로확장(부호 없음).</li>
-    <li><b>&gt;&gt; 단일 키</b> — 우시프트는 부호 모드를 추종한다(부호 있음=산술시프트 ASR·부호 없음=논리시프트 LSR). ROL/ROR은 폭 단위 회전.</li>
-    <li><b>BCD 무음오류 금지</b> — BCD&rarr;BIN 변환 중 A~F 니블 발견 시 변환을 거부하고 해당 니블을 빨강으로 강조한다.</li>
+    <li><b>비트 폭</b> — 축소하면 상위 비트가 잘리고, 확대하면 부호 모드에 따라 부호 확장 또는 0 확장을 적용한다.</li>
+    <li><b>시프트</b> — 우시프트는 부호 있음일 때 산술 시프트, 부호 없음일 때 논리 시프트로 동작한다.</li>
+    <li><b>BCD</b> — A~F 니블이 포함된 BCD&rarr;BIN 변환은 잘못된 입력으로 처리해 거부한다.</li>
   </ul>
 </div>
 
@@ -254,9 +252,7 @@
   <div class="fl">
     <a href="/">PLCManJP 홈</a>
     <a href="../">엔지니어 도구</a>
-    <a href="https://play.google.com/store/apps/details?id=com.plciocheck.iocheck">앱으로 (Android)</a>
   </div>
-  <p class="note">본 도구는 특정 제조사와 무관한 독립 개발 소프트웨어입니다. 계산 결과는 참고용이며, 최종 확인은 사용자 책임입니다.</p>
 </footer>
 
 <div class="toast" id="toast"></div>
