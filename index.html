@@ -85,6 +85,10 @@
   .soon{margin-top:18px;text-align:center;font-size:.85rem;color:var(--tx3)}
   .soon b{color:var(--tx2);font-weight:600}
 
+  /* serializations */
+  .st-serial{color:#a78bfa;background:rgba(167,139,250,.11);border:1px solid rgba(167,139,250,.28)}
+  .plat-serial svg{stroke:#a78bfa}
+
   /* footer */
   footer{border-top:1px solid var(--line);padding:40px 0 48px;text-align:center;color:var(--tx3);font-size:.82rem;background:var(--bg2)}
   .flinks{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-bottom:18px}
@@ -162,11 +166,32 @@
     </div>
   </section>
 
+  <section class="tight">
+    <div class="wrap">
+      <div class="sec-h">AI Serializations</div>
+      <!-- AI 웹소설 연재관 (novel/ slug) -->
+      <article class="card wide">
+        <div class="wbody">
+          <div class="badges">
+            <span class="plat plat-serial"><svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 016.5 3H20v15H6.5A2.5 2.5 0 004 20.5z"/><path d="M4 20.5A2.5 2.5 0 016.5 18H20v3H6.5A2.5 2.5 0 014 20.5z"/></svg>Web</span>
+            <span class="st st-serial">매일 자동 연재</span>
+          </div>
+          <h3>AI 웹소설 연재관</h3>
+          <p>AI가 매일 한 편씩 새로운 이야기를 이어 쓰는 웹소설 연재관입니다. 설치나 회원가입 없이 브라우저에서 바로 읽을 수 있고, 글자 크기와 줄 간격도 취향대로 조절할 수 있습니다.</p>
+        </div>
+        <div class="cta">
+          <a class="btn btn-primary" href="https://plcmanjp.github.io/novel/">연재관 열기</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
   <footer>
     <div class="wrap">
       <div class="flinks">
         <a href="https://plcman.tistory.com">블로그</a>
         <a href="https://plcmanjp.github.io/engineer-tool/">엔지니어 도구</a>
+        <a href="https://plcmanjp.github.io/novel/">AI 웹소설 연재관</a>
         <a href="https://play.google.com/store/apps/details?id=com.plciocheck.iocheck">Google Play</a>
         <a href="https://plcmanjp.github.io/plc-io-check-helper/privacy/">개인정보처리방침(PLC IO Check Helper)</a>
         <a href="https://plcmanjp.github.io/codeless-macro-tool/privacy/">개인정보처리방침(Codeless Macro Tool)</a>
