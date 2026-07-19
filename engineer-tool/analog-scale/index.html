@@ -8,7 +8,7 @@
 <meta property="og:title" content="아날로그 스케일 변환 | PLCManJP 엔지니어 도구">
 <meta property="og:description" content="현장 엔지니어를 위한 아날로그 센서 ↔ 공학단위 스케일 변환기입니다.">
 <link rel="canonical" href="https://plcmanjp.github.io/engineer-tool/analog-scale/">
-<script>try{var t=localStorage.getItem("plcmanjp-theme"),old=localStorage.getItem("plcmanjp-tool-theme");if(t!=="light"&&t!=="dark"&&(old==="light"||old==="dark")){t=old;localStorage.setItem("plcmanjp-theme",t);localStorage.removeItem("plcmanjp-tool-theme");}if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
+<script>try{var t=localStorage.getItem("plcmanjp-theme"),old=localStorage.getItem("plcmanjp-tool-theme");if(t!=="light"&&t!=="dark"&&(old==="light"||old==="dark")){t=old;localStorage.setItem("plcmanjp-theme",t);localStorage.removeItem("plcmanjp-tool-theme");}if(t!=="light"&&t!=="dark")t="light";document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","light");}</script>
 <style>
   :root {
     --bg: #e9edf1; --surface: #ffffff; --surface-2: #f3f6f9; --ink: #18222e;
@@ -17,14 +17,6 @@
     --signal: #7a3ea8; --signal-soft: #efe4f7; --readout: #0f1a26;
     --mono: ui-monospace, "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
     --sans: -apple-system, "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", system-ui, sans-serif;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #10161d; --surface: #19222c; --surface-2: #141c25; --ink: #e7edf3;
-      --muted: #93a1b0; --line: #2a3542; --primary: #4ea3e6; --primary-soft: #17303f;
-      --warn: #e6a13c; --warn-soft: #33270f; --danger: #e26374; --good: #7fc08a; --good-soft: #14241a;
-      --signal: #b088d8; --signal-soft: #2a1c3a; --readout: #dfe8f0;
-    }
   }
   :root[data-theme="light"] {
     --bg: #e9edf1; --surface: #ffffff; --surface-2: #f3f6f9; --ink: #18222e;
@@ -129,7 +121,7 @@
   <div class="topbar">
     <div class="tw">
       <div class="crumb"><a href="/">PLCManJP</a><span class="sep">/</span><a href="../">엔지니어 도구</a><span class="sep">/</span><span class="cur">아날로그 스케일 변환</span></div>
-      <button class="themebtn" id="themeBtn" type="button" aria-label="테마 전환" aria-live="polite">🌓 <span id="themeLbl">시스템</span></button>
+      <button class="themebtn" id="themeBtn" type="button" aria-label="테마 전환: 현재 라이트" aria-live="polite">🌓 <span id="themeLbl">라이트</span></button>
     </div>
   </div>
 
@@ -442,23 +434,23 @@
 
 <script>
 (function(){
-  var KEY="plcmanjp-theme", order=["","light","dark"], lbl={"":"시스템","light":"라이트","dark":"다크"};
+  var KEY="plcmanjp-theme", order=["light","dark"], lbl={"light":"라이트","dark":"다크"};
   var root=document.documentElement, btn=document.getElementById("themeBtn"), lblEl=document.getElementById("themeLbl");
-  var cur=root.getAttribute("data-theme")||"";
+  var cur=root.getAttribute("data-theme")==="dark"?"dark":"light";
   function readTheme(){
-    try{var t=localStorage.getItem(KEY);return t==="light"||t==="dark"?t:"";}catch(e){return root.getAttribute("data-theme")||"";}
+    try{var t=localStorage.getItem(KEY);return t==="dark"?"dark":"light";}catch(e){return root.getAttribute("data-theme")==="dark"?"dark":"light";}
   }
   function apply(t,save){
-    if(t) root.setAttribute("data-theme",t); else root.removeAttribute("data-theme");
+    t=t==="dark"?"dark":"light"; root.setAttribute("data-theme",t);
     cur=t;
     if(lblEl) lblEl.textContent=lbl[t];
     if(btn) btn.setAttribute("aria-label","테마 전환: 현재 "+lbl[t]);
-    if(save!==false)try{ if(t) localStorage.setItem(KEY,t); else localStorage.removeItem(KEY); }catch(e){}
+    if(save!==false)try{localStorage.setItem(KEY,t);}catch(e){}
     var event=document.createEvent("Event"); event.initEvent("resize",false,false); window.dispatchEvent(event);
   }
   if(btn) btn.addEventListener("click",function(){apply(order[(order.indexOf(cur)+1)%order.length]);});
   window.addEventListener("pageshow",function(){apply(readTheme(),false);});
-  window.addEventListener("storage",function(e){if(e.key===KEY)apply(e.newValue==="light"||e.newValue==="dark"?e.newValue:"",false);});
+  window.addEventListener("storage",function(e){if(e.key===KEY)apply(e.newValue==="dark"?"dark":"light",false);});
   apply(cur,false);
 })();
 </script>
