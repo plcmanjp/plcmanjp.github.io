@@ -8,7 +8,7 @@
 <meta property="og:title" content="원둘레 계산기 | PLCManJP 엔지니어 도구">
 <meta property="og:description" content="현장 엔지니어를 위한 원둘레 및 기어 피치원(PCD) 계산기입니다.">
 <link rel="canonical" href="https://plcmanjp.github.io/engineer-tool/circumference/">
-<script>try{var t=localStorage.getItem("plcmanjp-tool-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
+<script>try{var t=localStorage.getItem("plcmanjp-theme"),old=localStorage.getItem("plcmanjp-tool-theme");if(t!=="light"&&t!=="dark"&&(old==="light"||old==="dark")){t=old;localStorage.setItem("plcmanjp-theme",t);localStorage.removeItem("plcmanjp-tool-theme");}if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <style>
   :root {
     --bg: #e9edf1; --surface: #ffffff; --surface-2: #f3f6f9; --ink: #18222e;
@@ -115,7 +115,7 @@
   <div class="topbar">
     <div class="tw">
       <div class="crumb"><a href="/">PLCManJP</a><span class="sep">/</span><a href="../">엔지니어 도구</a><span class="sep">/</span><span class="cur">원둘레 계산기</span></div>
-      <button class="themebtn" id="themeBtn" type="button" aria-label="테마 전환">🌓 <span id="themeLbl">시스템</span></button>
+      <button class="themebtn" id="themeBtn" type="button" aria-label="테마 전환" aria-live="polite">🌓 <span id="themeLbl">시스템</span></button>
     </div>
   </div>
 
@@ -563,7 +563,7 @@
 
 <script>
 (function(){
-  var KEY="plcmanjp-tool-theme", order=["","light","dark"], lbl={"":"시스템","light":"라이트","dark":"다크"};
+  var KEY="plcmanjp-theme", order=["","light","dark"], lbl={"":"시스템","light":"라이트","dark":"다크"};
   var root=document.documentElement, btn=document.getElementById("themeBtn"), lblEl=document.getElementById("themeLbl");
   var cur=root.getAttribute("data-theme")||"";
   if(lblEl) lblEl.textContent=lbl[cur];
