@@ -239,13 +239,18 @@
     var KEY="plcmanjp-theme", order=["","light","dark"], lbl={"":"시스템","light":"라이트","dark":"다크"};
     var root=document.documentElement, btn=document.getElementById("themeBtn"), out=document.getElementById("themeLbl");
     var cur=root.getAttribute("data-theme")||"";
-    function apply(t){
+    function readTheme(){
+      try{var t=localStorage.getItem(KEY);return t==="light"||t==="dark"?t:"";}catch(e){return root.getAttribute("data-theme")||"";}
+    }
+    function apply(t,save){
       if(t) root.setAttribute("data-theme",t); else root.removeAttribute("data-theme");
       cur=t; out.textContent=lbl[t]; btn.setAttribute("aria-label","테마 전환: 현재 "+lbl[t]);
-      try{if(t)localStorage.setItem(KEY,t);else localStorage.removeItem(KEY);}catch(e){}
+      if(save!==false)try{if(t)localStorage.setItem(KEY,t);else localStorage.removeItem(KEY);}catch(e){}
     }
     btn.addEventListener("click",function(){apply(order[(order.indexOf(cur)+1)%order.length]);});
-    apply(cur);
+    window.addEventListener("pageshow",function(){apply(readTheme(),false);});
+    window.addEventListener("storage",function(e){if(e.key===KEY)apply(e.newValue==="light"||e.newValue==="dark"?e.newValue:"",false);});
+    apply(cur,false);
   })();
   </script>
 </body>
