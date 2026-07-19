@@ -294,11 +294,10 @@
   </section>
 
   <ul class="notes">
-    <li><b>기본 CRC</b>: Modbus (poly 8005, init FFFF, refin/refout ON, xorout 0000).</li>
-    <li><b>직접 입력</b>: 직전 프리셋 값으로 열고 수정. 다시 프리셋 선택 시 잠금·값 덮어씀(확인창 없음).</li>
-    <li><b>LE</b>: 2바이트 결과 저바이트 먼저 — Modbus RTU 전송 순서. WORD는 항상 고→저 표기.</li>
-    <li><b>골든</b>: ASCII <code>123456789</code> + CRC-16/Modbus → WORD <code>4B37</code> (LE <code>37 4B</code>).</li>
-    <li><b>입력 상한</b>: HEX·ASCII 모두 최대 4096 bytes까지 계산하며 초과분은 무시하고 경고합니다.</li>
+    <li><b>기본 CRC</b> — Modbus(poly 8005, init FFFF, refin/refout ON, xorout 0000).</li>
+    <li><b>바이트 순서</b> — LE는 저바이트 먼저인 Modbus RTU 전송 순서이며, WORD는 고&rarr;저로 표시한다.</li>
+    <li><b>검산값</b> — ASCII <code>123456789</code>의 CRC-16/Modbus 결과는 WORD <code>4B37</code>, LE <code>37 4B</code>다.</li>
+    <li><b>입력 상한</b> — HEX·ASCII 모두 4096 bytes이며 초과분은 무시하고 경고한다.</li>
   </ul>
 </div>
 
@@ -306,9 +305,7 @@
   <div class="fl">
     <a href="/">PLCManJP 홈</a>
     <a href="../">엔지니어 도구</a>
-    <a href="https://play.google.com/store/apps/details?id=com.plciocheck.iocheck">앱으로 (Android)</a>
   </div>
-  <p class="note">본 도구는 특정 제조사와 무관한 독립 개발 소프트웨어입니다. 계산 결과는 참고용이며, 최종 확인은 사용자 책임입니다.</p>
 </footer>
 
 <script>
