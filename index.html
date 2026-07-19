@@ -8,7 +8,7 @@
 <meta property="og:title" content="PLCManJP | 제조·설비 현장 실용 도구">
 <meta property="og:description" content="현장 엔지니어를 위한 실용 도구. PLC IO 점검 · 코드리스 매크로 자동화 · 웹 계산 도구.">
 <link rel="canonical" href="https://plcmanjp.github.io">
-<script>try{var t=localStorage.getItem("plcmanjp-theme"),old=localStorage.getItem("plcmanjp-tool-theme");if(t!=="light"&&t!=="dark"&&(old==="light"||old==="dark")){t=old;localStorage.setItem("plcmanjp-theme",t);localStorage.removeItem("plcmanjp-tool-theme");}if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
+<script>try{var t=localStorage.getItem("plcmanjp-theme"),old=localStorage.getItem("plcmanjp-tool-theme");if(t!=="light"&&t!=="dark"&&(old==="light"||old==="dark")){t=old;localStorage.setItem("plcmanjp-theme",t);localStorage.removeItem("plcmanjp-tool-theme");}if(t!=="light"&&t!=="dark")t="light";document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","light");}</script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2244929162842411" crossorigin="anonymous"></script>
 <style>
   :root{
@@ -19,14 +19,6 @@
     --android:#128a4c; --windows:#1474ad; --web:#006b80;
     --chip:rgba(24,34,49,.04); --ghost:rgba(24,34,49,.05); --hover-line:#9aabc0;
   }
-  @media(prefers-color-scheme:dark){:root{
-    color-scheme:dark;
-    --bg:#0c1016; --bg2:#11161f; --card:#161c27; --card2:#1b2230;
-    --line:#252e3d; --tx:#e7ecf3; --tx2:#9aa6b6; --tx3:#6b7689;
-    --acc:#3b82f6; --acc2:#22d3ee; --ok:#34d399; --serial:#a78bfa;
-    --android:#3ddc84; --windows:#48b0f7; --web:#22d3ee;
-    --chip:rgba(255,255,255,.04); --ghost:rgba(255,255,255,.05); --hover-line:#36465e;
-  }}
   :root[data-theme="light"]{
     color-scheme:light;
     --bg:#f4f7fb; --bg2:#eaf0f7; --card:#ffffff; --card2:#f7f9fc;
@@ -130,7 +122,7 @@
 </head>
 <body>
   <header class="hero">
-    <div class="themebar"><button class="themebtn" id="themeBtn" type="button" aria-label="테마 전환: 현재 시스템" aria-live="polite">🌓 <span id="themeLbl">시스템</span></button></div>
+    <div class="themebar"><button class="themebtn" id="themeBtn" type="button" aria-label="테마 전환: 현재 라이트" aria-live="polite">🌓 <span id="themeLbl">라이트</span></button></div>
     <div class="wrap">
       <div class="brand">PLCManJP <span class="tt">· FIELD TOOLS</span></div>
       <h1>제조·설비 현장을 위한<br><span class="g">실용 도구</span>를 만듭니다</h1>
@@ -236,20 +228,20 @@
   </footer>
   <script>
   (function(){
-    var KEY="plcmanjp-theme", order=["","light","dark"], lbl={"":"시스템","light":"라이트","dark":"다크"};
+    var KEY="plcmanjp-theme", order=["light","dark"], lbl={"light":"라이트","dark":"다크"};
     var root=document.documentElement, btn=document.getElementById("themeBtn"), out=document.getElementById("themeLbl");
-    var cur=root.getAttribute("data-theme")||"";
+    var cur=root.getAttribute("data-theme")==="dark"?"dark":"light";
     function readTheme(){
-      try{var t=localStorage.getItem(KEY);return t==="light"||t==="dark"?t:"";}catch(e){return root.getAttribute("data-theme")||"";}
+      try{var t=localStorage.getItem(KEY);return t==="dark"?"dark":"light";}catch(e){return root.getAttribute("data-theme")==="dark"?"dark":"light";}
     }
     function apply(t,save){
-      if(t) root.setAttribute("data-theme",t); else root.removeAttribute("data-theme");
+      t=t==="dark"?"dark":"light"; root.setAttribute("data-theme",t);
       cur=t; out.textContent=lbl[t]; btn.setAttribute("aria-label","테마 전환: 현재 "+lbl[t]);
-      if(save!==false)try{if(t)localStorage.setItem(KEY,t);else localStorage.removeItem(KEY);}catch(e){}
+      if(save!==false)try{localStorage.setItem(KEY,t);}catch(e){}
     }
     btn.addEventListener("click",function(){apply(order[(order.indexOf(cur)+1)%order.length]);});
     window.addEventListener("pageshow",function(){apply(readTheme(),false);});
-    window.addEventListener("storage",function(e){if(e.key===KEY)apply(e.newValue==="light"||e.newValue==="dark"?e.newValue:"",false);});
+    window.addEventListener("storage",function(e){if(e.key===KEY)apply(e.newValue==="dark"?"dark":"light",false);});
     apply(cur,false);
   })();
   </script>
