@@ -88,6 +88,8 @@
   .result-cap { font-size: 11px; font-weight: 700; color: var(--muted); }
   .meta-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--muted); }
   .meta-row b { color: var(--ink); font-family: var(--mono); }
+  .meta-row.setup { align-items: flex-start; }
+  #rSetup { text-align: right; }
   .norm-hex { font-family: var(--mono); font-size: 12px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; word-break: break-all; max-height: 84px; overflow: auto; }
   .norm-hex.empty { color: var(--muted); }
   .result-list { display: flex; flex-direction: column; gap: 7px; border-top: 1px dashed var(--line); padding-top: 10px; }
@@ -266,7 +268,7 @@
           <div class="result-main empty" id="wireTime">—</div>
         </div>
         <div class="result-list">
-          <div class="meta-row"><span>통신 설정</span><b id="rSetup">—</b></div>
+          <div class="meta-row setup"><span>통신 설정</span><b id="rSetup">—</b></div>
           <div class="meta-row"><span>프레임 바이트 수</span><b id="rBytes">—</b></div>
           <div class="meta-row"><span>문자당 비트 수</span><b id="rBpc">—</b></div>
           <div class="meta-row"><span>총 전송 비트 수</span><b id="rTotalBits">—</b></div>
@@ -504,13 +506,13 @@
     const eff = dataBits * 100 / bpc;
 
     // 표시
-    const setup = (iface === "RS485"
+    const ifaceLabel = (iface === "RS485"
       ? "RS-485 " + (wireMode === "TWO" ? "2선식" : "4선식")
-      : iface === "RS232" ? "RS-232" : "RS-422")
-      + " / " + baud + "bps / " + uartAbbr(dataBits, parity, stopBits);
+      : iface === "RS232" ? "RS-232" : "RS-422");
+    const speedLabel = baud + "bps / " + uartAbbr(dataBits, parity, stopBits);
     $("wireTime").textContent = formatMicros(wireUs);
     $("wireTime").className = "result-main";
-    $("rSetup").textContent = setup;
+    $("rSetup").innerHTML = ifaceLabel + "<br>" + speedLabel;
     $("rBytes").textContent = bytes.length + " bytes";
     $("rBpc").textContent = bpc + " bits";
     $("rTotalBits").textContent = totalBits + " bits";
