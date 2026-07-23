@@ -77,7 +77,11 @@
   }
 
   .params-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .params-grid.cols3 { grid-template-columns: 1fr 1fr 1fr; }
   .params-grid .full { grid-column: 1 / -1; }
+  .uart-current { font-size: 12px; color: var(--muted); margin: 2px 0 0; }
+  .uart-current b { color: var(--ink); font-family: var(--mono); }
+  .result-note { font-size: 11.5px; color: var(--muted); margin: 2px 0 0; }
 
   .result-main { font-family: var(--mono); font-size: 26px; font-weight: 800; color: var(--good); letter-spacing: .04em; word-break: break-all; }
   .result-main.empty { color: var(--muted); font-size: 15px; font-weight: 600; letter-spacing: 0; }
@@ -186,7 +190,7 @@
         <label class="f" id="baudCustomRow" hidden>통신속도 직접 입력 (1 이상 정수)
           <input id="baudCustom" inputmode="numeric" spellcheck="false" placeholder="예: 10400">
         </label>
-        <div class="params-grid">
+        <div class="params-grid cols3">
           <label class="f">데이터 비트
             <select id="dataBits"><option>5</option><option>6</option><option>7</option><option selected>8</option></select>
           </label>
@@ -196,10 +200,8 @@
           <label class="f">정지 비트
             <select id="stopBits"><option selected>1</option><option>2</option></select>
           </label>
-          <label class="f">현재 설정
-            <input id="uartAbbr" value="8N1" readonly>
-          </label>
         </div>
+        <p class="uart-current">현재 설정: <b id="uartAbbr">8N1</b></p>
         <span class="badge err" id="baudErr" hidden>통신속도는 1 이상의 정수여야 합니다.</span>
         <span class="badge warn" id="baudWarn" hidden>프리셋에 없는 통신속도입니다. 실제 장치 지원 여부를 확인하세요.</span>
       </div>
@@ -225,6 +227,9 @@
         <span class="badge err" id="frameErr" hidden></span>
         <span class="badge warn" id="frameWarn" hidden></span>
       </div>
+
+      <!-- RS-485 전환 지연 경고 (앱과 동일 위치·문구 — 프레임 아래, 결과 밖) -->
+      <span class="badge warn" id="turnWarn" hidden></span>
 
       <!-- 고급 설정 -->
       <div class="zone params">
@@ -273,6 +278,7 @@
           <div class="meta-row"><span>데이터 효율</span><b id="rEff">—</b></div>
         </div>
         <span class="badge warn" id="resultWarn" hidden></span>
+        <p class="result-note">이론상 선로 시간에 입력한 지연만 더한 값입니다. 실제 장치 응답시간과는 차이가 있을 수 있습니다.</p>
       </div>
     </div>
   </section>
@@ -419,6 +425,7 @@
       $(id).textContent = "—";
     });
     $("resultWarn").hidden = true;
+    $("turnWarn").hidden = true;
   }
 
   function recompute() {
@@ -426,7 +433,7 @@
     const dataBits = parseInt($("dataBits").value, 10);
     const parity = $("parity").value;
     const stopBits = parseInt($("stopBits").value, 10);
-    $("uartAbbr").value = uartAbbr(dataBits, parity, stopBits);
+    $("uartAbbr").textContent = uartAbbr(dataBits, parity, stopBits);
 
     // 통신속도
     const baudErr = $("baudErr"), baudWarn = $("baudWarn");
@@ -514,12 +521,17 @@
     $("rCps").textContent = roundHalfUp(cps, 3) + " 문자/초";
     $("rEff").textContent = roundHalfUp(eff, 1) + " %";
 
-    // 계산 유지 경고
-    const warns = [];
-    if (turnApplies && turn === 0) warns.push("RS-485 2선식인데 송수신 전환 지연이 0입니다.");
-    if (overheadUs > wireUs) warns.push("추가 지연 합이 순수 전송시간보다 큽니다.");
+    // RS-485 2선식 전환 지연 0 — 앱과 동일 문구·위치(프레임 아래, 결과 밖)
+    const tw = $("turnWarn");
+    if (turnApplies && turn === 0) {
+      tw.hidden = false;
+      tw.textContent = "RS-485 2선식인데 전환 지연이 0입니다. 트랜시버 전환 지연을 확인하세요.";
+    } else {
+      tw.hidden = true;
+    }
+    // 결과 영역 경고 — 추가 지연 합 초과만 유지
     const rw = $("resultWarn");
-    if (warns.length) { rw.hidden = false; rw.textContent = warns.join(" "); }
+    if (overheadUs > wireUs) { rw.hidden = false; rw.textContent = "추가 지연 합이 순수 전송시간보다 큽니다."; }
     else rw.hidden = true;
   }
 
