@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>개인정보처리방침 / Privacy Policy — FeedGrove</title>
+<style>
+  :root {
+    --fg: #1c1e21;
+    --muted: #5f6368;
+    --border: #e2e5e9;
+    --accent: #2563eb;
+    --bg-code: #f4f5f7;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 0 16px 64px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", Roboto, Arial, sans-serif;
+    color: var(--fg);
+    line-height: 1.7;
+    background: #ffffff;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; }
+  header {
+    padding: 32px 0 16px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+  h1 { font-size: 1.5rem; margin: 0 0 8px; }
+  .meta { color: var(--muted); font-size: 0.9rem; }
+  .lang-nav { margin-top: 16px; font-size: 0.95rem; }
+  .lang-nav a.lang-btn {
+    display: inline-block;
+    padding: 5px 16px;
+    margin-right: 8px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  .lang-nav a.lang-btn:hover { border-color: var(--accent); }
+  .lang-nav a.lang-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #ffffff;
+  }
+  /* JS 활성 시에만 단일 언어 표시 (미활성 시 양어 병기 폴백) */
+  body.js-lang-ko #en, body.js-lang-ko hr.divider { display: none; }
+  body.js-lang-en #ko, body.js-lang-en hr.divider { display: none; }
+  h2 {
+    font-size: 1.2rem;
+    margin-top: 40px;
+    padding-top: 4px;
+    border-top: 1px solid var(--border);
+  }
+  section.lang-block > h2:first-of-type { border-top: none; margin-top: 8px; }
+  code {
+    font-family: "Consolas", "SFMono-Regular", Menlo, monospace;
+    background: var(--bg-code);
+    border-radius: 4px;
+    font-size: 0.9em;
+    padding: 1px 5px;
+    word-break: break-all;
+  }
+  ul { padding-left: 22px; }
+  li { margin-bottom: 6px; }
+  a { color: var(--accent); }
+  .footer-note {
+    margin-top: 40px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+  hr.divider {
+    margin: 48px 0;
+    border: none;
+    border-top: 2px dashed var(--border);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>개인정보처리방침 / Privacy Policy</h1>
+  <div class="meta">FeedGrove &middot; 개발자 / Developer: PLCManJP &middot; 시행일 / Effective date: 2026-07-23</div>
+  <div class="lang-nav">
+    <a href="#ko" class="lang-btn" data-lang="ko" aria-pressed="false">한국어</a><a href="#en" class="lang-btn" data-lang="en" aria-pressed="false">English</a>
+  </div>
+</header>
+
+<section class="lang-block" id="ko">
+<h2>1. 요약</h2>
+<p>피드그로브는 계정이 필요 없고, 개발자가 운영하는 서버가 없습니다. 앱이 다루는 모든 데이터는 이용자의 기기 안에만 저장되며 개발자에게 전송되지 않습니다.</p>
+
+<h2>2. 개발자가 수집하는 정보</h2>
+<p>개발자는 이용자로부터 어떠한 개인정보도 수집하지 않습니다. 앱에는 회원가입·로그인 기능이 없고, 분석(Analytics) SDK와 광고 SDK가 포함되어 있지 않으며, 개발자가 운영하는 수집 서버로 데이터를 보내는 경로가 없습니다.</p>
+
+<h2>3. 기기 안에 저장되는 정보</h2>
+<p>앱은 아래 정보를 기기 내부 저장소(앱 전용 데이터베이스와 설정 저장소)에만 보관합니다.</p>
+<ul>
+  <li>이용자가 등록한 피드 주소, 피드 이름, 그룹, 동기화 주기 설정</li>
+  <li>수집한 게시물의 제목, 링크, 요약, 작성자, 게시 시각, 이미지 주소</li>
+  <li>읽음·즐겨찾기 표시, 검색·목록 표시 설정</li>
+  <li>이용자가 만든 파서 설정(선택자·패턴)</li>
+  <li>다이제스트 규칙과 전송 이력 상태</li>
+  <li>이용자가 등록한 Discord 웹훅 주소</li>
+</ul>
+<p>Discord 웹훅 주소는 Android Keystore에 보관된 기기 전용 키로 암호화(AES-256-GCM)해 저장합니다. 앱은 웹훅 주소 전체를 화면 로그나 오류 메시지에 남기지 않고 마스킹된 형태만 표시합니다.</p>
+
+<h2>4. 외부로 나가는 통신</h2>
+<p>앱은 다음 경우에만 외부와 통신하며, 통신 상대는 모두 이용자가 직접 지정한 곳입니다.</p>
+<ul>
+  <li>이용자가 등록한 피드 주소·웹페이지 주소로 직접 접속해 공개된 내용을 내려받습니다. 이때 해당 사이트에는 통상적인 웹 요청 정보(IP 주소, 요청 시각, 앱 식별 문자열)가 남을 수 있으며 이는 해당 사이트 운영자의 처리 영역입니다.</li>
+  <li>목록·상세 화면에 표시할 이미지를 게시물에 포함된 이미지 주소에서 직접 내려받습니다.</li>
+  <li>이용자가 Discord 전송을 설정한 경우에 한해, 이용자 소유의 Discord 웹훅 주소로 이용자가 지정한 규칙에 해당하는 게시물 제목·링크·요약을 전송합니다. 설정하지 않으면 전송은 전혀 발생하지 않습니다.</li>
+  <li>이용자가 게시물의 원문 보기나 공유를 실행하면 기기의 브라우저·공유 대상 앱으로 제목과 링크가 전달됩니다.</li>
+</ul>
+<p>앱은 이용자 기기의 연락처·위치·사진·파일에 접근하지 않으며, 요청하는 권한은 인터넷 접속 권한(<code>INTERNET</code>) 하나뿐입니다.</p>
+
+<h2>5. 제3자 제공과 판매</h2>
+<p>개발자는 이용자 정보를 제3자에게 제공하거나 판매하지 않습니다. 위 4항의 통신은 이용자가 스스로 지정한 대상(피드 사이트, 이용자 소유 Discord 채널)에 한정됩니다.</p>
+
+<h2>6. 보관과 파기</h2>
+<p>데이터는 기기 안에 보관되며 보관 기간은 이용자가 통제합니다. 앱 내에서 피드·게시물을 삭제하면 해당 데이터가 즉시 삭제됩니다. 앱을 삭제하면 앱이 저장한 모든 데이터가 기기에서 함께 삭제됩니다. 개발자 측에는 사본이 존재하지 않으므로 별도의 삭제 요청 절차가 필요하지 않습니다.</p>
+
+<h2>7. 아동</h2>
+<p>이 앱은 아동을 주 대상으로 하지 않으며 아동으로부터 개인정보를 의도적으로 수집하지 않습니다.</p>
+
+<h2>8. 보안</h2>
+<p>웹훅 주소는 Keystore 기반 암호화로 저장하고, 복호화에 실패하면 전송을 중단하고 재등록을 요구합니다. 앱은 http·https 이외의 주소를 거부하고, 사설망·loopback 등 비공용 주소로의 접속을 기본 차단합니다.</p>
+
+<h2>9. 방침 변경</h2>
+<p>방침이 변경되면 게시 문서를 갱신하고, 앱 업데이트 설명에 변경 사실을 알립니다.</p>
+
+<h2>10. 문의</h2>
+<p>문의처: <a href="mailto:chechapbg@gmail.com">chechapbg@gmail.com</a></p>
+</section>
+
+<hr class="divider">
+
+<section class="lang-block" id="en">
+<h2>1. Summary</h2>
+<p>FeedGrove requires no account, and the developer operates no server. All data the app handles is stored only on your device and is never transmitted to the developer.</p>
+
+<h2>2. Information the Developer Collects</h2>
+<p>The developer collects no personal information from you. The app has no sign-up or login, includes no analytics SDK or advertising SDK, and has no path that sends data to any collection server operated by the developer.</p>
+
+<h2>3. Information Stored on Your Device</h2>
+<p>The app keeps the following information only in your device's internal storage (the app's private database and settings store).</p>
+<ul>
+  <li>Feed addresses, feed names, groups, and sync interval settings you register</li>
+  <li>Title, link, summary, author, published time, and image address of collected posts</li>
+  <li>Read/favorite marks and search/list display settings</li>
+  <li>Parser settings you create (selectors and patterns)</li>
+  <li>Digest rules and delivery history state</li>
+  <li>Discord webhook addresses you register</li>
+</ul>
+<p>Discord webhook addresses are stored encrypted (AES-256-GCM) with a device-only key held in the Android Keystore. The app never writes the full webhook address to on-screen logs or error messages, showing only a masked form.</p>
+
+<h2>4. Outbound Communication</h2>
+<p>The app communicates externally only in the following cases, and every counterpart is a destination you specified yourself.</p>
+<ul>
+  <li>It connects directly to the feed or web page addresses you registered and downloads their publicly available content. In doing so, ordinary web request information (IP address, request time, app identifier string) may be recorded by that site, which falls under that site operator's processing.</li>
+  <li>It downloads the images for the list and detail screens directly from the image addresses contained in the posts.</li>
+  <li>Only when you have configured Discord delivery, it sends the title, link, and summary of posts matching the rules you specified to your own Discord webhook address. If you do not configure it, no delivery occurs at all.</li>
+  <li>When you open the original post or share it, the title and link are passed to your device's browser or the chosen share-target app.</li>
+</ul>
+<p>The app does not access your device's contacts, location, photos, or files, and the only permission it requests is the internet access permission (<code>INTERNET</code>).</p>
+
+<h2>5. Third-Party Sharing and Sale</h2>
+<p>The developer does not share or sell your information to any third party. The communication in section 4 above is limited to destinations you designated yourself (feed sites, your own Discord channels).</p>
+
+<h2>6. Retention and Deletion</h2>
+<p>Data is kept on your device, and you control the retention period. Deleting a feed or post within the app deletes that data immediately. Uninstalling the app removes all data the app stored from your device. The developer holds no copy, so no separate deletion request procedure is needed.</p>
+
+<h2>7. Children</h2>
+<p>This app is not primarily directed at children and does not knowingly collect personal information from children.</p>
+
+<h2>8. Security</h2>
+<p>Webhook addresses are stored with Keystore-based encryption; if decryption fails, delivery is stopped and re-registration is required. The app rejects addresses other than http and https, and blocks access to non-public addresses such as private networks and loopback by default.</p>
+
+<h2>9. Changes to This Policy</h2>
+<p>If this policy changes, the published document will be updated and the change will be noted in the app's update description.</p>
+
+<h2>10. Contact</h2>
+<p>Contact: <a href="mailto:chechapbg@gmail.com">chechapbg@gmail.com</a></p>
+</section>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var buttons = document.querySelectorAll(".lang-nav a.lang-btn");
+  var STORAGE_KEY = "feedgrove-privacy-lang";
+
+  function apply(lang) {
+    document.body.classList.remove("js-lang-ko", "js-lang-en");
+    document.body.classList.add("js-lang-" + lang);
+    document.documentElement.lang = lang;
+    for (var i = 0; i < buttons.length; i++) {
+      var on = buttons[i].getAttribute("data-lang") === lang;
+      buttons[i].classList.toggle("active", on);
+      buttons[i].setAttribute("aria-pressed", on ? "true" : "false");
+    }
+    try { localStorage.setItem(STORAGE_KEY, lang); } catch (e) { /* private mode 등 */ }
+  }
+
+  for (var i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener("click", function (e) {
+      e.preventDefault();
+      var lang = this.getAttribute("data-lang");
+      apply(lang);
+      if (history.replaceState) { history.replaceState(null, "", "#" + lang); }
+    });
+  }
+
+  // 초기 언어: URL 해시 > 저장된 선택 > 브라우저 언어(ko 계열=ko, 그 외=en)
+  var initial = null;
+  if (location.hash === "#en") { initial = "en"; }
+  else if (location.hash === "#ko") { initial = "ko"; }
+  if (!initial) {
+    try { initial = localStorage.getItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+  }
+  if (initial !== "ko" && initial !== "en") {
+    initial = /^ko/i.test(navigator.language || "") ? "ko" : "en";
+  }
+  apply(initial);
+})();
+</script>
+</body>
+</html>
