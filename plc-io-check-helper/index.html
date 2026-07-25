@@ -2,13 +2,275 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; connect-src 'none'; font-src 'none'; form-action 'none'; frame-src 'none'; img-src 'self'; manifest-src 'none'; media-src 'none'; object-src 'none'; script-src 'self'; script-src-attr 'none'; style-src 'self'; style-src-attr 'none'; worker-src 'none'">
+<meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PLC IO Check Helper — PLCManJP</title>
-<meta http-equiv="refresh" content="0; url=https://plcmanjp.github.io/">
-<style>body{font-family:sans-serif;text-align:center;margin-top:80px;color:#333}a{color:#2563eb}</style>
+<meta name="description" content="스마트폰으로 Mitsubishi MELSEC PLC의 I/O를 점검하고 실시간 모니터링하는 무료 Android 앱, PLC IO Check Helper를 소개합니다.">
+<meta name="theme-color" content="#f5f7fb">
+<meta property="og:title" content="PLC IO Check Helper | 현장 PLC I/O 점검과 모니터링">
+<meta property="og:description" content="MC Protocol·SLMP 직접 통신, IO 체크, 배치 모니터, GX Works 가져오기와 현장 계산기까지 하나의 Android 앱에서 사용하세요.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://plcmanjp.github.io/plc-io-check-helper/">
+<title>PLC IO Check Helper | 현장 PLC I/O 점검과 모니터링</title>
+<link rel="canonical" href="https://plcmanjp.github.io/plc-io-check-helper/">
+<link rel="icon" href="./assets/app-icon.png" type="image/png">
+<link rel="stylesheet" href="./assets/styles.css?v=20260725-1">
+<script src="./assets/theme-init.js"></script>
 </head>
 <body>
-  <p><a href="https://plcmanjp.github.io/">PLCManJP 제품 페이지</a>로 이동합니다…</p>
-  <script>location.replace("https://plcmanjp.github.io/");</script>
+  <a class="skip-link" href="#content">본문으로 바로가기</a>
+
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="https://plcmanjp.github.io/" aria-label="PLCManJP 제품 허브로 이동">
+        <img src="./assets/app-icon.png" width="40" height="40" alt="">
+        <span>
+          <strong>PLC IO Check Helper</strong>
+          <small>by PLCManJP</small>
+        </span>
+      </a>
+      <nav class="top-nav" aria-label="페이지 내 이동">
+        <a href="#features">주요 기능</a>
+        <a href="#screens">앱 화면</a>
+        <a href="#safety">안전 안내</a>
+      </nav>
+      <button class="theme-button" id="themeButton" type="button" aria-label="테마 전환: 현재 라이트">
+        <span aria-hidden="true">◐</span>
+        <span id="themeLabel">라이트</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="content">
+    <section class="hero plc-hero">
+      <div class="hero-glow hero-glow-one" aria-hidden="true"></div>
+      <div class="hero-glow hero-glow-two" aria-hidden="true"></div>
+      <div class="shell hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="status-dot"></span> Android · 모든 기능 무료 · 한국어/English/日本語</div>
+          <h1>스마트폰 하나로<br><span>PLC I/O 현장 점검</span></h1>
+          <p class="hero-lead">Mitsubishi MELSEC PLC에 Ethernet으로 직접 연결해 입출력 상태를 확인하세요. IO 체크부터 실시간 모니터링, 배치 조회, 프로젝트 이동과 현장 계산기까지 한 앱에 담았습니다.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="https://play.google.com/store/apps/details?id=com.plciocheck.iocheck">
+              Google Play에서 설치
+              <span aria-hidden="true">↗</span>
+            </a>
+            <a class="button button-secondary" href="#features">기능 살펴보기</a>
+          </div>
+          <ul class="hero-facts" aria-label="제품 특징">
+            <li><span aria-hidden="true">✓</span> 읽기 전용 모니터링</li>
+            <li><span aria-hidden="true">✓</span> 토큰·인앱 결제 없음</li>
+            <li><span aria-hidden="true">✓</span> 등록·동시 모니터링 제한 없음</li>
+          </ul>
+        </div>
+
+        <div class="hero-visual plc-visual" aria-label="PLC IO Check Helper 앱 화면">
+          <div class="phone-stage">
+            <div class="phone-frame phone-frame-back">
+              <img src="./assets/app-monitor.png" width="1080" height="1920" alt="등록한 PLC 디바이스 값을 실시간으로 표시하는 모니터 화면">
+            </div>
+            <div class="phone-frame phone-frame-front">
+              <img src="./assets/app-iocheck.png" width="1080" height="1920" alt="등록한 입출력을 OK 또는 NG로 점검하는 IO 체크 화면">
+            </div>
+          </div>
+          <div class="floating-card floating-card-top">
+            <span class="floating-icon">●</span>
+            <span><strong>LIVE</strong> 디바이스 값 실시간 확인</span>
+          </div>
+          <div class="floating-card floating-card-bottom">
+            <span class="floating-icon floating-icon-play">✓</span>
+            <span><strong>IO CHECK</strong> 결과를 OK/NG로 기록</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="proof-strip" aria-label="지원 범위">
+      <div class="shell proof-grid">
+        <div><strong>TCP · UDP</strong><span>현장 구성에 맞춘 Ethernet 연결</span></div>
+        <div><strong>3E · 4E</strong><span>Binary와 ASCII 프레임 지원</span></div>
+        <div><strong>Q · iQ-R</strong><span>MELSEC 시리즈 호환 구성</span></div>
+        <div><strong>X/Y · D/W</strong><span>비트와 워드 디바이스 조회</span></div>
+      </div>
+    </section>
+
+    <section class="section section-intro">
+      <div class="shell">
+        <div class="section-heading centered">
+          <p class="kicker">MADE FOR FIELD WORK</p>
+          <h2>노트북 없이도<br>빠르고 체계적인 I/O 점검</h2>
+          <p>PLC 파라미터에 맞춰 연결하고, 현장에서 필요한 디바이스만 등록해 값과 점검 결과를 바로 확인할 수 있습니다.</p>
+        </div>
+        <div class="use-case-grid">
+          <article class="use-card">
+            <span class="use-number">01</span>
+            <h3>시운전·배선 점검</h3>
+            <p>X·Y 입출력을 수동, 자동, 안내형 순차 모드로 확인하고 배선 맞바꿈과 단락을 점검합니다.</p>
+          </article>
+          <article class="use-card">
+            <span class="use-number">02</span>
+            <h3>설비 상태 확인</h3>
+            <p>비트 ON/OFF와 워드 값을 자동 폴링하며 10진·16진·실수·문자열 등 필요한 형식으로 봅니다.</p>
+          </article>
+          <article class="use-card">
+            <span class="use-number">03</span>
+            <h3>프로젝트 재사용</h3>
+            <p>프로젝트를 내보내고 가져오거나 공유해 다른 기기와 작업 구성을 이어서 사용합니다.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section features-section" id="features">
+      <div class="shell">
+        <div class="section-heading">
+          <p class="kicker">CAPABILITIES</p>
+          <h2>점검, 모니터링, 정리까지<br>현장 흐름을 한곳에</h2>
+          <p>MC Protocol·SLMP 통신부터 데이터 정리와 계산까지 실제 현장에서 자주 쓰는 작업을 연결했습니다.</p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-card feature-card-wide feature-card-purple">
+            <div class="feature-copy">
+              <span class="feature-label">IO CHECK</span>
+              <h3>점검 순서를 따라 OK/NG 기록</h3>
+              <p>등록한 X·Y 입출력을 하나씩 확인합니다. 자동·안내형 순차 점검과 배선 맞바꿈·단락 감지로 누락을 줄이고, 결과를 CSV와 요약 리포트로 공유할 수 있습니다.</p>
+              <ul class="mini-list">
+                <li>수동 · 자동 · 안내형 순차 3가지 모드</li>
+                <li>점검 결과와 통신 오류를 분리 표시</li>
+                <li>CSV · 요약 리포트 공유</li>
+              </ul>
+            </div>
+            <div class="step-demo" aria-label="IO 체크 흐름 예시">
+              <div><span>1</span><b>입력 확인</b><em>X 디바이스</em></div>
+              <div><span>2</span><b>출력 확인</b><em>Y 디바이스</em></div>
+              <div><span>3</span><b>결과 기록</b><em>OK / NG</em></div>
+              <div><span>4</span><b>리포트</b><em>CSV 공유</em></div>
+            </div>
+          </article>
+
+          <article class="feature-card">
+            <span class="feature-label">MONITOR</span>
+            <h3>실시간 디바이스 모니터링</h3>
+            <p>X·Y·M·L·B 비트와 D·W·ZR 워드를 자동 폴링합니다. 검색, 그룹, 상태 필터와 통신 오류 격리로 필요한 신호에 집중할 수 있습니다.</p>
+            <div class="chip-row" aria-hidden="true"><span>X/Y</span><span>D/W</span><span>ZR</span></div>
+          </article>
+
+          <article class="feature-card feature-card-blue">
+            <span class="feature-label">BATCH &amp; GROUP</span>
+            <h3>즉석 조회와 IO 모아보기</h3>
+            <p>주소를 직접 입력해 여러 값을 표로 한 번에 읽고, 입력·출력 신호를 구분한 카드로 설비 I/O를 빠르게 파악합니다.</p>
+            <div class="monitor-demo" aria-hidden="true"><span><i></i> X0 <b class="monitor-ok">ON</b></span><span>D100 <b>1250</b></span></div>
+          </article>
+
+          <article class="feature-card feature-card-wide media-card">
+            <div class="feature-copy">
+              <span class="feature-label">GX WORKS IMPORT</span>
+              <h3>기존 프로젝트의 디바이스와 코멘트 활용</h3>
+              <p>GX Works2 프로젝트(.gxw) 또는 코멘트·래더 CSV에서 디바이스를 가져옵니다. 종류별·POU별 그룹, POU 트리 미리보기, 더블코일 경고와 가져오기 선택 기능을 제공합니다.</p>
+              <p class="feature-note">가져오기 결과는 호환 편의 기능이므로 현장 적용 전에 반드시 원본과 대조해야 합니다.</p>
+            </div>
+            <div class="import-panel" aria-hidden="true">
+              <span>PROJECT.GXW</span>
+              <strong>디바이스 · 코멘트</strong>
+              <i></i>
+              <span>프로젝트 그룹</span>
+            </div>
+          </article>
+
+          <article class="feature-card">
+            <span class="feature-label">PROJECT</span>
+            <h3>내보내기 · 가져오기 · 공유</h3>
+            <p>여러 프로젝트를 저장하고 .plc 파일로 다른 Android 기기에 옮깁니다. 등록한 디바이스와 그룹 구성을 그대로 이어갈 수 있습니다.</p>
+          </article>
+
+          <article class="feature-card feature-card-blue">
+            <span class="feature-label">TOOLS</span>
+            <h3>현장 계산기와 변환 도구</h3>
+            <p>진법·비트 연산, 전자기어비, 원둘레, 삼각함수, 아날로그 스케일, 체크섬·CRC-16과 ASCII 변환 도구를 내장했습니다.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section screens-section" id="screens">
+      <div class="shell">
+        <div class="section-heading centered">
+          <p class="kicker">APP SCREENS</p>
+          <h2>필요한 작업으로<br>빠르게 이동</h2>
+          <p>IO 체크와 모니터링부터 배치 조회, 계산 도구까지 같은 프로젝트 흐름 안에서 사용할 수 있습니다.</p>
+        </div>
+        <div class="screen-grid">
+          <figure><div><img src="./assets/app-iocheck.png" width="1080" height="1920" loading="lazy" alt="IO 체크 화면"></div><figcaption><strong>IO 체크</strong><span>점검 결과를 OK/NG로 기록</span></figcaption></figure>
+          <figure><div><img src="./assets/app-monitor.png" width="1080" height="1920" loading="lazy" alt="디바이스 모니터 화면"></div><figcaption><strong>모니터</strong><span>등록 디바이스 실시간 조회</span></figcaption></figure>
+          <figure><div><img src="./assets/app-batch.png" width="1080" height="1920" loading="lazy" alt="배치 모니터 화면"></div><figcaption><strong>배치 모니터</strong><span>여러 주소를 표로 즉석 조회</span></figcaption></figure>
+          <figure><div><img src="./assets/app-tools.png" width="1080" height="1920" loading="lazy" alt="프로그래머 계산기 화면"></div><figcaption><strong>현장 도구</strong><span>진법·비트 계산과 변환</span></figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section workflow-section">
+      <div class="shell workflow-grid">
+        <div class="section-heading sticky-heading">
+          <p class="kicker">HOW IT WORKS</p>
+          <h2>연결부터 점검까지<br>네 단계로 시작</h2>
+          <p>PLC 쪽 Ethernet 파라미터와 앱 설정을 맞춘 뒤 필요한 디바이스를 등록합니다.</p>
+          <a class="button button-secondary" href="https://plcman.tistory.com/236">블로그 소개 보기 <span aria-hidden="true">↗</span></a>
+        </div>
+        <ol class="workflow-list">
+          <li><span>01</span><div><h3>PLC Ethernet 설정 확인</h3><p>MC Protocol·SLMP 포트와 TCP/UDP, 프레임·데이터 형식을 확인합니다.</p></div></li>
+          <li><span>02</span><div><h3>앱 연결 설정 입력</h3><p>PLC IP와 포트, 통신 방식을 입력하고 프로젝트를 선택합니다.</p></div></li>
+          <li><span>03</span><div><h3>디바이스 등록 또는 가져오기</h3><p>직접·자동 등록하거나 GX Works 자료에서 주소와 코멘트를 가져옵니다.</p></div></li>
+          <li><span>04</span><div><h3>모니터링과 IO 체크</h3><p>실시간 값을 확인하고 현장 점검 결과를 기록·공유합니다.</p></div></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section trust-section" id="safety">
+      <div class="shell trust-grid">
+        <div class="trust-copy">
+          <p class="kicker">READ-ONLY BY DESIGN</p>
+          <h2>설비 값을 바꾸지 않는<br>읽기 전용 도구</h2>
+          <p>PLC IO Check Helper는 디바이스 값을 읽어 표시하는 모니터링 앱입니다. 제어·쓰기 명령으로 설비 상태를 변경하지 않습니다.</p>
+        </div>
+        <div class="trust-list">
+          <div><span aria-hidden="true">✓</span><p><strong>로컬 프로젝트</strong>연결 설정과 프로젝트는 사용자 기기에서 관리하며 개발자 서버로 전송하지 않습니다.</p></div>
+          <div><span aria-hidden="true">✓</span><p><strong>모든 기능 무료</strong>토큰, 인앱 결제, 기능 잠금 없이 하단 배너 광고와 함께 모든 기능을 제공합니다.</p></div>
+          <div><span aria-hidden="true">✓</span><p><strong>독립 서드파티 앱</strong>Mitsubishi Electric Corporation과 제휴·보증·승인 관계가 없으며 관련 명칭은 호환성 표시 목적으로만 사용합니다.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="final-cta">
+      <div class="shell final-card">
+        <img src="./assets/app-icon.png" width="92" height="92" alt="">
+        <div>
+          <p class="kicker">START CHECKING</p>
+          <h2>현장의 PLC I/O를<br>스마트폰에서 확인하세요</h2>
+          <p>PLC IO Check Helper를 Google Play에서 무료로 설치할 수 있습니다.</p>
+        </div>
+        <div class="final-actions">
+          <a class="button button-light" href="https://play.google.com/store/apps/details?id=com.plciocheck.iocheck">Google Play에서 설치 <span aria-hidden="true">↗</span></a>
+          <a class="button button-outline-light" href="https://plcman.tistory.com/236">블로그 소개 보기</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-grid">
+      <div>
+        <a class="footer-brand" href="https://plcmanjp.github.io/">PLCManJP</a>
+        <p>제조·설비 현장을 위한 실용 도구를 만듭니다.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://play.google.com/store/apps/details?id=com.plciocheck.iocheck">Google Play</a>
+        <a href="https://plcman.tistory.com/236">블로그 소개</a>
+        <a href="https://plcmanjp.github.io/plc-io-check-helper/privacy/">개인정보처리방침</a>
+        <a href="https://plcmanjp.github.io/">다른 제품 보기</a>
+      </div>
+    </div>
+  </footer>
+  <script src="./assets/theme.js"></script>
 </body>
 </html>
