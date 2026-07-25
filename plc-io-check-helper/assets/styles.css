@@ -1308,6 +1308,22 @@ button:focus-visible {
   min-height: 610px;
 }
 
+.plc-visual .floating-card {
+  z-index: 4;
+}
+
+.plc-visual .floating-card-bottom {
+  bottom: 76px;
+  left: -22px;
+}
+
+@media (min-width: 981px) {
+  .plc-hero h1 {
+    font-size: clamp(2.6rem, 4vw, 3.3rem);
+    white-space: nowrap;
+  }
+}
+
 .phone-stage {
   position: relative;
   width: 100%;
