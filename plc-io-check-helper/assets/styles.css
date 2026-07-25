@@ -1123,6 +1123,10 @@ button:focus-visible {
 
   .brand strong {
     max-width: 185px;
+    overflow: visible;
+    line-height: 1.12;
+    text-overflow: clip;
+    white-space: normal;
   }
 
   .top-nav {
