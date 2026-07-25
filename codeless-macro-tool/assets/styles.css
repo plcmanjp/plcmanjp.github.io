@@ -64,6 +64,7 @@ body {
 
 img {
   display: block;
+  height: auto;
   max-width: 100%;
 }
 
@@ -346,7 +347,6 @@ button:focus-visible {
   border-radius: 20px;
   background: var(--surface);
   box-shadow: var(--shadow);
-  transform: perspective(1000px) rotateY(-2deg) rotateX(1deg);
 }
 
 .window-bar {
@@ -386,6 +386,8 @@ button:focus-visible {
 
 .window-shell img {
   width: 100%;
+  height: auto;
+  object-fit: contain;
 }
 
 .floating-card {
@@ -741,6 +743,9 @@ button:focus-visible {
 
 .media-image img {
   width: 100%;
+  height: auto;
+  object-fit: contain;
+  object-position: center;
 }
 
 .feature-note {
