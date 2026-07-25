@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; connect-src 'none'; font-src 'none'; form-action 'none'; frame-src 'none'; img-src 'none'; manifest-src 'none'; media-src 'none'; object-src 'none'; script-src 'sha256-y5nqpAc3J9gEX0Z6T8kysc66s3Y4l55GwaJLdVpRlJU=' 'sha256-kJxY/gSCasIYUGPBeT6G0QdewIL+DVtEyEZUXk0ozyY='; script-src-attr 'none'; style-src 'sha256-8aG4YgI4KnDHKc/Ql+ly4+0u/ayVyY+Q5HQ01bGQVV4='; style-src-attr 'none'; worker-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; connect-src 'none'; font-src 'none'; form-action 'none'; frame-src 'none'; img-src 'none'; manifest-src 'none'; media-src 'none'; object-src 'none'; script-src 'sha256-y5nqpAc3J9gEX0Z6T8kysc66s3Y4l55GwaJLdVpRlJU=' 'sha256-kJxY/gSCasIYUGPBeT6G0QdewIL+DVtEyEZUXk0ozyY='; script-src-attr 'none'; style-src 'sha256-KOun3GQRNwRBf5yBUYvnDoP5h3Mt0dV6VpwYGF9gqCA='; style-src-attr 'none'; worker-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="google-adsense-account" content="ca-pub-2244929162842411">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -92,8 +92,9 @@
   .card h3{font-size:1.2rem;font-weight:750;letter-spacing:-.01em;margin-bottom:8px}
   .card p{font-size:.92rem;color:var(--tx2);flex:1;margin-bottom:20px}
   .cta{display:flex;gap:10px;flex-wrap:wrap}
-  .cta-secondary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin-top:10px}
-  .cta-secondary .btn{justify-content:center;text-align:center}
+  .cta-equal{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cta-equal .btn{justify-content:center;text-align:center}
+  .cta-secondary{margin-top:10px}
   .btn{display:inline-flex;align-items:center;gap:7px;font-size:.86rem;font-weight:650;padding:10px 16px;border-radius:11px;transition:opacity .15s,background .15s}
   .btn:hover{opacity:.9}
   .btn-primary{background:linear-gradient(92deg,var(--acc),#2f6fe0);color:#fff}
@@ -151,7 +152,7 @@
           </div>
           <h3>PLC IO Check Helper</h3>
           <p>스마트폰 하나로 현장 설비를 점검하세요. Mitsubishi MELSEC(Q·iQ-R) PLC에 Ethernet으로 연결해 디바이스 I/O 상태를 실시간으로 모니터링할 수 있습니다. 진법 변환기, 전자기어비 계산기 등 현장 필수 계산기도 함께 내장된 전면 무료 앱입니다.</p>
-          <div class="cta">
+          <div class="cta cta-equal">
             <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.plciocheck.iocheck">Google Play 설치</a>
             <a class="btn btn-ghost" href="https://plcman.tistory.com/236">소개 · 가이드</a>
           </div>
@@ -165,11 +166,11 @@
           </div>
           <h3>JP's Codeless Macro Tool</h3>
           <p>코딩 지식이 없어도 누구나 키보드와 마우스 동작을 기록해 반복 작업을 자동화할 수 있는 Windows용 매크로 툴입니다. 화면 이미지 텍스트 인식(OCR), 비활성 백그라운드 제어, 조건 분기 등 강력한 기능으로 설계 및 사무 현장의 단순 반복 업무를 대폭 줄여줍니다.</p>
-          <div class="cta">
+          <div class="cta cta-equal">
             <a class="btn btn-primary" href="https://apps.microsoft.com/detail/9NXX9L2ZW52W">Microsoft Store 설치</a>
             <a class="btn btn-ghost" href="https://plcmanjp.github.io/codeless-macro-tool/">자세히 알아보기</a>
           </div>
-          <div class="cta cta-secondary">
+          <div class="cta cta-equal cta-secondary">
             <a class="btn btn-ghost" href="https://plcman.tistory.com/209">블로그 소개</a>
             <a class="btn btn-ghost" href="https://plcman.tistory.com/211">사용 매뉴얼</a>
           </div>
