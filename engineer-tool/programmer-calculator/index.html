@@ -42,11 +42,6 @@
   .device-bar { padding: 10px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
   .device-bar .back { font-size: 18px; color: var(--ink); }
   .device-bar h2 { font-size: 14.5px; margin: 0; font-weight: 600; flex: 1; min-width: 90px; }
-  .device-bar .chips { display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
-
-  .chip { appearance: none; cursor: pointer; border-radius: 8px; font-family: var(--sans); font-size: 10.5px; font-weight: 700; padding: 5px 9px; border: 1px solid var(--line); background: transparent; color: var(--muted); white-space: nowrap; }
-  .chip.active { border-color: transparent; background: var(--primary-soft); color: var(--primary); }
-  .chip.action { border: 1px solid var(--line); background: transparent; color: var(--muted); }
 
   .screen { padding: 12px 12px 16px; display: flex; flex-direction: column; gap: 10px; }
 
@@ -55,12 +50,10 @@
   .zone { border: 1px solid var(--line); border-radius: 14px; padding: 10px 11px 12px; display: flex; flex-direction: column; gap: 8px; }
   .zone.radix { background: color-mix(in srgb, var(--primary-soft) 45%, var(--surface)); border-color: color-mix(in srgb, var(--primary) 35%, var(--line)); }
   .zone.lamp { background: color-mix(in srgb, var(--good-soft) 55%, var(--surface)); border-color: color-mix(in srgb, var(--good) 35%, var(--line)); }
-  .zone.bcd { background: var(--surface-2); border-color: color-mix(in srgb, var(--signal) 30%, var(--line)); }
   .zone.keys { background: var(--surface); }
   .zone-head { font-size: 11px; font-weight: 800; letter-spacing: .02em; color: var(--muted); }
   .zone.radix .zone-head { color: var(--primary); }
   .zone.lamp .zone-head { color: var(--good); }
-  .zone.bcd .zone-head { color: var(--signal); }
 
   /* 폭 5단 세그먼트 */
   .widthseg { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; }
@@ -82,12 +75,10 @@
   .lampblock { display: flex; flex-direction: column; gap: 1px; margin-bottom: 3px; }
   .lampblock:last-child { margin-bottom: 0; }
 
-  /* BCD 패널 */
-  .bcdrow { display: flex; gap: 4px; }
-  .bcdnibble { flex: 1; text-align: center; padding: 5px 0; border-radius: 5px; font-family: var(--mono); font-size: 13.5px; font-weight: 700; background: var(--surface); color: var(--ink); }
-  .bcdnibble.invalid { background: color-mix(in srgb, var(--danger) 22%, var(--surface)); color: var(--danger); }
-  .bcdbtns { display: flex; gap: 8px; }
-  .bcdbtns button { flex: 1; height: 34px; border-radius: 8px; border: 1px solid var(--line); background: transparent; color: var(--ink); font-family: var(--sans); font-size: 11.5px; font-weight: 600; cursor: pointer; }
+  /* 변환·표시 제어 5키 1행 */
+  .controlrow { display: grid; grid-template-columns: 1.35fr 1.35fr .9fr .9fr .9fr; gap: 3px; }
+  .controlrow button { min-width: 0; height: 34px; border-radius: 7px; border: 1px solid var(--line); background: transparent; color: var(--muted); font-family: var(--sans); font-size: 10.5px; font-weight: 700; cursor: pointer; padding: 0 2px; white-space: nowrap; overflow: hidden; }
+  .controlrow button.active { border-color: transparent; background: var(--primary-soft); color: var(--primary); }
 
   /* 비트연산 8키 1행 */
   .oprow { display: flex; gap: 3px; }
@@ -146,11 +137,6 @@
     <div class="device-bar">
       <a class="back" href="../" aria-label="도구 목록으로">&larr;</a>
       <h2>프로그래머 계산기</h2>
-      <div class="chips">
-        <button class="chip" id="chipSigned" type="button">부호</button>
-        <button class="chip" id="chipGroup" type="button">그룹</button>
-        <button class="chip action" id="chipSwap" type="button">&#8644; 스왑</button>
-      </div>
     </div>
     <div class="screen">
       <div class="sticky-top">
@@ -175,14 +161,13 @@
         <div id="lampZone"></div>
       </div>
 
-      <!-- BCD 패널 -->
-      <div class="zone bcd">
-        <div class="zone-head">BCD 패널</div>
-        <div class="bcdrow" id="bcdZone"></div>
-        <div class="bcdbtns">
-          <button type="button" id="binToBcdBtn">BIN &rarr; BCD</button>
-          <button type="button" id="bcdToBinBtn">BCD &rarr; BIN</button>
-        </div>
+      <!-- 변환·표시 제어 5키 -->
+      <div class="controlrow">
+        <button type="button" id="binToBcdBtn">BIN &rarr; BCD</button>
+        <button type="button" id="bcdToBinBtn">BCD &rarr; BIN</button>
+        <button id="chipSigned" type="button">부호</button>
+        <button id="chipGroup" type="button">그룹</button>
+        <button id="chipSwap" type="button">스왑</button>
       </div>
 
       <!-- 비트연산 8키 -->
@@ -236,7 +221,7 @@
   <ul class="notes">
     <li><b>비트 폭</b> — 축소하면 상위 비트가 잘리고, 확대하면 부호 모드에 따라 부호 확장 또는 0 확장을 적용한다.</li>
     <li><b>시프트</b> — 우시프트는 부호 있음일 때 산술 시프트, 부호 없음일 때 논리 시프트로 동작한다.</li>
-    <li><b>BCD</b> — A~F 니블이 포함된 BCD&rarr;BIN 변환은 잘못된 입력으로 처리해 거부한다.</li>
+    <li><b>BCD</b> — 별도 니블 패널 없이 첫째 제어행의 BIN&rarr;BCD·BCD&rarr;BIN 버튼으로 변환하며, A~F 니블 입력은 오류 안내 후 거부한다.</li>
   </ul>
 </div>
 
@@ -638,7 +623,6 @@
     widthSeg: document.getElementById("widthSeg"),
     radixLines: document.getElementById("radixLines"),
     lampZone: document.getElementById("lampZone"),
-    bcdZone: document.getElementById("bcdZone"),
     rowAF: document.getElementById("rowAF"),
     chipSigned: document.getElementById("chipSigned"),
     chipGroup: document.getElementById("chipGroup"),
@@ -671,18 +655,6 @@
       html += "</div></div>";
     });
     el.lampZone.innerHTML = html;
-  }
-
-  function buildBcdZone() {
-    var n = nibbleCount(S.width);
-    var html = "";
-    for (var i = n - 1; i >= 0; i--) {
-      var nibVal = Number((S.raw >> BigInt(i * 4)) & 0xFn);
-      var text = nibVal <= 9 ? nibVal.toString(10) : nibVal.toString(16).toUpperCase();
-      var invalid = UI.bcdInvalid.has(i);
-      html += '<div class="bcdnibble' + (invalid ? " invalid" : "") + '">' + text + "</div>";
-    }
-    el.bcdZone.innerHTML = html;
   }
 
   function buildRadixLines() {
@@ -722,8 +694,6 @@
     buildRadixLines();
     // 비트 램프
     buildLampZone();
-    // BCD 패널
-    buildBcdZone();
     // 키패드 활성 자릿수 (A~F + 숫자 전부 동일 로직으로 갱신)
     var active = activeDigitsFor(S.inputRadix);
     Array.prototype.forEach.call(document.querySelectorAll(".keybtn.num[data-ch]"), function (b) {
@@ -731,7 +701,7 @@
       var enabled = active.indexOf(ch) >= 0;
       b.disabled = !enabled;
     });
-    // 상단 칩
+    // 변환·표시 제어행 토글
     el.chipSigned.classList.toggle("active", S.signed);
     el.chipGroup.classList.toggle("active", S.grouping);
   }
