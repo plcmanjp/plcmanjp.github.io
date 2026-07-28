@@ -195,7 +195,7 @@
       <!-- 섹션3: 코드(16진) → 문자 -->
       <div class="zone green">
         <div class="zone-head"><span class="h"><span>&#9670;</span><span class="section-label">코드(16진) &rarr; 문자</span></span></div>
-        <label class="f">16진 코드 입력 (예: 48656C6C6F, 공백 없이)<input type="text" id="hexInput" placeholder="16진 코드 입력 (예시:41421A2F)" autocomplete="off"></label>
+        <label class="f">16진 코드 입력 (예: 0241424303, 공백 없이)<input type="text" id="hexInput" placeholder="0241424303 → &lt;STX&gt;ABC&lt;ETX&gt;" autocomplete="off"></label>
         <div class="badge" id="skipBadge" hidden></div>
         <div class="outbox">
           <div class="box empty" id="decodedOutput">&mdash;</div>
@@ -208,7 +208,7 @@
   <ul class="notes">
     <li><b>범위</b> — 0~127의 7비트 표준 ASCII만 지원하며 확장 ASCII는 제외한다.</li>
     <li><b>PLC 워드</b> — 2문자를 1워드로 묶고, 홀수 길이의 남는 바이트는 0x00으로 채운다. 하위 먼저(LH)가 미쓰비시 기본 순서다.</li>
-    <li><b>16진 입력</b> — 연속 입력은 앞에서부터 2자리씩 1바이트로 읽는다. 잘못된 문자는 건너뛰고 경고한다.</li>
+    <li><b>16진 입력</b> — 연속 입력은 앞에서부터 2자리씩 1바이트로 읽는다. 제어문자는 <code>&lt;STX&gt;</code> 같은 표준 니모닉으로 표시한다. <code>0241424303</code>은 <code>&lt;STX&gt;ABC&lt;ETX&gt;</code>로 표시한다.</li>
   </ul>
   </div>
 
@@ -360,7 +360,7 @@
     return input.split("").filter(function (c) { return isHexDigit(c) || /\s/.test(c) || c === ","; }).join("").toUpperCase();
   }
   function decodeHex(input) {
-    if (!input || input.trim() === "") return { empty: true, text: "", skipped: [] };
+    if (!input || input.trim() === "") return { empty: true, text: "", displayText: "", skipped: [] };
     var hex = "", skipped = [];
     for (var i = 0; i < input.length; i++) {
       var c = input[i];
@@ -370,8 +370,17 @@
     }
     var chars = [], i2 = 0;
     while (i2 + 2 <= hex.length) { chars.push(parseInt(hex.substr(i2, 2), 16)); i2 += 2; }
-    if (chars.length === 0) return { empty: true, text: "", skipped: [] };
-    return { empty: false, text: chars.map(function (code) { return String.fromCharCode(code); }).join(""), skipped: skipped };
+    if (chars.length === 0) return { empty: true, text: "", displayText: "", skipped: [] };
+    return {
+      empty: false,
+      text: chars.map(function (code) { return String.fromCharCode(code); }).join(""),
+      displayText: chars.map(function (code) {
+        if (code >= 0 && code <= 31) return "<" + CONTROL_MNEMONICS[code] + ">";
+        if (code === 127) return "<DEL>";
+        return String.fromCharCode(code);
+      }).join(""),
+      skipped: skipped
+    };
   }
   function toPlcWords(codes, order) {
     if (codes.length === 0) return [];
@@ -445,7 +454,7 @@
     var clean = sanitizeHexInput(this.value);
     this.value = clean;
     var result = decodeHex(clean);
-    setOutbox(elDecodedOutput, elCopyDecoded, result.empty ? "" : result.text);
+    setOutbox(elDecodedOutput, elCopyDecoded, result.empty ? "" : result.displayText);
     if (!result.empty && result.skipped.length > 0) {
       elSkipBadge.hidden = false;
       elSkipBadge.textContent = "⚠ 인식 불가 토큰 건너뜀: " + result.skipped.join(", ");
