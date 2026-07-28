@@ -87,7 +87,7 @@
 
 <header>
   <h1>개인정보처리방침 / Privacy Policy</h1>
-  <div class="meta">JP's Codeless Macro Tool &middot; 개발자 / Developer: PLCManJP &middot; 시행일 / Effective date: 2026-07-02</div>
+  <div class="meta">JP's Codeless Macro Tool &middot; 개발자 / Developer: PLCManJP &middot; 시행일 / Effective date: 2026-07-28</div>
   <div class="lang-nav">
     <a href="#ko" class="lang-btn" data-lang="ko" aria-pressed="false">한국어</a><a href="#en" class="lang-btn" data-lang="en" aria-pressed="false">English</a>
   </div>
@@ -101,17 +101,11 @@
 <p>앱은 이름, 이메일, 위치, 기기 식별자 등 어떠한 개인정보도 수집·저장·전송하지 않습니다.</p>
 
 <h2>3. 네트워크 통신</h2>
-<p>앱이 인터넷에 접속하는 경우는 <strong>업데이트·변경내역 확인</strong> 한 가지뿐입니다.</p>
+<p>앱은 업데이트·변경내역을 자동으로 조회하거나 원격 서버로 데이터를 전송하지 않습니다.</p>
 <ul>
-  <li>앱은 GitHub 공개 저장소에 있는 다음 두 파일을 HTTPS GET 요청으로 읽어옵니다.
-    <ul>
-      <li><code>https://raw.githubusercontent.com/plcmanjp/JPs-Codeless-Macro-Tool-Release/main/version.json</code></li>
-      <li><code>https://raw.githubusercontent.com/plcmanjp/JPs-Codeless-Macro-Tool-Release/main/release_notes/v{버전}.md</code></li>
-    </ul>
-  </li>
-  <li>이 요청은 표준 HTTP 요청이며, 앱이 사용자의 개인 데이터(이름, 이메일, 매크로 내용, 사용 기록 등)를 담아 보내지 않습니다.</li>
-  <li>다만 이 요청이 GitHub 서버에 도달하는 과정에서 IP 주소 등 표준 접속 정보가 발생할 수 있으며, 이는 GitHub의 개인정보처리방침이 적용되는 영역입니다. 자세한 내용은 <a href="https://docs.github.com/ko/site-policy/privacy-policies" target="_blank" rel="noopener">GitHub 개인정보처리방침</a>에서 확인할 수 있습니다.</li>
-  <li>업데이트 확인 외의 다른 서버 통신(로그인, 분석, 광고, 크래시 리포트 등)은 존재하지 않습니다.</li>
+  <li>사용자가 도움말·개인정보처리방침·배포 안내·후원 안내(<a href="https://plcman.tistory.com/210" target="_blank" rel="noopener"><code>https://plcman.tistory.com/210</code></a>) 등 외부 링크를 클릭하면 앱은 Windows 기본 브라우저에 해당 URL을 열도록 요청합니다. 후원 팝업의 카카오페이·토스·페이팔 QR은 앱 안에서 표시되며, 결제는 사용자가 선택한 제3자 앱에서 처리됩니다.</li>
+  <li>이 동작은 앱이 사용자 데이터를 URL 요청에 담아 보내는 네트워크 기능이 아닙니다. 브라우저와 연결된 사이트의 통신·접속 정보 처리는 해당 사이트의 개인정보처리방침이 적용됩니다.</li>
+  <li>앱 내부에는 로그인, 분석, 광고, 크래시 리포트, 자동 업데이트 조회를 위한 별도 서버 통신이 없습니다.</li>
 </ul>
 
 <h2>4. 로컬 데이터 저장 위치</h2>
@@ -152,17 +146,11 @@
 <p>The App does not collect, store, or transmit any personal information, including names, emails, location, or device identifiers.</p>
 
 <h2>3. Network Communication</h2>
-<p>The only time the App connects to the internet is to <strong>check for updates and changelogs</strong>.</p>
+<p>The App does not automatically check for updates or changelogs and does not transmit data to a remote server.</p>
 <ul>
-  <li>The App reads two public files from a GitHub repository via HTTPS GET requests:
-    <ul>
-      <li><code>https://raw.githubusercontent.com/plcmanjp/JPs-Codeless-Macro-Tool-Release/main/version.json</code></li>
-      <li><code>https://raw.githubusercontent.com/plcmanjp/JPs-Codeless-Macro-Tool-Release/main/release_notes/v{version}.md</code></li>
-    </ul>
-  </li>
-  <li>These are standard HTTP requests. The App does not include any personal data (name, email, macro contents, usage history, etc.) in these requests.</li>
-  <li>As with any HTTP request, GitHub's servers may process standard connection information (such as IP address) while serving the request; this falls under GitHub's own privacy policy, available at <a href="https://docs.github.com/en/site-policy/privacy-policies" target="_blank" rel="noopener">GitHub Privacy Statement</a>.</li>
-  <li>The App makes no other server connections &mdash; no login, analytics, advertising, or crash-reporting services are contacted.</li>
+  <li>When the user clicks an external link such as Help, the privacy policy, the distribution page, or the donation information page (<a href="https://plcman.tistory.com/210" target="_blank" rel="noopener"><code>https://plcman.tistory.com/210</code></a>), the App asks the Windows default browser to open that URL. The KakaoPay, Toss, and PayPal QR codes in the donation dialog are displayed locally; any payment is handled by the third-party app chosen by the user.</li>
+  <li>This is not an App network feature that sends user data in the request. Communication and connection information handled by the browser and the linked site are subject to that site's privacy policy.</li>
+  <li>The App has no separate server communication for login, analytics, advertising, crash reporting, or automatic update checks.</li>
 </ul>
 
 <h2>4. Local Data Storage</h2>
