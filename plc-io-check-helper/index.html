@@ -2,20 +2,30 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; connect-src 'none'; font-src 'none'; form-action 'none'; frame-src 'none'; img-src 'self'; manifest-src 'none'; media-src 'none'; object-src 'none'; script-src 'self'; script-src-attr 'none'; style-src 'self'; style-src-attr 'none'; worker-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; connect-src 'none'; font-src 'none'; form-action 'none'; frame-src 'none'; img-src 'self'; manifest-src 'none'; media-src 'none'; object-src 'none'; script-src 'self' 'sha256-I08fr+UyalnDnnrUzGn9N7rxhpQAbr0dLzrs78ZUTyE='; script-src-attr 'none'; style-src 'self'; style-src-attr 'none'; worker-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="스마트폰으로 Mitsubishi MELSEC PLC의 I/O를 점검하고 실시간 모니터링하는 무료 Android 앱, PLC IO 체크 모니터링 for MELSEC을 소개합니다.">
-<meta name="theme-color" content="#f5f7fb">
+<meta name="theme-color" id="themeColor" content="#f5f7fb">
+<meta property="og:site_name" content="PLCManJP">
+<meta property="og:locale" content="ko_KR">
   <meta property="og:title" content="PLC IO 체크 모니터링 for MELSEC | 현장 PLC I/O 점검과 모니터링">
 <meta property="og:description" content="MC Protocol·SLMP 직접 통신, IO 체크, 배치 모니터, GX Works 가져오기와 현장 계산기까지 하나의 Android 앱에서 사용하세요.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://plcmanjp.github.io/plc-io-check-helper/">
+<meta property="og:image" content="https://plcmanjp.github.io/assets/og-plc-io-check-helper.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="스마트폰 하나로 PLC I/O 현장 점검">
+<meta name="twitter:card" content="summary_large_image">
   <title>PLC IO 체크 모니터링 for MELSEC | 현장 PLC I/O 점검과 모니터링</title>
 <link rel="canonical" href="https://plcmanjp.github.io/plc-io-check-helper/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="./assets/app-icon.png" type="image/png">
-<link rel="stylesheet" href="./assets/styles.css?v=20260725-4">
-<script src="./assets/theme-init.js"></script>
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/assets/product.css?v=20260729">
+<link rel="stylesheet" href="./assets/styles.css?v=20260729">
+<script src="/assets/theme-init.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#content">본문으로 바로가기</a>
@@ -53,7 +63,7 @@
           <div class="hero-actions">
             <a class="button button-primary" href="https://play.google.com/store/apps/details?id=com.plciocheck.iocheck">
               <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 9.48l1.84-3.18a.4.4 0 00-.69-.4l-1.86 3.23a11.4 11.4 0 00-9.78 0L5.25 5.9a.4.4 0 10-.69.4L6.4 9.48A11.3 11.3 0 001 18.5h22a11.3 11.3 0 00-5.4-9.02M7 15.25a1 1 0 110-2 1 1 0 010 2m10 0a1 1 0 110-2 1 1 0 010 2"/></svg>
-              Google Play에서 설치
+              Google Play 설치
               <span aria-hidden="true">↗</span>
             </a>
             <a class="button button-secondary" href="#features">기능 살펴보기</a>
@@ -238,6 +248,7 @@
           <div><span aria-hidden="true">✓</span><p><strong>로컬 프로젝트</strong>연결 설정과 프로젝트는 사용자 기기에서 관리하며 개발자 서버로 전송하지 않습니다.</p></div>
           <div><span aria-hidden="true">✓</span><p><strong>모든 기능 무료</strong>토큰, 인앱 결제, 기능 잠금 없이 하단 배너 광고와 함께 모든 기능을 제공합니다.</p></div>
           <div><span aria-hidden="true">✓</span><p><strong>독립 서드파티 앱</strong>Mitsubishi Electric Corporation과 제휴·보증·승인 관계가 없으며 관련 명칭은 호환성 표시 목적으로만 사용합니다.</p></div>
+          <p class="env-note"><span><b>지원 환경</b> Android 8.0(API 26) 이상</span><span><b>연결</b> Ethernet(TCP · UDP)</span><span><b>언어</b> 한국어 · English · 日本語</span></p>
         </div>
       </div>
     </section>
@@ -251,7 +262,7 @@
         <p>PLC IO 체크 모니터링 for MELSEC을 Google Play에서 무료로 설치할 수 있습니다.</p>
         </div>
         <div class="final-actions">
-          <a class="button button-light" href="https://play.google.com/store/apps/details?id=com.plciocheck.iocheck"><svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 9.48l1.84-3.18a.4.4 0 00-.69-.4l-1.86 3.23a11.4 11.4 0 00-9.78 0L5.25 5.9a.4.4 0 10-.69.4L6.4 9.48A11.3 11.3 0 001 18.5h22a11.3 11.3 0 00-5.4-9.02M7 15.25a1 1 0 110-2 1 1 0 010 2m10 0a1 1 0 110-2 1 1 0 010 2"/></svg>Google Play에서 설치 <span aria-hidden="true">↗</span></a>
+          <a class="button button-light" href="https://play.google.com/store/apps/details?id=com.plciocheck.iocheck"><svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 9.48l1.84-3.18a.4.4 0 00-.69-.4l-1.86 3.23a11.4 11.4 0 00-9.78 0L5.25 5.9a.4.4 0 10-.69.4L6.4 9.48A11.3 11.3 0 001 18.5h22a11.3 11.3 0 00-5.4-9.02M7 15.25a1 1 0 110-2 1 1 0 010 2m10 0a1 1 0 110-2 1 1 0 010 2"/></svg>Google Play 설치 <span aria-hidden="true">↗</span></a>
           <a class="button button-outline-light" href="https://plcman.tistory.com/236">블로그 소개 보기</a>
         </div>
       </div>
@@ -267,11 +278,39 @@
       <div class="footer-links">
         <a href="https://play.google.com/store/apps/details?id=com.plciocheck.iocheck">Google Play</a>
         <a href="https://plcman.tistory.com/236">블로그 소개</a>
+        <a href="https://plcmanjp.github.io/engineer-tool/">엔지니어 도구(웹)</a>
         <a href="https://plcmanjp.github.io/plc-io-check-helper/privacy/">개인정보처리방침</a>
         <a href="https://plcmanjp.github.io/">다른 제품 보기</a>
       </div>
     </div>
   </footer>
-  <script src="./assets/theme.js"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "name": "PLC IO 체크 모니터링 for MELSEC",
+        "url": "https://plcmanjp.github.io/plc-io-check-helper/",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Android 8.0+",
+        "inLanguage": ["ko", "en", "ja"],
+        "description": "Mitsubishi MELSEC PLC에 Ethernet으로 직접 연결해 디바이스 I/O를 점검하고 실시간으로 모니터링하는 읽기 전용 Android 앱.",
+        "image": "https://plcmanjp.github.io/assets/og-plc-io-check-helper.png",
+        "installUrl": "https://play.google.com/store/apps/details?id=com.plciocheck.iocheck",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
+        "author": { "@type": "Person", "name": "PLCManJP", "url": "https://plcmanjp.github.io/" }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "PLCManJP", "item": "https://plcmanjp.github.io/" },
+          { "@type": "ListItem", "position": 2, "name": "PLC IO 체크 모니터링 for MELSEC", "item": "https://plcmanjp.github.io/plc-io-check-helper/" }
+        ]
+      }
+    ]
+  }
+  </script>
+  <script src="/assets/theme.js"></script>
 </body>
 </html>

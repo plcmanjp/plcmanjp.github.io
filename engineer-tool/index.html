@@ -3,24 +3,40 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" id="themeColor" content="#e9edf1">
 <title>엔지니어 도구 — 제조 및 설비 현장 필수 계산 도구 모음 | PLCManJP</title>
 <meta name="description" content="프로그래머 계산기, 전자기어비 산출, 원둘레/면적 계산, 삼각함수, 아스키코드 인코딩, 아날로그 스케일 변환, 통신 체크섬, 시리얼 전송시간까지 현장 엔지니어를 위한 8종의 필수 계산 도구를 브라우저에서 바로 사용해보세요.">
 <meta property="og:title" content="엔지니어 도구 — 제조/설비 현장 필수 계산 도구 모음">
 <meta property="og:description" content="현장 엔지니어가 실무에서 즉시 활용할 수 있는 직관적인 계산 도구 8종을 설치 없이 무료로 제공합니다.">
+<meta property="og:site_name" content="PLCManJP">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://plcmanjp.github.io/engineer-tool/">
+<meta property="og:image" content="https://plcmanjp.github.io/assets/og-engineer-tool.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="제조·설비 현장 필수 계산 도구 8종">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://plcmanjp.github.io/engineer-tool/">
-<script>try{var t=localStorage.getItem("plcmanjp-theme"),old=localStorage.getItem("plcmanjp-tool-theme");if(t!=="light"&&t!=="dark"&&(old==="light"||old==="dark")){t=old;localStorage.setItem("plcmanjp-theme",t);localStorage.removeItem("plcmanjp-tool-theme");}if(t!=="light"&&t!=="dark")t="light";document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","light");}</script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<script>try{var t=localStorage.getItem("plcmanjp-theme"),old=localStorage.getItem("plcmanjp-tool-theme");if(t!=="light"&&t!=="dark"&&(old==="light"||old==="dark")){t=old;localStorage.setItem("plcmanjp-theme",t);localStorage.removeItem("plcmanjp-tool-theme");}if(t!=="light"&&t!=="dark")t=(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)?"dark":"light";document.documentElement.setAttribute("data-theme",t);var m=document.getElementById("themeColor");if(m)m.setAttribute("content",t==="dark"?"#10161d":"#e9edf1");}catch(e){document.documentElement.setAttribute("data-theme","light");}</script>
 <style>
   :root{
+    color-scheme:light;
     --bg:#e9edf1; --surface:#ffffff; --surface-2:#f3f6f9; --ink:#18222e;
     --muted:#5c6772; --line:#d3dae1; --primary:#15629f; --primary-soft:#e4eef7;
     --acc2:#0e7c86;
     --sans:-apple-system,"Segoe UI","Pretendard","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;
   }
   :root[data-theme="light"]{
+    color-scheme:light;
     --bg:#e9edf1; --surface:#ffffff; --surface-2:#f3f6f9; --ink:#18222e;
     --muted:#5c6772; --line:#d3dae1; --primary:#15629f; --primary-soft:#e4eef7; --acc2:#0e7c86;
   }
   :root[data-theme="dark"]{
+    color-scheme:dark;
     --bg:#10161d; --surface:#19222c; --surface-2:#141c25; --ink:#e7edf3;
     --muted:#93a1b0; --line:#2a3542; --primary:#4ea3e6; --primary-soft:#17303f; --acc2:#3fd0c9;
   }
@@ -29,6 +45,9 @@
   body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased}
   a{color:inherit;text-decoration:none}
   .wrap{max-width:880px;margin:0 auto;padding:0 18px}
+  .skip-link{position:absolute;left:-9999px;top:0;z-index:10;background:var(--surface);color:var(--ink);border:1px solid var(--primary);border-radius:0 0 10px 0;padding:10px 16px;font-size:.85rem;font-weight:650}
+  .skip-link:focus{left:0}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
 
   /* topbar */
   .topbar{border-bottom:1px solid var(--line);background:var(--surface)}
@@ -75,9 +94,11 @@
   .flinks{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
   .flinks a{color:var(--muted);font-weight:600} .flinks a:hover{color:var(--ink)}
   footer .note{font-size:.73rem;line-height:1.7;max-width:540px;margin:0 auto}
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.tool{transition:none}.tool:hover{transform:none}}
 </style>
 </head>
 <body>
+  <a class="skip-link" href="#tools">본문으로 바로가기</a>
   <div class="topbar">
     <div class="wrap">
       <div class="crumb"><a href="/">PLCManJP</a><span class="sep">/</span><span class="cur">엔지니어 도구</span></div>
@@ -94,9 +115,9 @@
     </div>
   </header>
 
-  <section>
+  <section id="tools">
     <div class="wrap">
-      <div class="sec-h">Tools</div>
+      <h2 class="sec-h">Tools</h2>
       <div class="grid">
 
         <a class="tool" href="programmer-calculator/">
@@ -161,9 +182,9 @@
         <span class="ax-ic"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.6 9.48l1.84-3.18a.4.4 0 00-.69-.4l-1.86 3.23a11.4 11.4 0 00-9.78 0L5.25 5.9a.4.4 0 10-.69.4L6.4 9.48A11.3 11.3 0 001 18.5h22a11.3 11.3 0 00-5.4-9.02M7 15.25a1 1 0 110-2 1 1 0 010 2m10 0a1 1 0 110-2 1 1 0 010 2"/></svg></span>
         <div class="ax-b">
           <h4>이 도구들은 앱에도 들어 있습니다</h4>
-          <p>PLC IO Check Helper(Android) 안에서 PLC IO 실시간 모니터링과 함께 현장에서 오프라인으로 바로 씁니다.</p>
+          <p>PLC IO 체크 모니터링 for MELSEC(Android) 안에서 PLC I/O 실시간 모니터링과 함께 현장에서 오프라인으로 바로 씁니다.</p>
         </div>
-        <a class="btn" href="https://play.google.com/store/apps/details?id=com.plciocheck.iocheck">Google Play</a>
+        <a class="btn" href="https://plcmanjp.github.io/plc-io-check-helper/">앱 알아보기</a>
       </div>
     </div>
   </section>
@@ -173,7 +194,9 @@
       <div class="flinks">
         <a href="/">PLCManJP 홈</a>
         <a href="https://plcman.tistory.com">블로그</a>
-        <a href="https://play.google.com/store/apps/details?id=com.plciocheck.iocheck">Google Play</a>
+        <a href="https://plcmanjp.github.io/plc-io-check-helper/">PLC IO 체크 모니터링</a>
+        <a href="https://plcmanjp.github.io/codeless-macro-tool/">Codeless Macro Tool</a>
+        <a href="https://plcmanjp.github.io/novel/">AI 웹소설 연재관</a>
       </div>
       <p class="note">
         PLCManJP — 제조·설비 현장 실용 도구 개발.<br>
@@ -181,6 +204,36 @@
       </p>
     </div>
   </footer>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "PLCManJP", "item": "https://plcmanjp.github.io/" },
+          { "@type": "ListItem", "position": 2, "name": "엔지니어 도구", "item": "https://plcmanjp.github.io/engineer-tool/" }
+        ]
+      },
+      {
+        "@type": "ItemList",
+        "name": "제조·설비 현장 필수 계산 도구",
+        "numberOfItems": 8,
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "프로그래머 계산기", "url": "https://plcmanjp.github.io/engineer-tool/programmer-calculator/" },
+          { "@type": "ListItem", "position": 2, "name": "전자기어비 계산기", "url": "https://plcmanjp.github.io/engineer-tool/gear-ratio/" },
+          { "@type": "ListItem", "position": 3, "name": "원둘레 계산기", "url": "https://plcmanjp.github.io/engineer-tool/circumference/" },
+          { "@type": "ListItem", "position": 4, "name": "삼각함수 계산기", "url": "https://plcmanjp.github.io/engineer-tool/trigonometry/" },
+          { "@type": "ListItem", "position": 5, "name": "ASCII 코드표 · 입력기", "url": "https://plcmanjp.github.io/engineer-tool/ascii/" },
+          { "@type": "ListItem", "position": 6, "name": "아날로그 스케일 변환", "url": "https://plcmanjp.github.io/engineer-tool/analog-scale/" },
+          { "@type": "ListItem", "position": 7, "name": "통신 코드 계산기", "url": "https://plcmanjp.github.io/engineer-tool/comm-code/" },
+          { "@type": "ListItem", "position": 8, "name": "시리얼 통신 속도 계산기", "url": "https://plcmanjp.github.io/engineer-tool/serial-time/" }
+        ]
+      }
+    ]
+  }
+  </script>
 
   <script>
   (function(){
