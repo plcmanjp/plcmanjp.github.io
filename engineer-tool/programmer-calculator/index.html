@@ -102,6 +102,9 @@
   .keybtn.eq { background: var(--primary); color: #fff; font-family: var(--sans); font-size: 17px; }
   .keybtn.zero { flex: 2; }
 
+  /* 물리 키보드 입력 피드백 */
+  .kbd-active { filter: brightness(.86); box-shadow: inset 0 0 0 2px var(--primary); }
+
   ul.notes { margin: 16px 2px 0; padding-left: 18px; color: var(--muted); font-size: 12.5px; }
   ul.notes li { margin-bottom: 6px; } ul.notes b { color: var(--ink); }
   footer.mock { margin-top: 22px; font-size: 12px; color: var(--muted); text-align: center; }
@@ -230,6 +233,7 @@
   <ul class="notes">
     <li><b>비트 폭</b> — 축소하면 상위 비트가 잘리고, 확대하면 부호 모드에 따라 부호 확장 또는 0 확장을 적용한다.</li>
     <li><b>시프트</b> — 우시프트는 부호 있음일 때 산술 시프트, 부호 없음일 때 논리 시프트로 동작한다.</li>
+    <li><b>키보드 입력</b> — 숫자 <b>0~9</b>·<b>A~F</b>, 사칙 <b>+ &minus; * /</b>, 나머지 <b>%</b>, 계산 <b>Enter</b> 또는 <b>=</b>, 한 자리 지우기 <b>Backspace</b>, 전체 지우기 <b>Esc</b>/<b>Del</b>, 부호 반전 <b>N</b>, 바이트 스왑 <b>S</b>. 비트 연산은 <b>&amp;</b>(AND)·<b>|</b>(OR)·<b>^</b>(XOR)·<b>~</b>(NOT)·<b>&lt;</b>(&lt;&lt;)·<b>&gt;</b>(&gt;&gt;)·<b>[</b>(ROL)·<b>]</b>(ROR). 현재 진법에서 쓸 수 없는 자릿수를 누르면 안내만 표시한다.</li>
     <li><b>BCD</b> — 별도 니블 패널 없이 첫째 제어행의 BIN&rarr;BCD·BCD&rarr;BIN 버튼으로 변환하며, A~F 니블 입력은 오류 안내 후 거부한다.</li>
   </ul>
 </div>
@@ -762,6 +766,87 @@
   document.getElementById("chipSwap").addEventListener("click", onByteSwap);
 
   render();
+})();
+</script>
+
+<script>
+/* 물리 키보드 입력 (웹 셸 전용 레이어)
+   위 계산 블록은 100 워크스페이스 목업에서 이식되는 영역이라, 이 레이어는
+   그 블록의 내부 함수에 의존하지 않고 DOM 버튼만 눌러 동작한다. */
+(function () {
+  "use strict";
+  var HEX = "0123456789ABCDEF";
+  var KEY_ACTION = {
+    "+": "addBtn", "-": "subBtn", "*": "mulBtn", "/": "divBtn", "%": "modBtn",
+    "=": "eqBtn", "Enter": "eqBtn",
+    "Backspace": "backspaceBtn", "Escape": "acBtn", "Delete": "acBtn",
+    "&": "opAnd", "|": "opOr", "^": "opXor", "~": "opNot",
+    "<": "opShl", ">": "opShr", "[": "opRol", "]": "opRor",
+    "N": "negBtn", "S": "chipSwap"
+  };
+  function actionIdFor(key) {
+    return (key && Object.prototype.hasOwnProperty.call(KEY_ACTION, key)) ? KEY_ACTION[key] : null;
+  }
+  function flashKey(btn) {
+    btn.classList.add("kbd-active");
+    setTimeout(function () { btn.classList.remove("kbd-active"); }, 130);
+  }
+  var toastEl = document.getElementById("toast"), toastTimer = null;
+  function toast(msg) {
+    if (!toastEl) return;
+    toastEl.textContent = msg;
+    toastEl.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toastEl.classList.remove("show"); }, 1700);
+  }
+  function digitCharFor(e) {
+    var k = e.key, code = e.code || "";
+    var up = (k && k.length === 1) ? k.toUpperCase() : "";
+    if (up && HEX.indexOf(up) >= 0) return up;
+    // 한글 IME 등으로 e.key가 라틴 문자로 오지 않을 때의 물리 키 fallback
+    if (!e.shiftKey && /^Digit[0-9]$/.test(code)) return code.slice(5);
+    if (/^Numpad[0-9]$/.test(code)) return code.slice(6);
+    if (/^Key[A-F]$/.test(code)) return code.slice(3);
+    return null;
+  }
+
+  // 마우스로 누른 버튼은 포커스를 놓아 Enter 키가 그 버튼을 재실행하지 않게 한다
+  // (키보드 Tab 포커스는 e.detail === 0 이라 그대로 유지된다)
+  var device = document.querySelector(".device");
+  if (device) {
+    device.addEventListener("click", function (e) {
+      var b = e.target.closest("button");
+      if (b && e.detail > 0) b.blur();
+    });
+  }
+
+  document.addEventListener("keydown", function (e) {
+    if (e.ctrlKey || e.altKey || e.metaKey) return; // 복사·브라우저 단축키 보존
+    var ae = document.activeElement, tag = ae ? ae.tagName : "";
+    if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || (ae && ae.isContentEditable)) return;
+    var k = e.key;
+    // 포커스된 버튼·링크는 Enter/Space 기본 동작(그 요소 활성화)을 그대로 둔다
+    if ((tag === "BUTTON" || tag === "A") && (k === "Enter" || k === " " || k === "Spacebar")) return;
+
+    var ch = digitCharFor(e);
+    if (ch !== null) {
+      e.preventDefault();
+      var digitBtn = document.querySelector('.keybtn.num[data-ch="' + ch + '"]');
+      if (!digitBtn) return;
+      if (digitBtn.disabled) { toast("허용되지 않는 자릿수입니다"); return; }
+      flashKey(digitBtn);
+      digitBtn.click();
+      return;
+    }
+
+    var id = actionIdFor(k) || actionIdFor(k && k.length === 1 ? k.toUpperCase() : null);
+    if (!id) return;
+    var btn = document.getElementById(id);
+    if (!btn || btn.disabled) return;
+    e.preventDefault();
+    flashKey(btn);
+    btn.click();
+  });
 })();
 </script>
 
