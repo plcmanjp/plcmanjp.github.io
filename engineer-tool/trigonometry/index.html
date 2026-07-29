@@ -126,6 +126,26 @@
   footer.site .note { font-size: 11.5px; line-height: 1.7; max-width: 460px; margin: 0 auto; }
   a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
   @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation-duration:.01ms !important;transition-duration:.01ms !important}}
+  /* 도움말 팝업 (엔지니어 도구 공용) */
+  .helpbtn { flex: 0 0 auto; appearance: none; border: 1px solid var(--line); background: var(--surface-2); color: var(--muted); font-family: var(--sans); font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
+  .helpbtn:hover { border-color: var(--primary); color: var(--primary); }
+  dialog.toolhelp { border: 1px solid var(--line); border-radius: 16px; background: var(--surface); color: var(--ink); padding: 0; width: min(460px, 92vw); max-height: 82vh; overflow: hidden; box-shadow: 0 18px 50px rgba(12, 20, 30, .38); }
+  dialog.toolhelp::backdrop { background: rgba(10, 16, 22, .55); }
+  .toolhelp-head { display: flex; align-items: center; gap: 8px; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+  .toolhelp-head h3 { margin: 0; font-size: 14.5px; flex: 1; }
+  .toolhelp-close { appearance: none; border: 0; background: transparent; color: var(--muted); font-size: 20px; line-height: 1; cursor: pointer; padding: 2px 7px; border-radius: 8px; }
+  .toolhelp-close:hover { color: var(--ink); background: var(--surface-2); }
+  .toolhelp-body { padding: 12px 14px 16px; overflow-y: auto; max-height: calc(82vh - 53px); }
+  .toolhelp-body h4 { margin: 14px 0 7px; font-size: 11px; letter-spacing: .04em; color: var(--primary); font-weight: 800; }
+  .toolhelp-body h4:first-child { margin-top: 0; }
+  .toolhelp-body ol, .toolhelp-body ul { margin: 0; padding-left: 17px; font-size: 12.5px; color: var(--muted); line-height: 1.65; }
+  .toolhelp-body li { margin-bottom: 5px; }
+  .toolhelp-body li:last-child { margin-bottom: 0; }
+  .toolhelp-body b { color: var(--ink); }
+  .toolhelp-body code { font-family: var(--mono); font-size: 11.5px; background: var(--surface-2); border-radius: 4px; padding: 1px 4px; }
+  .toolhelp-foot { margin: 14px 0 0; font-size: 11.5px; color: var(--muted); line-height: 1.65; }
+  .toolhelp-body kbd { font-family: var(--mono); font-size: 11.5px; font-weight: 700; color: var(--ink); background: var(--surface-2); border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 6px; padding: 2px 6px; white-space: nowrap; }
+  .toolhelp-body .sep { color: var(--muted); font-size: 11px; margin: 0 2px; }
 </style>
 </head>
 <body>
@@ -140,11 +160,11 @@
   <header>
     <p class="eyebrow">엔지니어 도구</p>
     <h1 class="page">삼각함수 계산기</h1>
-    <p class="lede">설비 기구물이나 다관절 로봇 등의 각도 및 거리를 산출할 때 필수적인 사인, 코사인, 탄젠트 계산을 지원합니다. 도(Degree)와 라디안(Radian) 간의 빠른 변환은 물론, <b>직각삼각형</b>의 빗변 역산과 두 <b>좌표</b> 점 사이의 방향각(ATAN2) 및 거리 계산까지 현장에서 필요한 삼각함수 연산을 3개의 탭으로 제공합니다.</p>
+    <p class="lede">각도와 길이를 오가는 계산을 세 개의 탭으로 모았습니다. 각도를 넣어 sin&middot;cos&middot;tan을 구하거나 비율에서 거꾸로 각도를 구하고, 도(&deg;)와 라디안을 서로 바꿉니다. <b>직각삼각형</b> 탭은 각도와 변 하나로 나머지 변을, <b>좌표</b> 탭은 두 점 사이의 거리와 방향각(ATAN2)을 구합니다. 설비 기구물이나 다관절 로봇의 각도&middot;거리를 잡을 때 씁니다.</p>
   </header>
 
   <section class="device">
-    <div class="device-bar"><a class="back" href="../" aria-label="도구 목록으로">&larr;</a><h2>삼각함수 계산기</h2></div>
+    <div class="device-bar"><a class="back" href="../" aria-label="도구 목록으로">&larr;</a><h2>삼각함수 계산기</h2><button class="helpbtn" id="toolHelpBtn" type="button" aria-haspopup="dialog"><span aria-hidden="true">?</span> 도움말</button></div>
     <div class="tabs" role="tablist">
       <button class="tab" role="tab" id="tab-fn" aria-selected="true">삼각함수</button>
       <button class="tab" role="tab" id="tab-tri" aria-selected="false">직각삼각형</button>
@@ -309,9 +329,13 @@
   </section>
 
   <ul class="notes">
-    <li><b>정의역</b> — tan 90&deg;+k&middot;180&deg;는 정의되지 않으며, asin/acos는 입력값이 -1~1 범위를 벗어나면 오류로 처리한다.</li>
-    <li><b>직각삼각형</b> — 각도는 0&deg;&lt;θ&lt;90&deg;, 변 길이는 0보다 커야 하며 다리변은 빗변보다 작아야 한다.</li>
-    <li><b>좌표</b> — 두 점이 같으면 거리는 0이지만 방향각은 정의하지 않는다.</li>
+
+    <li><b>이럴 때 씁니다</b> — 경사진 브래킷의 높이를 각도와 길이로 구할 때, 두 좌표 사이를 로봇이 몇 도 방향으로 얼마나 가야 하는지 구할 때, PLC 명령이 요구하는 라디안 값을 도에서 환산할 때 씁니다.</li>
+
+    <li><b>쓰는 순서</b> — 탭을 고르고 아는 값을 넣으면 나머지가 즉시 계산됩니다. 아래 도식이 지금 값을 그림으로 보여 줍니다.</li>
+
+    <li><b>자세한 사용법</b> — 계산기 제목 행의 <b>도움말</b> 버튼에서 전체 설명을 볼 수 있습니다.</li>
+
   </ul>
 </div>
 
@@ -949,6 +973,67 @@
   window.addEventListener("pageshow",function(){apply(readTheme(),false);});
   window.addEventListener("storage",function(e){if(e.key===KEY)apply(e.newValue==="dark"?"dark":"light",false);});
   apply(cur,false);
+})();
+</script>
+<dialog class="toolhelp" id="toolHelp" aria-labelledby="toolHelpTitle">
+  <div class="toolhelp-head">
+    <h3 id="toolHelpTitle">삼각함수 계산기 도움말</h3>
+    <button class="toolhelp-close" id="toolHelpClose" type="button" aria-label="닫기">&times;</button>
+  </div>
+  <div class="toolhelp-body">
+    <h4>이 도구로 할 수 있는 일</h4>
+    <ul>
+      <li><b>삼각함수</b> 탭 — 각도를 넣으면 sin&middot;cos&middot;tan이, 비율을 넣으면 각도(asin&middot;acos&middot;atan)가 나옵니다. 도(&deg;)와 라디안도 서로 바뀝니다.</li>
+      <li><b>직각삼각형</b> 탭 — 각도와 변 하나로 나머지 두 변을 구하고, 변 두 개로 각도를 거꾸로 구합니다.</li>
+      <li><b>좌표</b> 탭 — 두 점의 &Delta;X&middot;&Delta;Y, 방향각(ATAN2), 직선거리를 구합니다.</li>
+      <li>각 탭의 도식이 지금 입력한 값을 그림으로 보여 줍니다.</li>
+    </ul>
+    <h4>쓰는 순서</h4>
+    <ol>
+      <li>위 탭에서 <b>삼각함수</b>&middot;<b>직각삼각형</b>&middot;<b>좌표</b> 중 하나를 고릅니다.</li>
+      <li>아는 값을 넣으면 나머지가 즉시 계산됩니다.</li>
+      <li><b>&plusmn;</b> 버튼으로 부호를 뒤집고, 결과 옆 복사 버튼으로 값을 가져갑니다.</li>
+    </ol>
+    <h4>알아두면 좋은 것</h4>
+    <ul>
+      <li>tan은 <b>90&deg; + 180&deg;&times;n</b>에서 정의되지 않습니다. asin&middot;acos는 입력이 -1~1을 벗어나면 오류로 처리합니다.</li>
+      <li>직각삼각형은 <b>0&deg; &lt; &theta; &lt; 90&deg;</b>, 변 길이는 0보다 커야 하고 다리변은 빗변보다 짧아야 합니다.</li>
+      <li>좌표 탭에서 두 점이 같으면 거리는 0이지만 <b>방향각은 정의하지 않습니다</b>.</li>
+      <li>방향각은 <b>-180~180&deg;</b>와 <b>0~360&deg;</b> 두 가지를 함께 보여 줍니다. 쓰는 쪽 규약에 맞는 값을 고르면 됩니다.</li>
+    </ul>
+  </div>
+</dialog>
+<script>
+/* 도움말 팝업 (엔지니어 도구 공용) — 페이지 내부 로직에 의존하지 않는 독립 레이어 */
+(function () {
+  "use strict";
+  var dlg = document.getElementById("toolHelp");
+  var btn = document.getElementById("toolHelpBtn");
+  var closeBtn = document.getElementById("toolHelpClose");
+  if (!dlg || !btn) return;
+  function openHelp() {
+    if (typeof dlg.showModal === "function") dlg.showModal();
+    else dlg.setAttribute("open", "");
+    if (closeBtn) closeBtn.focus();
+  }
+  function closeHelp() {
+    if (typeof dlg.close === "function") dlg.close();
+    else dlg.removeAttribute("open");
+    btn.focus();
+  }
+  btn.addEventListener("click", openHelp);
+  if (closeBtn) closeBtn.addEventListener("click", closeHelp);
+  // Esc 닫기 — 브라우저의 dialog 기본 취소에만 기대지 않고 명시적으로 처리한다
+  document.addEventListener("keydown", function (e) {
+    if (!dlg.open) return;
+    if (e.key === "Escape" || e.key === "Esc") { e.preventDefault(); closeHelp(); }
+  });
+  // 배경(backdrop) 클릭으로 닫기 — 패널 바깥 좌표일 때만
+  dlg.addEventListener("click", function (e) {
+    if (e.target !== dlg) return;
+    var r = dlg.getBoundingClientRect();
+    if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) closeHelp();
+  });
 })();
 </script>
 </body>

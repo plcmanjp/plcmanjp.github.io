@@ -127,6 +127,26 @@
   footer.site .note { font-size: 11.5px; line-height: 1.7; max-width: 460px; margin: 0 auto; }
   a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
   @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation-duration:.01ms !important;transition-duration:.01ms !important}}
+  /* 도움말 팝업 (엔지니어 도구 공용) */
+  .helpbtn { flex: 0 0 auto; appearance: none; border: 1px solid var(--line); background: var(--surface-2); color: var(--muted); font-family: var(--sans); font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
+  .helpbtn:hover { border-color: var(--primary); color: var(--primary); }
+  dialog.toolhelp { border: 1px solid var(--line); border-radius: 16px; background: var(--surface); color: var(--ink); padding: 0; width: min(460px, 92vw); max-height: 82vh; overflow: hidden; box-shadow: 0 18px 50px rgba(12, 20, 30, .38); }
+  dialog.toolhelp::backdrop { background: rgba(10, 16, 22, .55); }
+  .toolhelp-head { display: flex; align-items: center; gap: 8px; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+  .toolhelp-head h3 { margin: 0; font-size: 14.5px; flex: 1; }
+  .toolhelp-close { appearance: none; border: 0; background: transparent; color: var(--muted); font-size: 20px; line-height: 1; cursor: pointer; padding: 2px 7px; border-radius: 8px; }
+  .toolhelp-close:hover { color: var(--ink); background: var(--surface-2); }
+  .toolhelp-body { padding: 12px 14px 16px; overflow-y: auto; max-height: calc(82vh - 53px); }
+  .toolhelp-body h4 { margin: 14px 0 7px; font-size: 11px; letter-spacing: .04em; color: var(--primary); font-weight: 800; }
+  .toolhelp-body h4:first-child { margin-top: 0; }
+  .toolhelp-body ol, .toolhelp-body ul { margin: 0; padding-left: 17px; font-size: 12.5px; color: var(--muted); line-height: 1.65; }
+  .toolhelp-body li { margin-bottom: 5px; }
+  .toolhelp-body li:last-child { margin-bottom: 0; }
+  .toolhelp-body b { color: var(--ink); }
+  .toolhelp-body code { font-family: var(--mono); font-size: 11.5px; background: var(--surface-2); border-radius: 4px; padding: 1px 4px; }
+  .toolhelp-foot { margin: 14px 0 0; font-size: 11.5px; color: var(--muted); line-height: 1.65; }
+  .toolhelp-body kbd { font-family: var(--mono); font-size: 11.5px; font-weight: 700; color: var(--ink); background: var(--surface-2); border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 6px; padding: 2px 6px; white-space: nowrap; }
+  .toolhelp-body .sep { color: var(--muted); font-size: 11px; margin: 0 2px; }
 </style>
 </head>
 <body>
@@ -141,11 +161,11 @@
     <header>
       <p class="eyebrow">엔지니어 도구</p>
       <h1 class="page">ASCII 코드표 · 입력기</h1>
-    <p class="lede">바코드 리더기, 비전 센서 등 시리얼 통신 장비의 데이터 프레임을 분석할 때 필수적인 0~127 표준 ASCII 코드표를 제공합니다. 상단의 입력기 탭에서는 <b>문자열을 16/10진수 배열이나 PLC D 레지스터 워드값</b>으로 손쉽게 상호 인코딩 및 디코딩할 수 있습니다.</p>
+    <p class="lede">바코드 리더기나 비전 센서 같은 시리얼 장비의 데이터를 읽을 때 쓰는 0~127 표준 ASCII 코드표입니다. 숫자&middot;문자&middot;이름 중 <b>아무 형식으로나</b> 검색할 수 있고, 입력기 탭에서는 문자열을 16진&middot;10진 코드 배열이나 <b>PLC D 레지스터 워드값</b>으로 바꾸고 다시 되돌릴 수 있습니다. STX&middot;ETX 같은 제어문자도 이름으로 보여 줍니다.</p>
   </header>
 
     <section class="device">
-      <div class="device-bar"><a class="back" href="../" aria-label="도구 목록으로">&larr;</a><h2 id="deviceTitle">ASCII 코드표</h2></div>
+      <div class="device-bar"><a class="back" href="../" aria-label="도구 목록으로">&larr;</a><h2 id="deviceTitle">ASCII 코드표</h2><button class="helpbtn" id="toolHelpBtn" type="button" aria-haspopup="dialog"><span aria-hidden="true">?</span> 도움말</button></div>
     <div class="tabs" role="tablist">
       <button class="tab" role="tab" id="tab-table" aria-selected="true">ASCII 코드표</button>
       <button class="tab" role="tab" id="tab-keypad" aria-selected="false">ASCII 입력기</button>
@@ -215,9 +235,13 @@
   </section>
 
   <ul class="notes">
-    <li><b>범위</b> — 0~127의 7비트 표준 ASCII만 지원하며 확장 ASCII는 제외한다.</li>
-    <li><b>PLC 워드</b> — 2문자를 1워드로 묶고, 홀수 길이의 남는 바이트는 0x00으로 채운다. 하위 먼저(LH)가 미쓰비시 기본 순서다.</li>
-    <li><b>16진 입력</b> — 연속 입력은 앞에서부터 2자리씩 1바이트로 읽는다. 제어문자는 <code>&lt;STX&gt;</code> 같은 표준 니모닉으로 표시한다. <code>0241424303</code>은 <code>&lt;STX&gt;ABC&lt;ETX&gt;</code>로 표시한다.</li>
+
+    <li><b>이럴 때 씁니다</b> — 통신 모니터에 찍힌 <code>02 41 42 43 03</code>이 무슨 뜻인지 확인할 때, 장비에 보낼 명령 문자열을 PLC D 레지스터에 넣을 워드값으로 바꿀 때 씁니다.</li>
+
+    <li><b>쓰는 순서</b> — 코드표 탭은 검색창에 <code>65</code>&middot;<code>0x41</code>&middot;<code>A</code>&middot;<code>LF</code> 중 아무 형식이나 넣습니다. 입력기 탭은 문자열이나 16진 코드를 넣으면 서로 변환됩니다.</li>
+
+    <li><b>자세한 사용법</b> — 제목 행의 <b>도움말</b> 버튼에서 전체 설명을 볼 수 있습니다.</li>
+
   </ul>
   </div>
 
@@ -508,6 +532,67 @@
   window.addEventListener("pageshow",function(){apply(readTheme(),false);});
   window.addEventListener("storage",function(e){if(e.key===KEY)apply(e.newValue==="dark"?"dark":"light",false);});
   apply(cur,false);
+})();
+</script>
+<dialog class="toolhelp" id="toolHelp" aria-labelledby="toolHelpTitle">
+  <div class="toolhelp-head">
+    <h3 id="toolHelpTitle">ASCII 코드표 &middot; 입력기 도움말</h3>
+    <button class="toolhelp-close" id="toolHelpClose" type="button" aria-label="닫기">&times;</button>
+  </div>
+  <div class="toolhelp-body">
+    <h4>이 도구로 할 수 있는 일</h4>
+    <ul>
+      <li>0~127 표준 ASCII 전체를 <b>표로 보고 검색</b>합니다.</li>
+      <li>문자열을 <b>10진&middot;16진&middot;8진</b> 코드 배열로 바꿉니다.</li>
+      <li>2문자씩 묶어 <b>PLC D 레지스터 워드값</b>으로 만듭니다.</li>
+      <li>거꾸로 <code>0241424303</code> 같은 16진 나열을 원래 문자열로 되돌립니다. 제어문자는 <code>&lt;STX&gt;</code>처럼 이름으로 표시합니다.</li>
+    </ul>
+    <h4>쓰는 순서</h4>
+    <ol>
+      <li><b>ASCII 코드표</b> 탭 — 검색창에 <code>65</code>, <code>0x41</code>, <code>A</code>, <code>LF</code> 중 아무 형식이나 넣으면 해당 행을 찾아 줍니다.</li>
+      <li><b>ASCII 입력기</b> 탭 — 문자 입력 칸에 문자열을 넣고 DEC&middot;HEX&middot;OCT를 고르면 코드 배열이 나옵니다.</li>
+      <li>PLC 워드값은 바이트 순서(하위 먼저&middot;상위 먼저)를 고른 뒤 복사 버튼으로 가져갑니다.</li>
+      <li>반대 방향은 <b>16진 코드 입력</b> 칸에 연속 HEX를 넣으면 됩니다.</li>
+    </ol>
+    <h4>알아두면 좋은 것</h4>
+    <ul>
+      <li><b>0~127 7비트 표준 ASCII</b>만 지원합니다. 확장 ASCII(128~255)와 한글은 대상이 아닙니다.</li>
+      <li>워드로 묶을 때 문자 수가 홀수면 남는 바이트를 <code>0x00</code>으로 채웁니다. <b>하위 먼저(LH)</b>가 미쓰비시 기본 순서입니다.</li>
+      <li>16진 입력은 앞에서부터 <b>2자리씩 1바이트</b>로 읽습니다. 예를 들어 <code>0241424303</code>은 <code>&lt;STX&gt;ABC&lt;ETX&gt;</code>입니다.</li>
+    </ul>
+  </div>
+</dialog>
+<script>
+/* 도움말 팝업 (엔지니어 도구 공용) — 페이지 내부 로직에 의존하지 않는 독립 레이어 */
+(function () {
+  "use strict";
+  var dlg = document.getElementById("toolHelp");
+  var btn = document.getElementById("toolHelpBtn");
+  var closeBtn = document.getElementById("toolHelpClose");
+  if (!dlg || !btn) return;
+  function openHelp() {
+    if (typeof dlg.showModal === "function") dlg.showModal();
+    else dlg.setAttribute("open", "");
+    if (closeBtn) closeBtn.focus();
+  }
+  function closeHelp() {
+    if (typeof dlg.close === "function") dlg.close();
+    else dlg.removeAttribute("open");
+    btn.focus();
+  }
+  btn.addEventListener("click", openHelp);
+  if (closeBtn) closeBtn.addEventListener("click", closeHelp);
+  // Esc 닫기 — 브라우저의 dialog 기본 취소에만 기대지 않고 명시적으로 처리한다
+  document.addEventListener("keydown", function (e) {
+    if (!dlg.open) return;
+    if (e.key === "Escape" || e.key === "Esc") { e.preventDefault(); closeHelp(); }
+  });
+  // 배경(backdrop) 클릭으로 닫기 — 패널 바깥 좌표일 때만
+  dlg.addEventListener("click", function (e) {
+    if (e.target !== dlg) return;
+    var r = dlg.getBoundingClientRect();
+    if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) closeHelp();
+  });
 })();
 </script>
 </body>

@@ -105,6 +105,31 @@
   /* 물리 키보드 입력 피드백 */
   .kbd-active { filter: brightness(.86); box-shadow: inset 0 0 0 2px var(--primary); }
 
+  /* 도움말 팝업 (엔지니어 도구 공용) */
+  .helpbtn { flex: 0 0 auto; appearance: none; border: 1px solid var(--line); background: var(--surface-2); color: var(--muted); font-family: var(--sans); font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
+  .helpbtn:hover { border-color: var(--primary); color: var(--primary); }
+  dialog.toolhelp { border: 1px solid var(--line); border-radius: 16px; background: var(--surface); color: var(--ink); padding: 0; width: min(460px, 92vw); max-height: 82vh; overflow: hidden; box-shadow: 0 18px 50px rgba(12, 20, 30, .38); }
+  dialog.toolhelp::backdrop { background: rgba(10, 16, 22, .55); }
+  .toolhelp-head { display: flex; align-items: center; gap: 8px; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+  .toolhelp-head h3 { margin: 0; font-size: 14.5px; flex: 1; }
+  .toolhelp-close { appearance: none; border: 0; background: transparent; color: var(--muted); font-size: 20px; line-height: 1; cursor: pointer; padding: 2px 7px; border-radius: 8px; }
+  .toolhelp-close:hover { color: var(--ink); background: var(--surface-2); }
+  .toolhelp-body { padding: 12px 14px 16px; overflow-y: auto; max-height: calc(82vh - 53px); }
+  .toolhelp-body h4 { margin: 14px 0 7px; font-size: 11px; letter-spacing: .04em; color: var(--primary); font-weight: 800; }
+  .toolhelp-body h4:first-child { margin-top: 0; }
+  .toolhelp-body dl { display: grid; grid-template-columns: auto 1fr; gap: 7px 12px; margin: 0; align-items: baseline; }
+  .toolhelp-body dt, .toolhelp-body dd { margin: 0; }
+  .toolhelp-body dd { font-size: 12.5px; color: var(--muted); }
+  .toolhelp-body ol, .toolhelp-body ul { margin: 0; padding-left: 17px; font-size: 12.5px; color: var(--muted); line-height: 1.65; }
+  .toolhelp-body li { margin-bottom: 5px; }
+  .toolhelp-body li:last-child { margin-bottom: 0; }
+  .toolhelp-body b { color: var(--ink); }
+  .toolhelp-body code { font-family: var(--mono); font-size: 11.5px; background: var(--surface-2); border-radius: 4px; padding: 1px 4px; }
+  .toolhelp-foot { margin: 14px 0 0; font-size: 11.5px; color: var(--muted); line-height: 1.65; }
+  .toolhelp-body kbd { font-family: var(--mono); font-size: 11.5px; font-weight: 700; color: var(--ink); background: var(--surface-2); border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 6px; padding: 2px 6px; white-space: nowrap; }
+  .toolhelp-body .sep { color: var(--muted); font-size: 11px; margin: 0 2px; }
+  .toolhelp-foot { margin: 14px 0 0; font-size: 11.5px; color: var(--muted); line-height: 1.65; }
+
   ul.notes { margin: 16px 2px 0; padding-left: 18px; color: var(--muted); font-size: 12.5px; }
   ul.notes li { margin-bottom: 6px; } ul.notes b { color: var(--ink); }
   footer.mock { margin-top: 22px; font-size: 12px; color: var(--muted); text-align: center; }
@@ -142,13 +167,14 @@
   <header>
     <p class="eyebrow">엔지니어 도구</p>
     <h1 class="page">프로그래머 계산기</h1>
-    <p class="lede">PLC 및 마이컴 프로그래밍 현장에서 필수적인 진수 변환과 비트 논리 연산을 직관적으로 처리합니다. GX Works 등 개발 툴의 K(10진)·H(16진) 표기 방식과 Device Batch Monitor의 비트 램프 UI를 적용하여, 디버깅 시 헥사(Hex) 및 바이너리(Bin) 값을 헷갈림 없이 빠르게 검증할 수 있습니다.</p>
+    <p class="lede">값 하나를 16진수·10진수·8진수·2진수로 <b>동시에</b> 보여 주는 계산기입니다. 어느 진법에 입력하든 나머지가 즉시 함께 바뀌고, 비트 램프를 눌러 0과 1을 직접 켜고 끌 수 있습니다. AND·OR·시프트 같은 비트 연산과 BCD 변환도 지원해서, PLC나 마이컴을 디버깅할 때 화면의 Hex 값이 실제로 어떤 비트 조합인지 바로 확인할 수 있습니다. 표기는 GX Works의 K(10진)·H(16진) 방식을, 비트 램프는 Device Batch Monitor를 따랐습니다.</p>
   </header>
 
   <section class="device">
     <div class="device-bar">
       <a class="back" href="../" aria-label="도구 목록으로">&larr;</a>
       <h2>프로그래머 계산기</h2>
+      <button class="helpbtn" id="toolHelpBtn" type="button" aria-haspopup="dialog"><span aria-hidden="true">?</span> 도움말</button>
     </div>
     <div class="screen">
       <div class="sticky-top">
@@ -231,10 +257,13 @@
   </section>
 
   <ul class="notes">
-    <li><b>비트 폭</b> — 축소하면 상위 비트가 잘리고, 확대하면 부호 모드에 따라 부호 확장 또는 0 확장을 적용한다.</li>
-    <li><b>시프트</b> — 우시프트는 부호 있음일 때 산술 시프트, 부호 없음일 때 논리 시프트로 동작한다.</li>
-    <li><b>키보드 입력</b> — 숫자 <b>0~9</b>·<b>A~F</b>, 사칙 <b>+ &minus; * /</b>, 나머지 <b>%</b>, 계산 <b>Enter</b> 또는 <b>=</b>, 한 자리 지우기 <b>Backspace</b>, 전체 지우기 <b>Esc</b>/<b>Del</b>, 부호 반전 <b>N</b>, 바이트 스왑 <b>S</b>. 비트 연산은 <b>&amp;</b>(AND)·<b>|</b>(OR)·<b>^</b>(XOR)·<b>~</b>(NOT)·<b>&lt;</b>(&lt;&lt;)·<b>&gt;</b>(&gt;&gt;)·<b>[</b>(ROL)·<b>]</b>(ROR). 현재 진법에서 쓸 수 없는 자릿수를 누르면 안내만 표시한다.</li>
-    <li><b>BCD</b> — 별도 니블 패널 없이 첫째 제어행의 BIN&rarr;BCD·BCD&rarr;BIN 버튼으로 변환하며, A~F 니블 입력은 오류 안내 후 거부한다.</li>
+
+    <li><b>이럴 때 씁니다</b> — 모니터에 뜬 <b>H0F00</b>이 몇 번 비트인지 확인할 때, 통신 데이터의 바이트 순서를 뒤집어 볼 때, 표시기가 내보내는 <b>BCD</b> 값을 10진수로 되돌릴 때, 특정 비트만 남기는 마스크 값을 만들 때 씁니다.</li>
+
+    <li><b>쓰는 순서</b> — 위쪽에서 비트 폭을 고르고, H&middot;K&middot;O&middot;B 중 입력할 진법 줄을 누른 뒤 값을 넣습니다. 나머지 진법과 비트 램프가 함께 바뀝니다.</li>
+
+    <li><b>자세한 사용법</b> — 계산기 제목 행의 <b>도움말</b> 버튼에서 기능 설명과 키보드 단축키 전체를 볼 수 있습니다.</li>
+
   </ul>
 </div>
 
@@ -244,6 +273,66 @@
     <a href="../">엔지니어 도구</a>
   </div>
 </footer>
+
+<dialog class="toolhelp" id="toolHelp" aria-labelledby="toolHelpTitle">
+  <div class="toolhelp-head">
+    <h3 id="toolHelpTitle">프로그래머 계산기 도움말</h3>
+    <button class="toolhelp-close" id="toolHelpClose" type="button" aria-label="닫기">&times;</button>
+  </div>
+  <div class="toolhelp-body">
+    <h4>이 도구로 할 수 있는 일</h4>
+    <ul>
+      <li>값 하나를 <b>16진수(H) &middot; 10진수(K) &middot; 8진수(O) &middot; 2진수(B)</b>로 동시에 봅니다. 한 줄을 누르면 그 진법으로 입력할 수 있고, 나머지 줄은 자동으로 바뀝니다.</li>
+      <li><b>비트 램프</b>를 눌러 각 비트를 직접 켜고 끕니다. 어떤 비트가 서 있는지 눈으로 바로 확인할 수 있습니다.</li>
+      <li><b>비트 폭</b>(4bit &middot; 8bit &middot; WORD &middot; DWORD &middot; QWORD)을 골라 PLC 디바이스 크기에 맞춥니다.</li>
+      <li>AND &middot; OR &middot; XOR &middot; NOT &middot; 시프트 &middot; 회전 같은 <b>비트 연산</b>과 <b>BCD 변환</b>을 지원합니다.</li>
+    </ul>
+
+    <h4>알아두면 좋은 것</h4>
+    <ul>
+      <li><b>부호</b> 버튼을 켜면 10진수(K)를 음수까지 표시합니다. 끄면 0 이상만 표시합니다.</li>
+      <li><b>비트 폭을 줄이면</b> 넘치는 상위 비트가 잘립니다. 늘릴 때는 부호 설정에 따라 부호 확장 또는 0 확장을 적용합니다.</li>
+      <li><b>오른쪽 시프트</b>는 부호가 켜져 있으면 부호를 유지하는 산술 시프트로, 꺼져 있으면 논리 시프트로 동작합니다.</li>
+      <li><b>스왑</b>은 바이트 순서를 뒤집습니다. 통신 데이터의 엔디안을 맞출 때 씁니다.</li>
+    </ul>
+
+    <h4>키보드 단축키 (PC)</h4>
+    <dl>
+      <dt><kbd>0</kbd> ~ <kbd>9</kbd><span class="sep">/</span><kbd>A</kbd> ~ <kbd>F</kbd></dt>
+      <dd>자릿수 입력 (넘버패드 포함). 현재 진법에서 쓸 수 없는 자릿수는 안내만 표시합니다.</dd>
+      <dt><kbd>Backspace</kbd></dt>
+      <dd>한 자리 지우기</dd>
+      <dt><kbd>Esc</kbd><span class="sep">/</span><kbd>Del</kbd></dt>
+      <dd>전체 지우기 (AC)</dd>
+    </dl>
+
+    <h4>산술</h4>
+    <dl>
+      <dt><kbd>+</kbd> <kbd>-</kbd> <kbd>*</kbd> <kbd>/</kbd></dt>
+      <dd>더하기 &middot; 빼기 &middot; 곱하기 &middot; 나누기</dd>
+      <dt><kbd>%</kbd></dt>
+      <dd>나머지 (MOD)</dd>
+      <dt><kbd>Enter</kbd><span class="sep">/</span><kbd>=</kbd></dt>
+      <dd>계산</dd>
+      <dt><kbd>N</kbd></dt>
+      <dd>부호 반전 (&plusmn;)</dd>
+    </dl>
+
+    <h4>비트 연산</h4>
+    <dl>
+      <dt><kbd>&amp;</kbd> <kbd>|</kbd> <kbd>^</kbd> <kbd>~</kbd></dt>
+      <dd>AND &middot; OR &middot; XOR &middot; NOT</dd>
+      <dt><kbd>&lt;</kbd> <kbd>&gt;</kbd></dt>
+      <dd>왼쪽 시프트 (&lt;&lt;) &middot; 오른쪽 시프트 (&gt;&gt;)</dd>
+      <dt><kbd>[</kbd> <kbd>]</kbd></dt>
+      <dd>왼쪽 회전 (ROL) &middot; 오른쪽 회전 (ROR)</dd>
+      <dt><kbd>S</kbd></dt>
+      <dd>바이트 스왑</dd>
+    </dl>
+
+    <p class="toolhelp-foot">비트 폭 &middot; 진법 &middot; BCD 변환은 화면의 버튼으로 선택합니다. <kbd>Ctrl</kbd> &middot; <kbd>Alt</kbd> 조합은 브라우저 기본 기능으로 넘깁니다.</p>
+  </div>
+</dialog>
 
 <div class="toast" id="toast"></div>
 
@@ -799,6 +888,10 @@
     clearTimeout(toastTimer);
     toastTimer = setTimeout(function () { toastEl.classList.remove("show"); }, 1700);
   }
+  // 도움말 팝업이 열려 있으면 계산기 입력을 받지 않는다 (팝업 제어는 하단 공용 스크립트)
+  var helpDlg = document.getElementById("toolHelp");
+  function helpIsOpen() { return !!(helpDlg && helpDlg.open); }
+
   function digitCharFor(e) {
     var k = e.key, code = e.code || "";
     var up = (k && k.length === 1) ? k.toUpperCase() : "";
@@ -822,6 +915,7 @@
 
   document.addEventListener("keydown", function (e) {
     if (e.ctrlKey || e.altKey || e.metaKey) return; // 복사·브라우저 단축키 보존
+    if (helpIsOpen()) return; // 도움말 팝업이 열려 있으면 계산기 입력을 받지 않는다(Esc는 dialog가 처리)
     var ae = document.activeElement, tag = ae ? ae.tagName : "";
     if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || (ae && ae.isContentEditable)) return;
     var k = e.key;
@@ -870,6 +964,39 @@
   window.addEventListener("pageshow",function(){apply(readTheme(),false);});
   window.addEventListener("storage",function(e){if(e.key===KEY)apply(e.newValue==="dark"?"dark":"light",false);});
   apply(cur,false);
+})();
+</script>
+<script>
+/* 도움말 팝업 (엔지니어 도구 공용) — 페이지 내부 로직에 의존하지 않는 독립 레이어 */
+(function () {
+  "use strict";
+  var dlg = document.getElementById("toolHelp");
+  var btn = document.getElementById("toolHelpBtn");
+  var closeBtn = document.getElementById("toolHelpClose");
+  if (!dlg || !btn) return;
+  function openHelp() {
+    if (typeof dlg.showModal === "function") dlg.showModal();
+    else dlg.setAttribute("open", "");
+    if (closeBtn) closeBtn.focus();
+  }
+  function closeHelp() {
+    if (typeof dlg.close === "function") dlg.close();
+    else dlg.removeAttribute("open");
+    btn.focus();
+  }
+  btn.addEventListener("click", openHelp);
+  if (closeBtn) closeBtn.addEventListener("click", closeHelp);
+  // Esc 닫기 — 브라우저의 dialog 기본 취소에만 기대지 않고 명시적으로 처리한다
+  document.addEventListener("keydown", function (e) {
+    if (!dlg.open) return;
+    if (e.key === "Escape" || e.key === "Esc") { e.preventDefault(); closeHelp(); }
+  });
+  // 배경(backdrop) 클릭으로 닫기 — 패널 바깥 좌표일 때만
+  dlg.addEventListener("click", function (e) {
+    if (e.target !== dlg) return;
+    var r = dlg.getBoundingClientRect();
+    if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) closeHelp();
+  });
 })();
 </script>
 </body>
