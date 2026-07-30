@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; connect-src 'none'; font-src 'none'; form-action 'none'; frame-src 'none'; img-src 'self'; manifest-src 'none'; media-src 'none'; object-src 'none'; script-src 'sha256-wJG50zY5Rw4NDG+CxHCS1J3bGs9fy2dNenSkydYXsBs=' 'sha256-koEeHKVYd5oCXrjUXIAsLyo9E1QZa9NEmfc8WD7UxI4=' 'sha256-QtqAB+zmzoCwLNrhUOw6HoSDr4Ez8/TNkaRS1L3Pc1s='; script-src-attr 'none'; style-src 'sha256-xHNyWmAgaMNUxjEzes8AWp/QRlAsUTDTiwCKZcsWNbU='; style-src-attr 'none'; worker-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; connect-src 'none'; font-src 'none'; form-action 'none'; frame-src 'none'; img-src 'self'; manifest-src 'none'; media-src 'none'; object-src 'none'; script-src 'sha256-wJG50zY5Rw4NDG+CxHCS1J3bGs9fy2dNenSkydYXsBs=' 'sha256-koEeHKVYd5oCXrjUXIAsLyo9E1QZa9NEmfc8WD7UxI4=' 'sha256-QtqAB+zmzoCwLNrhUOw6HoSDr4Ez8/TNkaRS1L3Pc1s='; script-src-attr 'none'; style-src 'sha256-FJ+gyqHiek4MpQLm2AcwBoqwVvbWvbcQD5/I1NKUV1o='; style-src-attr 'none'; worker-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="google-site-verification" content="OwG5LbzGDYkvqDulqCkbK-_Yn-M28l3_QhQ-glExRZk" />
 <meta name="google-adsense-account" content="ca-pub-2244929162842411">
@@ -147,7 +147,7 @@
   footer .note{font-size:.74rem;line-height:1.7;max-width:560px;margin:0 auto}
   /* 2열 그리드가 좁아지는 구간에서만 축약 라벨로 교체 (nowrap 오버플로 방지) */
   @media(min-width:681px) and (max-width:880px){.store-label-full{display:none}.store-label-short{display:inline}}
-  @media(max-width:680px){.grid .cta{display:grid;grid-template-columns:1fr}.grid .cta .btn{width:100%;justify-content:center;text-align:center}}
+  @media(max-width:680px){.grid .cta,.card.wide .cta{display:grid;grid-template-columns:1fr}.grid .cta .btn,.card.wide .cta .btn{width:100%;justify-content:center;text-align:center}.card.wide{padding:26px 24px}}
   @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.card,.btn{transition:none}.card:hover{transform:none}}
 </style>
 </head>
@@ -210,6 +210,25 @@
 
   <section class="tight">
     <div class="wrap">
+      <h2 class="sec-h">Games</h2>
+      <!-- Ladder Quest (ladder-quest/ slug) -->
+      <article class="card wide">
+        <div class="wbody">
+          <div class="badges">
+            <span class="plat"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/></svg>Web</span>
+            <span class="st st-dev">개발 중 · 무료</span>
+          </div>
+          <h3>Ladder Quest</h3>
+          <p>PLC 래더 로직으로 현장 설비를 움직이는 퍼즐 게임입니다. 미션 사양을 읽고 래더 다이어그램을 직접 편성해 요구 동작을 재현합니다. 설치나 회원가입 없이 브라우저에서 바로 즐길 수 있고, 한 번 열어 두면 오프라인에서도 동작합니다. 폰에서는 가로로 돌려야 래더가 다 들어갑니다.</p>
+        </div>
+        <div class="cta">
+          <a class="btn btn-primary" href="https://plcmanjp.github.io/ladder-quest/">게임 열기</a>
+        </div>
+      </article>
+    </div>
+  </section>
+  <section class="tight">
+    <div class="wrap">
       <h2 class="sec-h">Tools</h2>
       <!-- engineer-tool 웹 도구 허브 -->
       <article class="card wide">
@@ -244,25 +263,6 @@
         </div>
         <div class="cta">
           <a class="btn btn-primary" href="https://plcmanjp.github.io/novel/">연재관 열기</a>
-        </div>
-      </article>
-    </div>
-  </section>
-  <section class="tight">
-    <div class="wrap">
-      <h2 class="sec-h">Games</h2>
-      <!-- Ladder Quest (ladder-quest/ slug) -->
-      <article class="card wide">
-        <div class="wbody">
-          <div class="badges">
-            <span class="plat"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/></svg>Web</span>
-            <span class="st st-dev">개발 중 · 무료</span>
-          </div>
-          <h3>Ladder Quest</h3>
-          <p>PLC 래더 로직으로 현장 설비를 움직이는 퍼즐 게임입니다. 미션 사양을 읽고 래더 다이어그램을 직접 편성해 요구 동작을 재현합니다. 설치나 회원가입 없이 브라우저에서 바로 즐길 수 있고, 한 번 열어 두면 오프라인에서도 동작합니다. 폰에서는 가로로 돌려야 래더가 다 들어갑니다.</p>
-        </div>
-        <div class="cta">
-          <a class="btn btn-primary" href="https://plcmanjp.github.io/ladder-quest/">게임 열기</a>
         </div>
       </article>
     </div>
