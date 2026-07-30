@@ -1,0 +1,20 @@
+{
+  "name": "Ladder Quest",
+  "short_name": "Ladder Quest",
+  "description": "PLC 래더 로직을 편성해 현장 설비를 요구대로 움직이는 퍼즐 게임",
+  "lang": "ko",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#11161c",
+  "theme_color": "#11161c",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
