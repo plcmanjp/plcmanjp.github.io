@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; connect-src 'none'; font-src 'none'; form-action 'none'; frame-src 'none'; img-src 'self'; manifest-src 'none'; media-src 'none'; object-src 'none'; script-src 'sha256-wJG50zY5Rw4NDG+CxHCS1J3bGs9fy2dNenSkydYXsBs=' 'sha256-uZEqWL2EXo3pIcfcPUD74rb3A7AYqjbYry4EFX9/BX4=' 'sha256-QtqAB+zmzoCwLNrhUOw6HoSDr4Ez8/TNkaRS1L3Pc1s='; script-src-attr 'none'; style-src 'sha256-f0ABmDsqcjBoQg8lkcdoZR8kvo6Z3e9sqr0ZNuou/58='; style-src-attr 'none'; worker-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; connect-src 'none'; font-src 'none'; form-action 'none'; frame-src 'none'; img-src 'self'; manifest-src 'none'; media-src 'none'; object-src 'none'; script-src 'sha256-wJG50zY5Rw4NDG+CxHCS1J3bGs9fy2dNenSkydYXsBs=' 'sha256-uZEqWL2EXo3pIcfcPUD74rb3A7AYqjbYry4EFX9/BX4=' 'sha256-QtqAB+zmzoCwLNrhUOw6HoSDr4Ez8/TNkaRS1L3Pc1s='; script-src-attr 'none'; style-src 'sha256-w6LGnGL3i3yMF0V3w4FEftuG3KXQsHtpTk9i0mCiACw='; style-src-attr 'none'; worker-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="google-site-verification" content="OwG5LbzGDYkvqDulqCkbK-_Yn-M28l3_QhQ-glExRZk">
 <meta name="google-adsense-account" content="ca-pub-2244929162842411">
@@ -96,8 +96,9 @@
   section.tight{padding-top:0}
   .sec-h{font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;color:var(--tx3);font-weight:700;margin-bottom:22px;text-align:center}
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-  .product-grid{grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch}
-  @media(max-width:980px){.product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  .product-grid{grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch}
+  .product-grid .product-card:last-child:nth-child(odd){grid-column:1/-1;width:calc((100% - 18px)/2);justify-self:center}
+  @media(max-width:980px){.product-grid{grid-template-columns:1fr}.product-grid .product-card:last-child:nth-child(odd){grid-column:auto;width:auto;justify-self:stretch}}
   @media(max-width:680px){.grid,.product-grid{grid-template-columns:1fr}.hero h1{font-size:1.9rem}}
   .card{
     background:linear-gradient(180deg,var(--card),var(--card2));
@@ -227,7 +228,10 @@
           </div>
           <div class="cta cta-equal product-actions">
             <a class="btn btn-primary store-button" href="https://play.google.com/store/apps/details?id=com.plciocheck.iocheck" aria-label="Google Play 설치"><svg class="store-icon" aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 9.48l1.84-3.18a.4.4 0 00-.69-.4l-1.86 3.23a11.4 11.4 0 00-9.78 0L5.25 5.9a.4.4 0 10-.69.4L6.4 9.48A11.3 11.3 0 001 18.5h22a11.3 11.3 0 00-5.4-9.02M7 15.25a1 1 0 110-2 1 1 0 010 2m10 0a1 1 0 110-2 1 1 0 010 2"/></svg><span class="store-label-full" aria-hidden="true">Google Play 설치</span><span class="store-label-short" aria-hidden="true">Play 설치</span></a>
-            <a class="btn btn-ghost" href="https://plcmanjp.github.io/plc-io-check-helper/#screens">실제 화면 보기</a>
+            <a class="btn btn-ghost" href="https://plcmanjp.github.io/plc-io-check-helper/">자세히 알아보기</a>
+          </div>
+          <div class="cta cta-equal cta-single cta-secondary">
+            <a class="btn btn-ghost" href="https://plcman.tistory.com/236">블로그 소개</a>
           </div>
         </article>
 
@@ -255,7 +259,11 @@
           </div>
           <div class="cta cta-equal product-actions">
             <a class="btn btn-primary store-button" href="https://apps.microsoft.com/detail/9NXX9L2ZW52W" aria-label="Microsoft Store 설치"><svg class="store-icon" aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5.5 8.5h13l1 11h-15l1-11Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M8.5 9V6.75a3.5 3.5 0 0 1 7 0V9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M8 12h3v3H8v-3Zm4 0h3v3h-3v-3Zm-4 4h3v3H8v-3Zm4 0h3v3h-3v-3Z" fill="currentColor"/></svg><span class="store-label-full" aria-hidden="true">Microsoft Store 설치</span><span class="store-label-short" aria-hidden="true">Store 설치</span></a>
-            <a class="btn btn-ghost" href="https://plcmanjp.github.io/codeless-macro-tool/#screens">실제 화면 보기</a>
+            <a class="btn btn-ghost" href="https://plcmanjp.github.io/codeless-macro-tool/">자세히 알아보기</a>
+          </div>
+          <div class="cta cta-equal cta-secondary">
+            <a class="btn btn-ghost" href="https://plcman.tistory.com/209">블로그 소개</a>
+            <a class="btn btn-ghost" href="https://plcman.tistory.com/211">사용 매뉴얼</a>
           </div>
         </article>
 
@@ -283,7 +291,7 @@
           </div>
           <div class="cta cta-equal product-actions">
             <a class="btn btn-primary" href="https://groups.google.com/g/feedgrove-testers">테스터 그룹 가입</a>
-            <a class="btn btn-ghost" href="https://plcmanjp.github.io/feedgrove/#screens">실제 화면 보기</a>
+            <a class="btn btn-ghost" href="https://plcmanjp.github.io/feedgrove/">자세히 알아보기</a>
           </div>
         </article>
 
