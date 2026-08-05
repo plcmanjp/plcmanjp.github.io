@@ -7,7 +7,7 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<title>원둘레 계산기 — 원주, 면적, PCD 계산 | 엔지니어 도구</title>
+<title>원둘레 계산기: 원주, 면적, PCD 계산 | 엔지니어 도구</title>
 <meta name="description" content="지름, 반지름, 원주, 면적 중 하나만 입력하면 나머지를 즉시 계산합니다. 기어의 모듈과 잇수로 피치원(PCD)을 산출하여 이송량을 환산해보세요.">
 <meta property="og:title" content="원둘레 계산기 | PLCManJP 엔지니어 도구">
 <meta property="og:description" content="현장 엔지니어를 위한 원둘레 및 기어 피치원(PCD) 계산기입니다.">
@@ -144,7 +144,7 @@
     <header>
       <p class="eyebrow">엔지니어 도구</p>
       <h1 class="page">원둘레 계산기</h1>
-      <p class="lede">지름&middot;반지름&middot;원주&middot;면적 중 <b>아는 값 하나만</b> 넣으면 나머지 셋이 즉시 나옵니다. 롤러가 한 바퀴에 얼마나 보내는지, 턴테이블 원주가 얼마인지 확인할 때 씁니다. PCD(기어) 탭에서는 모듈과 잇수로 피치원 지름을 구합니다.</p>
+      <p class="lede">지름, 반지름, 원주, 면적 중 <b>아는 값 하나만</b> 넣으면 나머지 셋이 즉시 나옵니다. 롤러가 한 바퀴에 얼마나 보내는지, 턴테이블 원주가 얼마인지 확인할 때 씁니다. PCD(기어) 탭에서는 모듈과 잇수로 피치원 지름을 구합니다.</p>
     </header>
 
     <section class="device">
@@ -161,11 +161,11 @@
 
           <div class="zone green">
             <div class="zone-head"><span class="h"><span>&#9670;</span><span>원 도식</span></span></div>
-            <canvas class="diagram-canvas" id="circleCanvas" width="480" height="190" aria-label="원 도식(지름·반지름·원주·면적)"></canvas>
+            <canvas class="diagram-canvas" id="circleCanvas" width="480" height="190" aria-label="원 도식(지름, 반지름, 원주, 면적)"></canvas>
           </div>
 
           <div class="zone input">
-            <div class="zone-head"><span class="h"><span>&#9654;</span><span>값 입력 (하나만 편집)</span></span><span class="sub">지름 &middot; 반지름 &middot; 원주 &middot; 면적 상호 변환</span></div>
+            <div class="zone-head"><span class="h"><span>&#9654;</span><span>값 입력 (하나만 편집)</span></span><span class="sub">지름, 반지름, 원주, 면적 상호 변환</span></div>
 
             <div class="frow" id="rowD">
               <label class="f"><span>지름 (d)</span>
@@ -207,15 +207,15 @@
 
         <!-- ── 탭1: PCD(기어) ── -->
         <div id="panelPcd" hidden>
-          <p class="hint0">모듈(m)과 잇수(z)를 입력하면 피치원 지름(PCD)이 자동 산출됩니다 (단방향 &mdash; 역산 없음)</p>
+          <p class="hint0">모듈(m)과 잇수(z)를 입력하면 피치원 지름(PCD)이 자동 산출됩니다 (단방향, 역산 없음)</p>
 
           <div class="zone green">
             <div class="zone-head"><span class="h"><span>&#9670;</span><span>기어 도식</span></span></div>
-            <canvas class="diagram-canvas" id="gearCanvas" width="480" height="200" aria-label="기어 도식(피치원·톱니 모식도)"></canvas>
+            <canvas class="diagram-canvas" id="gearCanvas" width="480" height="200" aria-label="기어 도식(피치원, 톱니 모식도)"></canvas>
           </div>
 
           <div class="zone input">
-            <div class="zone-head"><span class="h"><span>&#9654;</span><span>모듈 &middot; 잇수 입력</span></span><span class="sub">PCD = m &times; z (단방향, 역산 없음)</span></div>
+            <div class="zone-head"><span class="h"><span>&#9654;</span><span>모듈, 잇수 입력</span></span><span class="sub">PCD = m &times; z (단방향, 역산 없음)</span></div>
 
             <div class="row">
               <label class="f">모듈 (m)<input type="number" step="any" id="mInput" value="" placeholder="모듈 입력 (예시:2)"></label>
@@ -240,11 +240,11 @@
 
     <ul class="notes">
 
-      <li><b>이럴 때 씁니다</b> — 롤러 지름으로 1회전 이송량을 구할 때, 원주를 재서 지름을 거꾸로 알아낼 때, 기어 모듈과 잇수로 피치원 지름(PCD)을 구할 때 씁니다.</li>
+      <li><b>이럴 때 씁니다</b>: 롤러 지름으로 1회전 이송량을 구할 때, 원주를 재서 지름을 거꾸로 알아낼 때, 기어 모듈과 잇수로 피치원 지름(PCD)을 구할 때 씁니다.</li>
 
-      <li><b>쓰는 순서</b> — 네 칸 중 아는 값 한 곳에 숫자를 넣으면 나머지 세 칸과 오른쪽 도식이 함께 바뀝니다.</li>
+      <li><b>쓰는 순서</b>: 네 칸 중 아는 값 한 곳에 숫자를 넣으면 나머지 세 칸과 오른쪽 도식이 함께 바뀝니다.</li>
 
-      <li><b>자세한 사용법</b> — 계산기 제목 행의 <b>도움말</b> 버튼에서 전체 설명을 볼 수 있습니다.</li>
+      <li><b>자세한 사용법</b>: 계산기 제목 행의 <b>도움말</b> 버튼에서 전체 설명을 볼 수 있습니다.</li>
 
     </ul>
   </div>
@@ -614,7 +614,7 @@
   <div class="toolhelp-body">
     <h4>이 도구로 할 수 있는 일</h4>
     <ul>
-      <li>지름(d)&middot;반지름(r)&middot;원주(C)&middot;면적(A) 중 하나를 넣으면 나머지 셋을 바로 구합니다. 어느 칸에 넣어도 됩니다.</li>
+      <li>지름(d), 반지름(r), 원주(C), 면적(A) 중 하나를 넣으면 나머지 셋을 바로 구합니다. 어느 칸에 넣어도 됩니다.</li>
       <li><b>PCD(기어)</b> 탭에서 모듈(m)과 잇수(z)로 피치원 지름을 구합니다.</li>
       <li>값 옆의 복사 버튼으로 결과를 그대로 가져갈 수 있습니다.</li>
     </ul>

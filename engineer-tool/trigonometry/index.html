@@ -7,7 +7,7 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<title>삼각함수 계산기 — 직각삼각형 각도 및 좌표 거리 산출 | 엔지니어 도구</title>
+<title>삼각함수 계산기: 직각삼각형 각도 및 좌표 거리 산출 | 엔지니어 도구</title>
 <meta name="description" content="기구물이나 로봇의 각도, 거리를 산출할 때 유용한 사인, 코사인, 탄젠트 계산과 도/라디안 변환, 두 점 간의 ATAN2 방향각 계산을 지원합니다.">
 <meta property="og:title" content="삼각함수 계산기 | PLCManJP 엔지니어 도구">
 <meta property="og:description" content="현장 엔지니어를 위한 삼각함수, 직각삼각형, 좌표 방향각/거리 계산기입니다.">
@@ -160,7 +160,7 @@
   <header>
     <p class="eyebrow">엔지니어 도구</p>
     <h1 class="page">삼각함수 계산기</h1>
-    <p class="lede">각도와 길이를 오가는 계산을 세 개의 탭으로 모았습니다. 각도를 넣어 sin&middot;cos&middot;tan을 구하거나 비율에서 거꾸로 각도를 구하고, 도(&deg;)와 라디안을 서로 바꿉니다. <b>직각삼각형</b> 탭은 각도와 변 하나로 나머지 변을, <b>좌표</b> 탭은 두 점 사이의 거리와 방향각(ATAN2)을 구합니다. 설비 기구물이나 다관절 로봇의 각도&middot;거리를 잡을 때 씁니다.</p>
+    <p class="lede">각도와 길이를 오가는 계산을 세 개의 탭으로 모았습니다. 각도를 넣어 sin, cos, tan을 구하거나 비율에서 거꾸로 각도를 구하고, 도(&deg;)와 라디안을 서로 바꿉니다. <b>직각삼각형</b> 탭은 각도와 변 하나로 나머지 변을, <b>좌표</b> 탭은 두 점 사이의 거리와 방향각(ATAN2)을 구합니다. 설비 기구물이나 다관절 로봇의 각도, 거리를 잡을 때 씁니다.</p>
   </header>
 
   <section class="device">
@@ -175,7 +175,7 @@
 
       <!-- ── 탭1: 삼각함수 ── -->
       <div class="tabpanel" id="panel-fn">
-        <p class="hint0">각도를 입력하면 sin·cos·tan 이 자동 산출됩니다 (각도 ↔ 라디안 상호 변환)</p>
+        <p class="hint0">각도를 입력하면 sin, cos, tan 이 자동 산출됩니다 (각도 ↔ 라디안 상호 변환)</p>
 
         <canvas id="circleCanvas" class="diagram-canvas" width="480" height="220" style="height:220px" aria-label="단위원 도식"></canvas>
 
@@ -260,16 +260,16 @@
 
         <div class="outrow"><span class="ol" id="triOut1Label">높이 (a)</span><span class="ov" id="triOut1"></span><button class="iconbtn sm txt" id="triOut1Copy" disabled>복사</button></div>
         <div class="outrow"><span class="ol" id="triOut2Label">밑변 (b)</span><span class="ov" id="triOut2"></span><button class="iconbtn sm txt" id="triOut2Copy" disabled>복사</button></div>
-        <div class="formula" id="triFormula">높이(a) = 빗변(c)&middot;sin&theta;  &middot;  밑변(b) = 빗변(c)&middot;cos&theta;</div>
+        <div class="formula" id="triFormula">높이(a) = 빗변(c) x sin&theta; / 밑변(b) = 빗변(c) x cos&theta;</div>
 
         <hr class="divider">
         <div class="sectionhead">두 변 &rarr; 각도</div>
         <p class="hint0">알고 있는 두 변을 선택하고 값을 입력하면 각도가 산출됩니다</p>
 
         <div class="seg3" id="revPairSeg">
-          <button type="button" data-pair="BASE_HEIGHT" aria-pressed="true">밑변&middot;높이</button>
-          <button type="button" data-pair="HYP_HEIGHT" aria-pressed="false">빗변&middot;높이</button>
-          <button type="button" data-pair="HYP_BASE" aria-pressed="false">빗변&middot;밑변</button>
+          <button type="button" data-pair="BASE_HEIGHT" aria-pressed="true">밑변과 높이</button>
+          <button type="button" data-pair="HYP_HEIGHT" aria-pressed="false">빗변, 높이</button>
+          <button type="button" data-pair="HYP_BASE" aria-pressed="false">빗변, 밑변</button>
         </div>
 
         <label class="f" id="revHypWrap" hidden>빗변 (c)<input type="text" id="revHypInput" inputmode="decimal" placeholder="빗변 입력 (예시:5)"></label>
@@ -279,12 +279,12 @@
         <div class="outrow" id="revAngleRow" hidden style="margin-top:6px"><span class="ol">각도 θ</span><span class="ov" id="revAngleVal"></span><button class="iconbtn sm txt" id="revAngleCopy" disabled>복사</button></div>
         <div class="outrow" id="revMissingRow" hidden><span class="ol" id="revMissingLabel"></span><span class="ov" id="revMissingVal"></span><button class="iconbtn sm txt" id="revMissingCopy" disabled>복사</button></div>
         <div class="errtext" id="revGeomErr" hidden>직각삼각형을 이룰 수 없습니다 (다리변은 빗변보다 작아야 합니다)</div>
-        <div class="formula" id="revFormula">&theta; = atan(높이(a)/밑변(b))  &middot;  빗변(c) = &radic;(높이(a)&sup2;+밑변(b)&sup2;)</div>
+        <div class="formula" id="revFormula">&theta; = atan(높이(a)/밑변(b)), 빗변(c) = &radic;(높이(a)&sup2;+밑변(b)&sup2;)</div>
       </div>
 
       <!-- ── 탭3: 좌표 ── -->
       <div class="tabpanel" id="panel-co" hidden>
-        <p class="hint0">두 점의 좌표로 방향 각도와 거리를 구합니다 (ATAN2 — 0 나눗셈 없음&middot;전 사분면 자동)</p>
+        <p class="hint0">두 점의 좌표로 방향 각도와 거리를 구합니다 (ATAN2, 0 나눗셈 없음, 전 사분면 자동)</p>
 
         <canvas id="coordCanvas" class="diagram-canvas" width="480" height="220" style="height:220px" aria-label="좌표 방향 도식"></canvas>
 
@@ -330,11 +330,11 @@
 
   <ul class="notes">
 
-    <li><b>이럴 때 씁니다</b> — 경사진 브래킷의 높이를 각도와 길이로 구할 때, 두 좌표 사이를 로봇이 몇 도 방향으로 얼마나 가야 하는지 구할 때, PLC 명령이 요구하는 라디안 값을 도에서 환산할 때 씁니다.</li>
+    <li><b>이럴 때 씁니다</b>: 경사진 브래킷의 높이를 각도와 길이로 구할 때, 두 좌표 사이를 로봇이 몇 도 방향으로 얼마나 가야 하는지 구할 때, PLC 명령이 요구하는 라디안 값을 도에서 환산할 때 씁니다.</li>
 
-    <li><b>쓰는 순서</b> — 탭을 고르고 아는 값을 넣으면 나머지가 즉시 계산됩니다. 아래 도식이 지금 값을 그림으로 보여 줍니다.</li>
+    <li><b>쓰는 순서</b>: 탭을 고르고 아는 값을 넣으면 나머지가 즉시 계산됩니다. 아래 도식이 지금 값을 그림으로 보여 줍니다.</li>
 
-    <li><b>자세한 사용법</b> — 계산기 제목 행의 <b>도움말</b> 버튼에서 전체 설명을 볼 수 있습니다.</li>
+    <li><b>자세한 사용법</b>: 계산기 제목 행의 <b>도움말</b> 버튼에서 전체 설명을 볼 수 있습니다.</li>
 
   </ul>
 </div>
@@ -983,20 +983,20 @@
   <div class="toolhelp-body">
     <h4>이 도구로 할 수 있는 일</h4>
     <ul>
-      <li><b>삼각함수</b> 탭 — 각도를 넣으면 sin&middot;cos&middot;tan이, 비율을 넣으면 각도(asin&middot;acos&middot;atan)가 나옵니다. 도(&deg;)와 라디안도 서로 바뀝니다.</li>
-      <li><b>직각삼각형</b> 탭 — 각도와 변 하나로 나머지 두 변을 구하고, 변 두 개로 각도를 거꾸로 구합니다.</li>
-      <li><b>좌표</b> 탭 — 두 점의 &Delta;X&middot;&Delta;Y, 방향각(ATAN2), 직선거리를 구합니다.</li>
+      <li><b>삼각함수</b> 탭: 각도를 넣으면 sin, cos, tan이, 비율을 넣으면 각도(asin, acos, atan)가 나옵니다. 도(&deg;)와 라디안도 서로 바뀝니다.</li>
+      <li><b>직각삼각형</b> 탭: 각도와 변 하나로 나머지 두 변을 구하고, 변 두 개로 각도를 거꾸로 구합니다.</li>
+      <li><b>좌표</b> 탭: 두 점의 &Delta;X, &Delta;Y, 방향각(ATAN2), 직선거리를 구합니다.</li>
       <li>각 탭의 도식이 지금 입력한 값을 그림으로 보여 줍니다.</li>
     </ul>
     <h4>쓰는 순서</h4>
     <ol>
-      <li>위 탭에서 <b>삼각함수</b>&middot;<b>직각삼각형</b>&middot;<b>좌표</b> 중 하나를 고릅니다.</li>
+      <li>위 탭에서 <b>삼각함수</b>, <b>직각삼각형</b>, <b>좌표</b> 중 하나를 고릅니다.</li>
       <li>아는 값을 넣으면 나머지가 즉시 계산됩니다.</li>
       <li><b>&plusmn;</b> 버튼으로 부호를 뒤집고, 결과 옆 복사 버튼으로 값을 가져갑니다.</li>
     </ol>
     <h4>알아두면 좋은 것</h4>
     <ul>
-      <li>tan은 <b>90&deg; + 180&deg;&times;n</b>에서 정의되지 않습니다. asin&middot;acos는 입력이 -1~1을 벗어나면 오류로 처리합니다.</li>
+      <li>tan은 <b>90&deg; + 180&deg;&times;n</b>에서 정의되지 않습니다. asin, acos는 입력이 -1~1을 벗어나면 오류로 처리합니다.</li>
       <li>직각삼각형은 <b>0&deg; &lt; &theta; &lt; 90&deg;</b>, 변 길이는 0보다 커야 하고 다리변은 빗변보다 짧아야 합니다.</li>
       <li>좌표 탭에서 두 점이 같으면 거리는 0이지만 <b>방향각은 정의하지 않습니다</b>.</li>
       <li>방향각은 <b>-180~180&deg;</b>와 <b>0~360&deg;</b> 두 가지를 함께 보여 줍니다. 쓰는 쪽 규약에 맞는 값을 고르면 됩니다.</li>

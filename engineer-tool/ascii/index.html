@@ -7,9 +7,9 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<title>ASCII 코드표 · 입력기 — 시리얼 통신 문자 인코딩 | 엔지니어 도구</title>
+<title>ASCII 코드표와 입력기: 시리얼 통신 문자 인코딩 | 엔지니어 도구</title>
 <meta name="description" content="바코드 리더기, 비전 센서 등과의 시리얼 통신 프레임을 분석할 때 필요한 아스키코드표입니다. 문자열을 16진수 배열이나 PLC D 레지스터 값으로 빠르게 변환하세요.">
-<meta property="og:title" content="ASCII 코드표 · 입력기 | PLCManJP 엔지니어 도구">
+<meta property="og:title" content="ASCII 코드표와 입력기 | PLCManJP 엔지니어 도구">
 <meta property="og:description" content="현장 엔지니어를 위한 아스키코드표 및 문자 인코딩 계산기입니다.">
 <link rel="canonical" href="https://plcmanjp.github.io/engineer-tool/ascii/">
 <script>try{var t=localStorage.getItem("plcmanjp-theme"),old=localStorage.getItem("plcmanjp-tool-theme");if(t!=="light"&&t!=="dark"&&(old==="light"||old==="dark")){t=old;localStorage.setItem("plcmanjp-theme",t);localStorage.removeItem("plcmanjp-tool-theme");}if(t!=="light"&&t!=="dark")t=(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)?"dark":"light";document.documentElement.setAttribute("data-theme",t);var m=document.getElementById("themeColor");if(m)m.setAttribute("content",t==="dark"?"#10161d":"#e9edf1");}catch(e){document.documentElement.setAttribute("data-theme","light");}</script>
@@ -152,7 +152,7 @@
 <body>
   <div class="topbar">
     <div class="tw">
-      <div class="crumb"><a href="/">PLCManJP</a><span class="sep">/</span><a href="../">엔지니어 도구</a><span class="sep">/</span><span class="cur">ASCII 코드표 · 입력기</span></div>
+      <div class="crumb"><a href="/">PLCManJP</a><span class="sep">/</span><a href="../">엔지니어 도구</a><span class="sep">/</span><span class="cur">ASCII 코드표와 입력기</span></div>
       <button class="themebtn" id="themeBtn" type="button" aria-label="테마 전환: 현재 라이트" aria-live="polite">🌓 <span id="themeLbl">라이트</span></button>
     </div>
   </div>
@@ -160,8 +160,8 @@
   <div class="wrap">
     <header>
       <p class="eyebrow">엔지니어 도구</p>
-      <h1 class="page">ASCII 코드표 · 입력기</h1>
-    <p class="lede">바코드 리더기나 비전 센서 같은 시리얼 장비의 데이터를 읽을 때 쓰는 0~127 표준 ASCII 코드표입니다. 숫자&middot;문자&middot;이름 중 <b>아무 형식으로나</b> 검색할 수 있고, 입력기 탭에서는 문자열을 16진&middot;10진 코드 배열이나 <b>PLC D 레지스터 워드값</b>으로 바꾸고 다시 되돌릴 수 있습니다. STX&middot;ETX 같은 제어문자도 이름으로 보여 줍니다.</p>
+      <h1 class="page">ASCII 코드표와 입력기</h1>
+    <p class="lede">바코드 리더기나 비전 센서 같은 시리얼 장비의 데이터를 읽을 때 쓰는 0~127 표준 ASCII 코드표입니다. 숫자, 문자, 이름 중 <b>아무 형식으로나</b> 검색할 수 있고, 입력기 탭에서는 문자열을 16진, 10진 코드 배열이나 <b>PLC D 레지스터 워드값</b>으로 바꾸고 다시 되돌릴 수 있습니다. STX, ETX 같은 제어문자도 이름으로 보여 줍니다.</p>
   </header>
 
     <section class="device">
@@ -177,7 +177,7 @@
 
       <div class="zone input">
         <div class="zone-head"><span class="h"><span>&#9654;</span><span>검색</span></span><span class="sub">코드(10진/16진) 또는 문자로 검색</span></div>
-        <input type="text" class="search-input" id="asciiQuery" placeholder="예: 65 · 0x41 · A · LF">
+        <input type="text" class="search-input" id="asciiQuery" placeholder="예: 65, 0x41, A, LF">
       </div>
 
       <div class="zone table">
@@ -236,11 +236,11 @@
 
   <ul class="notes">
 
-    <li><b>이럴 때 씁니다</b> — 통신 모니터에 찍힌 <code>02 41 42 43 03</code>이 무슨 뜻인지 확인할 때, 장비에 보낼 명령 문자열을 PLC D 레지스터에 넣을 워드값으로 바꿀 때 씁니다.</li>
+    <li><b>이럴 때 씁니다</b>: 통신 모니터에 찍힌 <code>02 41 42 43 03</code>이 무슨 뜻인지 확인할 때, 장비에 보낼 명령 문자열을 PLC D 레지스터에 넣을 워드값으로 바꿀 때 씁니다.</li>
 
-    <li><b>쓰는 순서</b> — 코드표 탭은 검색창에 <code>65</code>&middot;<code>0x41</code>&middot;<code>A</code>&middot;<code>LF</code> 중 아무 형식이나 넣습니다. 입력기 탭은 문자열이나 16진 코드를 넣으면 서로 변환됩니다.</li>
+    <li><b>쓰는 순서</b>: 코드표 탭은 검색창에 <code>65</code>, <code>0x41</code>, <code>A</code>, <code>LF</code> 중 아무 형식이나 넣습니다. 입력기 탭은 문자열이나 16진 코드를 넣으면 서로 변환됩니다.</li>
 
-    <li><b>자세한 사용법</b> — 제목 행의 <b>도움말</b> 버튼에서 전체 설명을 볼 수 있습니다.</li>
+    <li><b>자세한 사용법</b>: 제목 행의 <b>도움말</b> 버튼에서 전체 설명을 볼 수 있습니다.</li>
 
   </ul>
   </div>
@@ -536,22 +536,22 @@
 </script>
 <dialog class="toolhelp" id="toolHelp" aria-labelledby="toolHelpTitle">
   <div class="toolhelp-head">
-    <h3 id="toolHelpTitle">ASCII 코드표 &middot; 입력기 도움말</h3>
+    <h3 id="toolHelpTitle">ASCII 코드표와 입력기 도움말</h3>
     <button class="toolhelp-close" id="toolHelpClose" type="button" aria-label="닫기">&times;</button>
   </div>
   <div class="toolhelp-body">
     <h4>이 도구로 할 수 있는 일</h4>
     <ul>
       <li>0~127 표준 ASCII 전체를 <b>표로 보고 검색</b>합니다.</li>
-      <li>문자열을 <b>10진&middot;16진&middot;8진</b> 코드 배열로 바꿉니다.</li>
+      <li>문자열을 <b>10진, 16진, 8진</b> 코드 배열로 바꿉니다.</li>
       <li>2문자씩 묶어 <b>PLC D 레지스터 워드값</b>으로 만듭니다.</li>
       <li>거꾸로 <code>0241424303</code> 같은 16진 나열을 원래 문자열로 되돌립니다. 제어문자는 <code>&lt;STX&gt;</code>처럼 이름으로 표시합니다.</li>
     </ul>
     <h4>쓰는 순서</h4>
     <ol>
-      <li><b>ASCII 코드표</b> 탭 — 검색창에 <code>65</code>, <code>0x41</code>, <code>A</code>, <code>LF</code> 중 아무 형식이나 넣으면 해당 행을 찾아 줍니다.</li>
-      <li><b>ASCII 입력기</b> 탭 — 문자 입력 칸에 문자열을 넣고 DEC&middot;HEX&middot;OCT를 고르면 코드 배열이 나옵니다.</li>
-      <li>PLC 워드값은 바이트 순서(하위 먼저&middot;상위 먼저)를 고른 뒤 복사 버튼으로 가져갑니다.</li>
+      <li><b>ASCII 코드표</b> 탭: 검색창에 <code>65</code>, <code>0x41</code>, <code>A</code>, <code>LF</code> 중 아무 형식이나 넣으면 해당 행을 찾아 줍니다.</li>
+      <li><b>ASCII 입력기</b> 탭: 문자 입력 칸에 문자열을 넣고 DEC, HEX, OCT를 고르면 코드 배열이 나옵니다.</li>
+      <li>PLC 워드값은 바이트 순서(하위 먼저, 상위 먼저)를 고른 뒤 복사 버튼으로 가져갑니다.</li>
       <li>반대 방향은 <b>16진 코드 입력</b> 칸에 연속 HEX를 넣으면 됩니다.</li>
     </ol>
     <h4>알아두면 좋은 것</h4>

@@ -7,7 +7,7 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<title>시리얼 통신 속도 계산기 — RS-232·RS-422·RS-485 전송시간 | 엔지니어 도구</title>
+<title>시리얼 통신 속도 계산기: RS-232, RS-422, RS-485 전송시간 | 엔지니어 도구</title>
 <meta name="description" content="통신속도, 데이터 비트, 패리티, 정지 비트와 송신 프레임을 입력하면 RS-232, RS-422, RS-485 시리얼 통신의 이론상 선로 전송시간을 즉시 계산합니다. 타임아웃과 폴링 주기 산정에 활용하세요.">
 <meta property="og:title" content="시리얼 통신 속도 계산기 | PLCManJP 엔지니어 도구">
 <meta property="og:description" content="현장 엔지니어를 위한 시리얼 통신 프레임 전송시간 계산기입니다.">
@@ -175,7 +175,7 @@
   <header>
     <p class="eyebrow">엔지니어 도구</p>
     <h1 class="page">시리얼 통신 속도 계산기</h1>
-    <p class="lede">프레임 하나가 선로를 지나가는 데 걸리는 시간을 계산합니다. 통신속도와 UART 설정(데이터 비트&middot;패리티&middot;정지 비트), 실제 보낼 바이트열을 넣으면 첫 시작 비트부터 마지막 정지 비트까지의 <b>이론상 전송시간</b>이 나옵니다. 통신 타임아웃 값을 정하거나 폴링 주기&middot;Modbus RTU 프레임 점유시간을 잡을 때 씁니다. RS-485 2선식은 송수신 전환 지연까지 더해 총시간을 보여 줍니다.</p>
+    <p class="lede">프레임 하나가 선로를 지나가는 데 걸리는 시간을 계산합니다. 통신속도와 UART 설정(데이터 비트, 패리티, 정지 비트), 실제 보낼 바이트열을 넣으면 첫 시작 비트부터 마지막 정지 비트까지의 <b>이론상 전송시간</b>이 나옵니다. 통신 타임아웃 값을 정하거나 폴링 주기, Modbus RTU 프레임 점유시간을 잡을 때 씁니다. RS-485 2선식은 송수신 전환 지연까지 더해 총시간을 보여 줍니다.</p>
   </header>
 
   <section class="device">
@@ -207,7 +207,7 @@
       <div class="zone input">
         <div class="zone-head">
           <div class="h">▶ 통신 설정</div>
-          <div class="sub">통신속도 프리셋 15종 · 직접 입력 · UART 프레임</div>
+          <div class="sub">통신속도 프리셋 15종, 직접 입력, UART 프레임</div>
         </div>
         <label class="f">통신속도 (bps)
           <select id="baudSel">
@@ -241,13 +241,13 @@
       <div class="zone input">
         <div class="zone-head">
           <div class="h">▶ 프로토콜 프레임</div>
-          <div class="sub">엄격 파서 — 오류 바이트를 건너뛰지 않습니다 (최대 4096 bytes)</div>
+          <div class="sub">엄격 파서: 오류 바이트를 건너뛰지 않습니다 (최대 4096 bytes)</div>
         </div>
         <div class="seg-toggle">
           <button type="button" id="modeHex" aria-pressed="true">HEX</button>
           <button type="button" id="modeAscii" aria-pressed="false">ASCII</button>
         </div>
-        <label class="f" id="frameLabel">HEX 프레임 (공백·콤마·하이픈·0xNN·연속 HEX)
+        <label class="f" id="frameLabel">HEX 프레임 (공백, 콤마, 하이픈, 0xNN, 연속 HEX)
           <textarea id="frame" spellcheck="false" placeholder="01 03 00 00 00 0A C5 CD">01 03 00 00 00 0A C5 CD</textarea>
         </label>
         <div class="meta-row"><span>입력 바이트</span><b id="byteMeta">0 bytes</b></div>
@@ -265,7 +265,7 @@
       <!-- 고급 설정 -->
       <div class="zone params">
         <details class="adv" id="advDetails">
-          <summary>고급 설정 — 추가 지연 (µs, 기본 0)</summary>
+          <summary>고급 설정: 추가 지연 (µs, 기본 0)</summary>
           <div class="adv-body">
             <div class="params-grid">
               <label class="f">프레임 전 지연 (µs)
@@ -316,11 +316,11 @@
 
   <ul class="notes">
 
-    <li><b>이럴 때 씁니다</b> — 무수순 통신의 타임아웃을 몇 ms로 잡을지 정할 때, 슬레이브 여러 대를 도는 폴링 주기를 계산할 때, 통신속도를 올리면 실제로 얼마나 빨라지는지 비교할 때 씁니다.</li>
+    <li><b>이럴 때 씁니다</b>: 무수순 통신의 타임아웃을 몇 ms로 잡을지 정할 때, 슬레이브 여러 대를 도는 폴링 주기를 계산할 때, 통신속도를 올리면 실제로 얼마나 빨라지는지 비교할 때 씁니다.</li>
 
-    <li><b>쓰는 순서</b> — 인터페이스와 통신속도&middot;UART 설정을 고르고, 실제 보낼 프레임을 HEX 또는 ASCII로 넣습니다.</li>
+    <li><b>쓰는 순서</b>: 인터페이스와 통신속도, UART 설정을 고르고, 실제 보낼 프레임을 HEX 또는 ASCII로 넣습니다.</li>
 
-    <li><b>자세한 사용법</b> — 계산기 제목 행의 <b>도움말</b> 버튼에서 전체 설명을 볼 수 있습니다.</li>
+    <li><b>자세한 사용법</b>: 계산기 제목 행의 <b>도움말</b> 버튼에서 전체 설명을 볼 수 있습니다.</li>
 
   </ul>
 </div>
@@ -655,23 +655,23 @@
     <h4>이 도구로 할 수 있는 일</h4>
     <ul>
       <li>프레임을 선로에 흘려보내는 <b>순수 전송시간</b>을 계산합니다.</li>
-      <li>프레임 전&middot;후 지연, 바이트 사이 지연, RS-485 <b>송수신 전환 지연</b>을 더한 예상 총시간을 봅니다.</li>
+      <li>프레임 전, 후 지연, 바이트 사이 지연, RS-485 <b>송수신 전환 지연</b>을 더한 예상 총시간을 봅니다.</li>
       <li>문자 전송률(cps)과 <b>데이터 효율</b>(실제 데이터 비트 비중)을 함께 보여 줍니다.</li>
     </ul>
     <h4>쓰는 순서</h4>
     <ol>
-      <li><b>인터페이스</b>(RS-232&middot;RS-422&middot;RS-485)와 배선 방식을 고릅니다.</li>
+      <li><b>인터페이스</b>(RS-232, RS-422, RS-485)와 배선 방식을 고릅니다.</li>
       <li><b>통신속도</b>를 고릅니다. 목록에 없으면 직접 입력을 고르고 값을 넣습니다.</li>
-      <li><b>UART 설정</b>(데이터 비트&middot;패리티&middot;정지 비트)을 장비 설정과 똑같이 맞춥니다.</li>
+      <li><b>UART 설정</b>(데이터 비트, 패리티, 정지 비트)을 장비 설정과 똑같이 맞춥니다.</li>
       <li>실제 보낼 <b>프레임</b>을 HEX 또는 ASCII로 넣습니다.</li>
       <li>필요하면 <b>고급 설정</b>을 열어 지연 시간을 넣습니다.</li>
     </ol>
     <h4>알아두면 좋은 것</h4>
     <ul>
-      <li>계산식 — 문자당 비트 = 1(시작) + 데이터 + 패리티(0 또는 1) + 정지, 전송시간 = 총 비트 수 &divide; 통신속도.</li>
+      <li>계산식: 문자당 비트 = 1(시작) + 데이터 + 패리티(0 또는 1) + 정지, 전송시간 = 총 비트 수 &divide; 통신속도.</li>
       <li><b>선로 전송시간만</b> 계산합니다. 상대 장비가 응답을 만드는 처리 시간은 포함하지 않으므로, 타임아웃은 여유를 두고 잡습니다.</li>
-      <li>RS-485 전환 지연은 <b>2선식 반이중</b>일 때만 총시간에 더합니다. 4선식&middot;RS-232&middot;RS-422에는 적용하지 않습니다.</li>
-      <li>검산값 — 9600bps&middot;8N1&middot;8바이트는 <code>8.333 ms</code>, 115200bps&middot;8N1&middot;64바이트는 <code>5.556 ms</code>입니다.</li>
+      <li>RS-485 전환 지연은 <b>2선식 반이중</b>일 때만 총시간에 더합니다. 4선식, RS-232, RS-422에는 적용하지 않습니다.</li>
+      <li>검산값: 9600bps, 8N1, 8바이트는 <code>8.333 ms</code>, 115200bps, 8N1, 64바이트는 <code>5.556 ms</code>입니다.</li>
       <li>홀수 니블, HEX가 아닌 문자, 잘못된 이스케이프는 오류로 처리하고 결과를 비웁니다. 입력은 4096 bytes까지입니다.</li>
     </ul>
   </div>

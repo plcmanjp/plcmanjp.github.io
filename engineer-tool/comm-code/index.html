@@ -7,7 +7,7 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<title>통신 코드 계산기 — 체크섬 및 CRC-16 계산기 | 엔지니어 도구</title>
+<title>통신 코드 계산기: 체크섬 및 CRC-16 계산기 | 엔지니어 도구</title>
 <meta name="description" content="RS-232C, RS-485 통신에 필요한 SUM, XOR 체크섬과 Modbus CRC-16 코드를 빠르고 정확하게 계산하여 데이터 오류를 검증하세요.">
 <meta property="og:title" content="통신 코드 계산기 | PLCManJP 엔지니어 도구">
 <meta property="og:description" content="현장 엔지니어를 위한 시리얼 통신 체크섬 및 CRC-16 계산기입니다.">
@@ -200,7 +200,7 @@
   <header>
     <p class="eyebrow">엔지니어 도구</p>
     <h1 class="page">통신 코드 계산기</h1>
-    <p class="lede">시리얼 통신(RS-232C&middot;RS-485 등) 프레임 끝에 붙이는 <b>검사값</b>을 계산합니다. 합산&middot;XOR&middot;LRC 체크섬과 CRC-16(Modbus&middot;CCITT-FALSE&middot;XMODEM&middot;ARC)을 지원하고, 파라미터를 직접 넣어 다른 규격에도 맞출 수 있습니다. 장비 매뉴얼의 기대 코드를 넣으면 일치 여부를 검산해 주므로 통신이 안 될 때 원인을 좁히는 데 씁니다.</p>
+    <p class="lede">시리얼 통신(RS-232C, RS-485 등) 프레임 끝에 붙이는 <b>검사값</b>을 계산합니다. 합산, XOR, LRC 체크섬과 CRC-16(Modbus, CCITT-FALSE, XMODEM, ARC)을 지원하고, 파라미터를 직접 넣어 다른 규격에도 맞출 수 있습니다. 장비 매뉴얼의 기대 코드를 넣으면 일치 여부를 검산해 주므로 통신이 안 될 때 원인을 좁히는 데 씁니다.</p>
   </header>
 
   <section class="device">
@@ -212,7 +212,7 @@
       <div class="zone input">
         <div class="zone-head">
           <div class="h">▶ 알고리즘</div>
-          <div class="sub">체크섬 4종 · CRC-16 프리셋 4종 · 직접 입력</div>
+          <div class="sub">체크섬 4종, CRC-16 프리셋 4종, 직접 입력</div>
         </div>
         <p class="group-label">체크섬</p>
         <div class="chiprow cs" id="csChips">
@@ -237,7 +237,7 @@
           <div class="h">◆ CRC 파라미터</div>
           <div class="sub">프리셋 = 잠금 표시 / 직접 입력 = 편집</div>
         </div>
-        <span class="lock-badge" id="lockBadge">잠금 · 프리셋 값</span>
+        <span class="lock-badge" id="lockBadge">잠금(프리셋 값)</span>
         <div class="params-grid">
           <label class="f">Poly (hex)
             <input id="poly" value="8005" maxlength="4" spellcheck="false" readonly>
@@ -269,7 +269,7 @@
           <button type="button" id="modeHex" aria-pressed="true">HEX</button>
           <button type="button" id="modeAscii" aria-pressed="false">ASCII</button>
         </div>
-        <label class="f" id="inputLabel">HEX 바이트 (공백·콤마 OK)
+        <label class="f" id="inputLabel">HEX 바이트 (공백, 콤마 OK)
           <textarea id="payload" spellcheck="false" placeholder="01 03 00 00 00 0A">01 03 00 00 00 0A</textarea>
         </label>
         <div class="meta-row"><span>파싱 결과</span><b id="byteMeta">0 bytes</b></div>
@@ -316,11 +316,11 @@
 
   <ul class="notes">
 
-    <li><b>이럴 때 씁니다</b> — 장비에 보낼 명령 프레임의 CRC를 직접 만들 때, 받은 프레임의 검사값이 맞는지 확인할 때, 매뉴얼 예제와 내 계산이 왜 다른지 파고들 때 씁니다.</li>
+    <li><b>이럴 때 씁니다</b>: 장비에 보낼 명령 프레임의 CRC를 직접 만들 때, 받은 프레임의 검사값이 맞는지 확인할 때, 매뉴얼 예제와 내 계산이 왜 다른지 파고들 때 씁니다.</li>
 
-    <li><b>쓰는 순서</b> — 체크섬 방식이나 CRC 종류를 고르고, HEX 또는 ASCII로 바이트열을 넣은 뒤 결과의 바이트 순서(LE&middot;BE)를 프레임 규격에 맞춰 고릅니다.</li>
+    <li><b>쓰는 순서</b>: 체크섬 방식이나 CRC 종류를 고르고, HEX 또는 ASCII로 바이트열을 넣은 뒤 결과의 바이트 순서(LE, BE)를 프레임 규격에 맞춰 고릅니다.</li>
 
-    <li><b>자세한 사용법</b> — 계산기 제목 행의 <b>도움말</b> 버튼에서 전체 설명을 볼 수 있습니다.</li>
+    <li><b>자세한 사용법</b>: 계산기 제목 행의 <b>도움말</b> 버튼에서 전체 설명을 볼 수 있습니다.</li>
 
   </ul>
 </div>
@@ -472,7 +472,7 @@
 
     const badge = $("lockBadge");
     if (locked) {
-      badge.textContent = "잠금 · 프리셋 값";
+      badge.textContent = "잠금(프리셋 값)";
       badge.classList.remove("edit");
     } else {
       badge.textContent = "편집 · 직접 입력";
@@ -713,8 +713,8 @@
   <div class="toolhelp-body">
     <h4>이 도구로 할 수 있는 일</h4>
     <ul>
-      <li>바이트열의 <b>체크섬</b>(합산 8&middot;합산 16&middot;XOR 8&middot;LRC)을 계산합니다.</li>
-      <li><b>CRC-16</b> 4종(Modbus&middot;CCITT-FALSE&middot;XMODEM&middot;ARC)을 계산합니다. <b>직접 입력</b>을 고르면 Poly&middot;Init&middot;XorOut&middot;RefIn&middot;RefOut을 손으로 맞출 수 있습니다.</li>
+      <li>바이트열의 <b>체크섬</b>(합산 8, 합산 16, XOR 8, LRC)을 계산합니다.</li>
+      <li><b>CRC-16</b> 4종(Modbus, CCITT-FALSE, XMODEM, ARC)을 계산합니다. <b>직접 입력</b>을 고르면 Poly, Init, XorOut, RefIn, RefOut을 손으로 맞출 수 있습니다.</li>
       <li>결과를 <b>LE(저&rarr;고)</b>와 <b>BE(고&rarr;저)</b> 두 순서로 보여 줍니다.</li>
       <li><b>기대 코드</b> 칸에 매뉴얼 값을 넣으면 일치하는지 검산해 줍니다.</li>
     </ul>
@@ -722,15 +722,15 @@
     <ol>
       <li>위쪽에서 <b>체크섬 방식</b> 또는 <b>CRC 종류</b>를 고릅니다.</li>
       <li><b>HEX</b>와 <b>ASCII</b> 중 입력 형식을 고르고 바이트열을 넣습니다. 예: <code>01 03 00 00 00 0A</code>.</li>
-      <li>프레임 규격에 맞는 <b>바이트 순서</b>(LE&middot;BE)를 고르고 결과를 복사합니다.</li>
+      <li>프레임 규격에 맞는 <b>바이트 순서</b>(LE, BE)를 고르고 결과를 복사합니다.</li>
       <li>확인이 필요하면 기대 코드를 넣어 검산 결과를 봅니다.</li>
     </ol>
     <h4>알아두면 좋은 것</h4>
     <ul>
-      <li>체크섬&middot;CRC는 데이터가 전송 중 <b>깨졌는지 확인하는 검사값</b>입니다. 암호가 아닙니다.</li>
+      <li>체크섬, CRC는 데이터가 전송 중 <b>깨졌는지 확인하는 검사값</b>입니다. 암호가 아닙니다.</li>
       <li><b>LE</b>는 저바이트를 먼저 보내는 Modbus RTU 전송 순서이고, WORD 표시는 고&rarr;저입니다.</li>
-      <li>검산값 — ASCII <code>123456789</code>의 CRC-16/Modbus는 WORD <code>4B37</code>, LE <code>37 4B</code>입니다.</li>
-      <li>HEX&middot;ASCII 모두 <b>4096 bytes</b>까지이며, 초과분은 무시하고 경고를 표시합니다.</li>
+      <li>검산값: ASCII <code>123456789</code>의 CRC-16/Modbus는 WORD <code>4B37</code>, LE <code>37 4B</code>입니다.</li>
+      <li>HEX, ASCII 모두 <b>4096 bytes</b>까지이며, 초과분은 무시하고 경고를 표시합니다.</li>
     </ul>
   </div>
 </dialog>

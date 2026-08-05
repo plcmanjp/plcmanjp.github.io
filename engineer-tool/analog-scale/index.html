@@ -7,7 +7,7 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<title>아날로그 스케일 변환 — 4-20mA, 0-10V 센서 스케일링 | 엔지니어 도구</title>
+<title>아날로그 스케일 변환: 4-20mA, 0-10V 센서 스케일링 | 엔지니어 도구</title>
 <meta name="description" content="4~20mA, 0~10V 등 아날로그 센서 신호를 온도, 압력 등 공학 단위로 선형 변환합니다. PLC AD/DA 컨버전 설정값을 그래프와 함께 직관적으로 확인하세요.">
 <meta property="og:title" content="아날로그 스케일 변환 | PLCManJP 엔지니어 도구">
 <meta property="og:description" content="현장 엔지니어를 위한 아날로그 센서 ↔ 공학단위 스케일 변환기입니다.">
@@ -158,7 +158,7 @@
   <header>
     <p class="eyebrow">엔지니어 도구</p>
     <h1 class="page">아날로그 스케일 변환</h1>
-    <p class="lede">센서가 보내는 4~20mA&middot;0~10V 신호, PLC가 읽는 디지털 카운트, 사람이 보는 실제 단위(&#8451;&middot;kPa 등)를 서로 환산합니다. 기준 범위를 한 번 넣어 두면 현재값 PV를 바꿀 때마다 나머지가 즉시 따라오고, 아래 <b>전달 특성 그래프</b>를 좌우로 끌어 전 구간이 어떻게 대응되는지 눈으로 확인할 수 있습니다. A/D 입력과 D/A 출력 양방향을 지원합니다.</p>
+    <p class="lede">센서가 보내는 4~20mA, 0~10V 신호, PLC가 읽는 디지털 카운트, 사람이 보는 실제 단위(&#8451;, kPa 등)를 서로 환산합니다. 기준 범위를 한 번 넣어 두면 현재값 PV를 바꿀 때마다 나머지가 즉시 따라오고, 아래 <b>전달 특성 그래프</b>를 좌우로 끌어 전 구간이 어떻게 대응되는지 눈으로 확인할 수 있습니다. A/D 입력과 D/A 출력 양방향을 지원합니다.</p>
   </header>
 
   <section class="device">
@@ -184,7 +184,7 @@
 
       <!-- 3) 현재값 + 변환값 (병합, 녹색) -->
       <div class="zone green">
-        <div class="zone-head"><span class="h"><span>&#9670;</span><span>현재값 · 변환값</span></span></div>
+        <div class="zone-head"><span class="h"><span>&#9670;</span><span>현재값, 변환값</span></span></div>
         <div class="pv">
           <label class="f"><span id="pvHint">현재값 PV (분해능)</span><input type="number" id="pv" value="0" placeholder="분해능 입력 또는 그래프 드래그" inputmode="decimal"></label>
         </div>
@@ -210,11 +210,11 @@
 
   <ul class="notes">
 
-    <li><b>이럴 때 씁니다</b> — 압력 센서가 4~20mA를 보내는데 PLC 카운트가 <b>1638</b>일 때 실제 몇 kPa인지 확인할 때, 반대로 인버터에 50Hz를 내보내려면 D/A 카운트를 얼마로 써야 하는지 역산할 때 씁니다.</li>
+    <li><b>이럴 때 씁니다</b>: 압력 센서가 4~20mA를 보내는데 PLC 카운트가 <b>1638</b>일 때 실제 몇 kPa인지 확인할 때, 반대로 인버터에 50Hz를 내보내려면 D/A 카운트를 얼마로 써야 하는지 역산할 때 씁니다.</li>
 
-    <li><b>쓰는 순서</b> — A/D인지 D/A인지 고르고, 분해능(카운트) 범위와 변환값(공학단위) 범위를 넣은 뒤 현재값 PV를 입력합니다.</li>
+    <li><b>쓰는 순서</b>: A/D인지 D/A인지 고르고, 분해능(카운트) 범위와 변환값(공학단위) 범위를 넣은 뒤 현재값 PV를 입력합니다.</li>
 
-    <li><b>자세한 사용법</b> — 계산기 제목 행의 <b>도움말</b> 버튼에서 전체 설명을 볼 수 있습니다.</li>
+    <li><b>자세한 사용법</b>: 계산기 제목 행의 <b>도움말</b> 버튼에서 전체 설명을 볼 수 있습니다.</li>
 
   </ul>
 </div>
@@ -496,24 +496,24 @@
   <div class="toolhelp-body">
     <h4>이 도구로 할 수 있는 일</h4>
     <ul>
-      <li>센서 신호(4~20mA&middot;0~10V)와 PLC 디지털 카운트, 실제 공학 단위 사이를 <b>직선 비례</b>로 환산합니다.</li>
-      <li><b>A/D 입력</b> 탭 — 센서에서 들어온 카운트가 실제로 몇 도&middot;몇 kPa인지 확인합니다.</li>
-      <li><b>D/A 출력</b> 탭 — 내보내고 싶은 공학값이 카운트로 얼마인지 거꾸로 구합니다.</li>
+      <li>센서 신호(4~20mA, 0~10V)와 PLC 디지털 카운트, 실제 공학 단위 사이를 <b>직선 비례</b>로 환산합니다.</li>
+      <li><b>A/D 입력</b> 탭: 센서에서 들어온 카운트가 실제로 몇 도, 몇 kPa인지 확인합니다.</li>
+      <li><b>D/A 출력</b> 탭: 내보내고 싶은 공학값이 카운트로 얼마인지 거꾸로 구합니다.</li>
       <li><b>전달 특성 그래프</b>를 좌우로 끌면 PV가 따라 움직여, 전 구간의 대응 관계를 한눈에 볼 수 있습니다.</li>
     </ul>
     <h4>쓰는 순서</h4>
     <ol>
       <li>위 탭에서 <b>A/D 입력</b>인지 <b>D/A 출력</b>인지 고릅니다.</li>
       <li><b>분해능</b>(카운트) 범위를 프리셋에서 고르거나 직접 넣습니다. 예: 0~4000, -16000~16000.</li>
-      <li>전압&middot;전류도 함께 보려면 <b>신호 사용</b>을 켜고 4~20mA 같은 범위를 넣습니다.</li>
-      <li><b>변환값</b> MIN&middot;MAX와 단위를 넣습니다. 예: 0~100, &#8451;.</li>
+      <li>전압, 전류도 함께 보려면 <b>신호 사용</b>을 켜고 4~20mA 같은 범위를 넣습니다.</li>
+      <li><b>변환값</b> MIN, MAX와 단위를 넣습니다. 예: 0~100, &#8451;.</li>
       <li><b>현재값 PV</b>를 넣으면 나머지 값과 변환식이 즉시 계산됩니다.</li>
     </ol>
     <h4>알아두면 좋은 것</h4>
     <ul>
       <li>설정한 MIN~MAX <b>밖의 값</b>도 직선을 연장해 계산하고, 범위를 벗어났다고 경고를 함께 표시합니다.</li>
-      <li>단위는 직접 입력하거나 kPa&middot;MPa&middot;bar&middot;psi&middot;torr&middot;&micro;m&middot;mm&middot;m 프리셋에서 고를 수 있습니다.</li>
-      <li>계산은 <b>1차(직선) 스케일링</b>입니다. 로그&middot;제곱근 특성을 가진 센서에는 맞지 않습니다.</li>
+      <li>단위는 직접 입력하거나 kPa, MPa, bar, psi, torr, &micro;m, mm, m 프리셋에서 고를 수 있습니다.</li>
+      <li>계산은 <b>1차(직선) 스케일링</b>입니다. 로그, 제곱근 특성을 가진 센서에는 맞지 않습니다.</li>
     </ul>
   </div>
 </dialog>

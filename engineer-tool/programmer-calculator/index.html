@@ -7,7 +7,7 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<title>프로그래머 계산기 — PLC 진법 변환 및 비트 연산 | 엔지니어 도구</title>
+<title>프로그래머 계산기: PLC 진법 변환 및 비트 연산 | 엔지니어 도구</title>
 <meta name="description" content="PLC 및 마이컴 프로그래밍 시 필수적인 진수 변환과 비트 단위 논리 연산을 제공합니다. 디버깅 중 Hex 및 Bin 값을 직관적으로 확인하세요.">
 <meta property="og:title" content="프로그래머 계산기 | PLCManJP 엔지니어 도구">
 <meta property="og:description" content="현장 엔지니어를 위한 진수 변환 및 비트 연산 계산기입니다.">
@@ -167,7 +167,7 @@
   <header>
     <p class="eyebrow">엔지니어 도구</p>
     <h1 class="page">프로그래머 계산기</h1>
-    <p class="lede">값 하나를 16진수·10진수·8진수·2진수로 <b>동시에</b> 보여 주는 계산기입니다. 어느 진법에 입력하든 나머지가 즉시 함께 바뀌고, 비트 램프를 눌러 0과 1을 직접 켜고 끌 수 있습니다. AND·OR·시프트 같은 비트 연산과 BCD 변환도 지원해서, PLC나 마이컴을 디버깅할 때 화면의 Hex 값이 실제로 어떤 비트 조합인지 바로 확인할 수 있습니다. 표기는 GX Works의 K(10진)·H(16진) 방식을, 비트 램프는 Device Batch Monitor를 따랐습니다.</p>
+    <p class="lede">값 하나를 16진수, 10진수, 8진수, 2진수로 <b>동시에</b> 보여 주는 계산기입니다. 어느 진법에 입력하든 나머지가 즉시 함께 바뀌고, 비트 램프를 눌러 0과 1을 직접 켜고 끌 수 있습니다. AND, OR, 시프트 같은 비트 연산과 BCD 변환도 지원해서, PLC나 마이컴을 디버깅할 때 화면의 Hex 값이 실제로 어떤 비트 조합인지 바로 확인할 수 있습니다. 표기는 GX Works의 K(10진), H(16진) 방식을, 비트 램프는 Device Batch Monitor를 따랐습니다.</p>
   </header>
 
   <section class="device">
@@ -258,11 +258,11 @@
 
   <ul class="notes">
 
-    <li><b>이럴 때 씁니다</b> — 모니터에 뜬 <b>H0F00</b>이 몇 번 비트인지 확인할 때, 통신 데이터의 바이트 순서를 뒤집어 볼 때, 표시기가 내보내는 <b>BCD</b> 값을 10진수로 되돌릴 때, 특정 비트만 남기는 마스크 값을 만들 때 씁니다.</li>
+    <li><b>이럴 때 씁니다</b>: 모니터에 뜬 <b>H0F00</b>이 몇 번 비트인지 확인할 때, 통신 데이터의 바이트 순서를 뒤집어 볼 때, 표시기가 내보내는 <b>BCD</b> 값을 10진수로 되돌릴 때, 특정 비트만 남기는 마스크 값을 만들 때 씁니다.</li>
 
-    <li><b>쓰는 순서</b> — 위쪽에서 비트 폭을 고르고, H&middot;K&middot;O&middot;B 중 입력할 진법 줄을 누른 뒤 값을 넣습니다. 나머지 진법과 비트 램프가 함께 바뀝니다.</li>
+    <li><b>쓰는 순서</b>: 위쪽에서 비트 폭을 고르고, H, K, O, B 중 입력할 진법 줄을 누른 뒤 값을 넣습니다. 나머지 진법과 비트 램프가 함께 바뀝니다.</li>
 
-    <li><b>자세한 사용법</b> — 계산기 제목 행의 <b>도움말</b> 버튼에서 기능 설명과 키보드 단축키 전체를 볼 수 있습니다.</li>
+    <li><b>자세한 사용법</b>: 계산기 제목 행의 <b>도움말</b> 버튼에서 기능 설명과 키보드 단축키 전체를 볼 수 있습니다.</li>
 
   </ul>
 </div>
@@ -282,10 +282,10 @@
   <div class="toolhelp-body">
     <h4>이 도구로 할 수 있는 일</h4>
     <ul>
-      <li>값 하나를 <b>16진수(H) &middot; 10진수(K) &middot; 8진수(O) &middot; 2진수(B)</b>로 동시에 봅니다. 한 줄을 누르면 그 진법으로 입력할 수 있고, 나머지 줄은 자동으로 바뀝니다.</li>
+      <li>값 하나를 <b>16진수(H), 10진수(K), 8진수(O), 2진수(B)</b>로 동시에 봅니다. 한 줄을 누르면 그 진법으로 입력할 수 있고, 나머지 줄은 자동으로 바뀝니다.</li>
       <li><b>비트 램프</b>를 눌러 각 비트를 직접 켜고 끕니다. 어떤 비트가 서 있는지 눈으로 바로 확인할 수 있습니다.</li>
-      <li><b>비트 폭</b>(4bit &middot; 8bit &middot; WORD &middot; DWORD &middot; QWORD)을 골라 PLC 디바이스 크기에 맞춥니다.</li>
-      <li>AND &middot; OR &middot; XOR &middot; NOT &middot; 시프트 &middot; 회전 같은 <b>비트 연산</b>과 <b>BCD 변환</b>을 지원합니다.</li>
+      <li><b>비트 폭</b>(4bit, 8bit, WORD, DWORD, QWORD)을 골라 PLC 디바이스 크기에 맞춥니다.</li>
+      <li>AND, OR, XOR, NOT, 시프트, 회전 같은 <b>비트 연산</b>과 <b>BCD 변환</b>을 지원합니다.</li>
     </ul>
 
     <h4>알아두면 좋은 것</h4>
@@ -309,7 +309,7 @@
     <h4>산술</h4>
     <dl>
       <dt><kbd>+</kbd> <kbd>-</kbd> <kbd>*</kbd> <kbd>/</kbd></dt>
-      <dd>더하기 &middot; 빼기 &middot; 곱하기 &middot; 나누기</dd>
+      <dd>더하기, 빼기, 곱하기, 나누기</dd>
       <dt><kbd>%</kbd></dt>
       <dd>나머지 (MOD)</dd>
       <dt><kbd>Enter</kbd><span class="sep">/</span><kbd>=</kbd></dt>
@@ -321,16 +321,16 @@
     <h4>비트 연산</h4>
     <dl>
       <dt><kbd>&amp;</kbd> <kbd>|</kbd> <kbd>^</kbd> <kbd>~</kbd></dt>
-      <dd>AND &middot; OR &middot; XOR &middot; NOT</dd>
+      <dd>AND, OR, XOR, NOT</dd>
       <dt><kbd>&lt;</kbd> <kbd>&gt;</kbd></dt>
-      <dd>왼쪽 시프트 (&lt;&lt;) &middot; 오른쪽 시프트 (&gt;&gt;)</dd>
+      <dd>왼쪽 시프트 (&lt;&lt;), 오른쪽 시프트 (&gt;&gt;)</dd>
       <dt><kbd>[</kbd> <kbd>]</kbd></dt>
-      <dd>왼쪽 회전 (ROL) &middot; 오른쪽 회전 (ROR)</dd>
+      <dd>왼쪽 회전 (ROL), 오른쪽 회전 (ROR)</dd>
       <dt><kbd>S</kbd></dt>
       <dd>바이트 스왑</dd>
     </dl>
 
-    <p class="toolhelp-foot">비트 폭 &middot; 진법 &middot; BCD 변환은 화면의 버튼으로 선택합니다. <kbd>Ctrl</kbd> &middot; <kbd>Alt</kbd> 조합은 브라우저 기본 기능으로 넘깁니다.</p>
+    <p class="toolhelp-foot">비트 폭, 진법, BCD 변환은 화면의 버튼으로 선택합니다. <kbd>Ctrl</kbd>과 <kbd>Alt</kbd> 조합은 브라우저 기본 기능으로 넘깁니다.</p>
   </div>
 </dialog>
 

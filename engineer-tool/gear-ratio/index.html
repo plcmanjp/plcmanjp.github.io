@@ -7,7 +7,7 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<title>전자기어비 계산기 — 서보 기어비 산출 및 검산 | 엔지니어 도구</title>
+<title>전자기어비 계산기: 서보 기어비 산출 및 검산 | 엔지니어 도구</title>
 <meta name="description" content="엔코더 분해능, 감속비, 볼스크류 리드 등 기계 사양을 입력해 서보 모터의 전자기어비를 빠르고 정확하게 계산합니다. 장비 셋업 시간을 단축하세요.">
 <meta property="og:title" content="전자기어비 계산기 | PLCManJP 엔지니어 도구">
 <meta property="og:description" content="현장 엔지니어를 위한 서보 전자기어비 계산기입니다.">
@@ -178,17 +178,17 @@
   <header>
     <p class="eyebrow">엔지니어 도구</p>
     <h1 class="page">전자기어비 계산기</h1>
-    <p class="lede">서보 모터의 전자기어비 파라미터 <b>CMX(PA06)&middot;CDV(PA07)</b>를 구합니다. 서보 시리즈와 기구 제원(볼스크류 리드 또는 회전 분할수), 지령 단위를 넣으면 약분된 기약분수로 바로 나옵니다. 목표 속도를 QD75/RD75/FX 위치결정 모듈이 실제로 낼 수 있는지도 함께 판정해서, 셋업 전에 파라미터와 속도를 한 번에 확인할 수 있습니다.</p>
+    <p class="lede">서보 모터의 전자기어비 파라미터 <b>CMX(PA06), CDV(PA07)</b>를 구합니다. 서보 시리즈와 기구 제원(볼스크류 리드 또는 회전 분할수), 지령 단위를 넣으면 약분된 기약분수로 바로 나옵니다. 목표 속도를 QD75/RD75/FX 위치결정 모듈이 실제로 낼 수 있는지도 함께 판정해서, 셋업 전에 파라미터와 속도를 한 번에 확인할 수 있습니다.</p>
   </header>
 
   <section class="device">
     <div class="device-bar"><a class="back" href="../" aria-label="도구 목록으로">&larr;</a><h2>전자기어비 계산기</h2><button class="helpbtn" id="toolHelpBtn" type="button" aria-haspopup="dialog"><span aria-hidden="true">?</span> 도움말</button></div>
     <div class="screen">
-      <p class="hint0">기구 제원과 지령 사양을 입력하면 CMX/CDV·분해능·1회전당 펄스·속도가 자동 계산됩니다.</p>
+      <p class="hint0">기구 제원과 지령 사양을 입력하면 CMX/CDV, 분해능, 1회전당 펄스, 속도가 자동 계산됩니다.</p>
 
       <!-- 입력 존 -->
       <div class="zone input">
-        <div class="zone-head"><span class="h"><span>&#9654;</span><span>입력 — 서보·기구·지령</span></span><span class="sub">시리즈·기구 유형·지령 단위·감속비·기어비</span></div>
+        <div class="zone-head"><span class="h"><span>&#9654;</span><span>입력: 서보, 기구, 지령</span></span><span class="sub">시리즈, 기구 유형, 지령 단위, 감속비, 기어비</span></div>
 
         <div class="row" id="seriesRow">
           <label class="f">서보 시리즈
@@ -281,7 +281,7 @@
 
       <!-- 결과 존 -->
       <div class="zone green">
-        <div class="zone-head"><span class="h"><span>&#9670;</span><span>결과 — CMX / CDV</span></span></div>
+        <div class="zone-head"><span class="h"><span>&#9670;</span><span>결과: CMX / CDV</span></span></div>
         <div class="hint0" id="resultPending">제원을 입력하면 CMX/CDV가 자동 계산됩니다</div>
         <div class="badge" id="errBanner" hidden></div>
         <div class="result" id="resultBox" hidden>
@@ -355,11 +355,11 @@
 
   <ul class="notes">
 
-    <li><b>이럴 때 씁니다</b> — 새 축을 셋업하며 CMX/CDV를 정할 때, 지령 1펄스에 <b>0.001mm</b>씩 움직이게 맞출 때, 목표 속도가 위치결정 모듈의 펄스 출력 한계를 넘는지 미리 확인할 때 씁니다.</li>
+    <li><b>이럴 때 씁니다</b>: 새 축을 셋업하며 CMX/CDV를 정할 때, 지령 1펄스에 <b>0.001mm</b>씩 움직이게 맞출 때, 목표 속도가 위치결정 모듈의 펄스 출력 한계를 넘는지 미리 확인할 때 씁니다.</li>
 
-    <li><b>쓰는 순서</b> — 서보 시리즈와 기구 유형을 고르고, 리드나 분할수&middot;지령 단위&middot;감속비를 넣으면 CMX/CDV가 즉시 나옵니다.</li>
+    <li><b>쓰는 순서</b>: 서보 시리즈와 기구 유형을 고르고, 리드나 분할수, 지령 단위, 감속비를 넣으면 CMX/CDV가 즉시 나옵니다.</li>
 
-    <li><b>자세한 사용법</b> — 계산기 제목 행의 <b>도움말</b> 버튼에서 전체 설명을 볼 수 있습니다. 각 입력 항목 옆의 <b>?</b> 버튼에는 그 항목만의 설명이 따로 있습니다.</li>
+    <li><b>자세한 사용법</b>: 계산기 제목 행의 <b>도움말</b> 버튼에서 전체 설명을 볼 수 있습니다. 각 입력 항목 옆의 <b>?</b> 버튼에는 그 항목만의 설명이 따로 있습니다.</li>
 
   </ul>
   </div>
@@ -798,7 +798,7 @@
   <div class="toolhelp-body">
     <h4>이 도구로 할 수 있는 일</h4>
     <ul>
-      <li>전자기어비 파라미터 <b>CMX(PA06)&middot;CDV(PA07)</b>를 최대공약수로 약분한 기약분수로 구합니다.</li>
+      <li>전자기어비 파라미터 <b>CMX(PA06), CDV(PA07)</b>를 최대공약수로 약분한 기약분수로 구합니다.</li>
       <li>지령 1펄스에 기계가 얼마나 움직일지(<b>지령 단위</b>)를 정하면 거기에 맞는 값을 계산합니다.</li>
       <li>목표 속도를 <b>QD75/RD75/FX</b> 위치결정 모듈이 낼 수 있는지 모듈별로 판정합니다.</li>
       <li>결과가 서보 시리즈의 파라미터 상한을 넘으면 <b>범위 초과</b>로 알려 줍니다.</li>
@@ -808,14 +808,14 @@
       <li><b>서보 시리즈</b>를 고릅니다. 인코더 분해능이 자동으로 들어갑니다(수동을 고르면 직접 입력).</li>
       <li><b>기구 유형</b>을 고르고 볼스크류 리드 또는 회전 테이블 분할수를 넣습니다.</li>
       <li><b>지령 단위</b> 또는 1회전당 펄스 수를 넣습니다.</li>
-      <li>감속기&middot;기어가 있으면 <b>감속비</b>와 <b>기어비</b>를 넣습니다. 없으면 1/1 그대로 둡니다.</li>
-      <li>나온 CMX&middot;CDV를 복사해 서보 파라미터에 씁니다.</li>
+      <li>감속기, 기어가 있으면 <b>감속비</b>와 <b>기어비</b>를 넣습니다. 없으면 1/1 그대로 둡니다.</li>
+      <li>나온 CMX, CDV를 복사해 서보 파라미터에 씁니다.</li>
     </ol>
     <h4>알아두면 좋은 것</h4>
     <ul>
       <li>공식은 <code>CMX/CDV = (인코더 분해능 &times; 지령 단위 &times; 모터측 비) &divide; (부하 이동량 &times; 부하측 비)</code>입니다.</li>
-      <li><b>볼스크류&middot;회전 테이블</b>만 정확한 유리수로 계산합니다. 원주율(&pi;)이 들어가는 벨트&middot;풀리&middot;컨베이어&middot;랙&amp;피니언은 지원하지 않습니다.</li>
-      <li>파라미터 상한 — MR-J2S 65,535 &middot; MR-J3/J4 1,048,576 &middot; MR-J5&middot;수동 16,777,216. CMX 또는 CDV가 넘으면 범위 초과로 표시합니다.</li>
+      <li><b>볼스크류, 회전 테이블</b>만 정확한 유리수로 계산합니다. 원주율(&pi;)이 들어가는 벨트, 풀리, 컨베이어, 랙&amp;피니언은 지원하지 않습니다.</li>
+      <li>파라미터 상한: MR-J2S 65,535, MR-J3/J4 1,048,576, MR-J5/수동 16,777,216. CMX 또는 CDV가 넘으면 범위 초과로 표시합니다.</li>
       <li>속도 판정은 모듈의 <b>최대 펄스 출력</b> 기준입니다. 실제 가감속 시간과 부하 조건은 별도로 확인해야 합니다.</li>
     </ul>
   </div>
