@@ -87,7 +87,7 @@
 
 <header>
   <h1>개인정보처리방침 / Privacy Policy</h1>
-  <div class="meta">FeedGrove &middot; 개발자 / Developer: PLCManJP &middot; 시행일 / Effective date: 2026-07-31</div>
+  <div class="meta">FeedGrove &middot; 개발자 / Developer: PLCManJP &middot; 시행일 / Effective date: 2026-07-31 &middot; 최종 갱신 / Last updated: 2026-08-07</div>
   <div class="lang-nav">
     <a href="#ko" class="lang-btn" data-lang="ko" aria-pressed="false">한국어</a><a href="#en" class="lang-btn" data-lang="en" aria-pressed="false">English</a>
   </div>
@@ -95,10 +95,10 @@
 
 <section class="lang-block" id="ko">
 <h2>1. 요약</h2>
-<p>FeedGrove는 계정이 필요 없고 개발자가 운영하는 수집 서버가 없습니다. 앱 데이터는 기본적으로 이용자의 기기에 저장되며 개발자에게 전송되지 않습니다. 다만 이용자가 FEED/GROUP Discord 자동 전송을 명시적으로 시작하거나 저장된 다이제스트를 수동 전송하면 아래 4항의 정보가 제3자인 Discord로 전송될 수 있습니다. 일반 release vc19에는 광고 SDK·광고 UI·광고 요청이 없습니다. 동일한 앱 패키지로 제공될 Play 내부 테스트용 internalAdQc vc20 candidate에는 테스트 모드 배너를 위해 Google Mobile Ads Next-Gen SDK와 Google User Messaging Platform(UMP) SDK가 포함될 예정이며, 해당 빌드에서는 아래 4항의 데이터가 Google에 의해 처리될 수 있습니다.</p>
+<p>FeedGrove는 계정이 필요 없고 개발자가 운영하는 수집 서버가 없습니다. 앱 데이터는 기본적으로 이용자의 기기에 저장되며 개발자에게 전송되지 않습니다. 다만 이용자가 FEED/GROUP Discord 자동 전송을 명시적으로 시작하거나 저장된 다이제스트를 수동 전송하면 아래 4항의 정보가 제3자인 Discord로 전송될 수 있습니다. 현재 Play에 게재된 vc22 Alpha는 광고 SDK, 광고 UI, 광고 요청이 없는 산출물입니다. test-only vc24 비공개 Alpha와 vc25부터의 정규 후보에는 Google Mobile Ads Next-Gen SDK, Google User Messaging Platform(UMP) SDK와 광고 ID 권한이 포함되며, 아래 4항의 데이터가 Google에 의해 처리될 수 있습니다. 정규 후보는 SDK를 포함하지만 퍼블리셔 정책 승인 전까지 광고 요청과 표시를 하지 않습니다. SDK 포함과 광고 개시는 다른 단계입니다.</p>
 
 <h2>2. 개발자가 수집하는 정보</h2>
-<p>개발자는 이용자의 데이터를 개발자가 운영하는 서버로 수집하지 않습니다. 앱에는 회원가입·로그인 기능이 없고 개발자가 운영하는 수집 서버로 데이터를 보내는 경로도 없습니다. 일반 release vc19에는 분석(Analytics) SDK와 광고 SDK가 포함되어 있지 않습니다. internalAdQc vc20 candidate에는 별도의 Analytics SDK는 없지만 Google Mobile Ads Next-Gen 1.3.0과 UMP 4.0.0이 포함될 예정이며, 이 Google SDK의 처리는 개발자 자체 서버 수집과 구분됩니다.</p>
+<p>개발자는 이용자의 데이터를 개발자가 운영하는 서버로 수집하지 않습니다. 앱에는 회원가입·로그인 기능이 없고 개발자가 운영하는 수집 서버로 데이터를 보내는 경로도 없습니다. test-only vc24 비공개 Alpha와 이후 정규 광고 후보에는 별도의 Analytics SDK는 없지만 Google Mobile Ads Next-Gen과 UMP가 포함되며, 이 Google SDK의 처리는 개발자 자체 서버 수집과 구분됩니다.</p>
 
 <h2>3. 앱에 저장되는 정보</h2>
 <p>앱은 아래 정보를 기기 내부 저장소(앱 전용 데이터베이스와 설정 저장소)에 보관합니다. Discord 전송을 활성화하거나 수동 실행한 경우 일부 정보는 4항에 따라 Discord로도 전송될 수 있습니다.</p>
@@ -118,20 +118,20 @@
   <li>이용자가 등록한 피드 주소·웹페이지 주소로 직접 접속해 공개된 내용을 내려받습니다. 이때 해당 사이트에는 통상적인 웹 요청 정보(IP 주소, 요청 시각, 앱 식별 문자열)가 남을 수 있으며 이는 해당 사이트 운영자의 처리 영역입니다.</li>
   <li>목록·상세 화면에 표시할 이미지를 게시물에 포함된 이미지 주소에서 직접 내려받습니다. 이미지 호스트는 이용자가 직접 입력한 곳이 아닐 수 있습니다.</li>
   <li>이용자가 FEED 또는 GROUP Discord 대상을 만들 때는 Discord 제3자 전송, 자동 전송 필드와 실제 멘션을 검토하고 최종 시작을 별도로 확인해야 합니다. <code>활성</code>과 <code>자동 전송</code>이 모두 켜진 대상만 다음 피드 동기화부터 조건에 맞는 항목을 백그라운드에서 전송합니다. endpoint 승인 ID 목록, template 내용 또는 대상 멘션이 바뀌면 자동 전송은 안전을 위해 꺼지고 다시 확인해야 합니다.</li>
-  <li>FEED/GROUP의 plain 전송에는 게시물 제목·원문 링크·출처명이 포함됩니다. single/multi embed 전송에는 제목·원문 링크·요약·출처명·이미지 URL·게시 시각이 포함됩니다. 두 형식 모두 설정된 경우 Discord 멘션 대상 사용자 ID를 포함할 수 있습니다. 등록한 피드 URL 자체와 게시물 작성자는 Discord 전송 내용에 포함되지 않습니다.</li>
-  <li>이용자가 저장된 다이제스트와 활성 Discord 대상을 선택해 전송하면 다이제스트 프로필 이름·생성 시각·포함 항목의 제목·원문 링크·출처명·접힘 수와, 설정된 경우 Discord 멘션 대상 사용자 ID가 포함될 수 있습니다. 게시물 요약·이미지 URL·게시 시각·작성자는 다이제스트 payload에 포함되지 않습니다. 다이제스트 자동 전송은 기본적으로 꺼져 있습니다.</li>
+  <li>FEED/GROUP의 plain 전송에는 게시물 제목·원문 링크·출처명(사용자가 직접 정한 피드 표시 이름 포함)이 포함됩니다. single/multi embed 전송에는 제목·원문 링크·요약·출처명·이미지 URL·게시 시각이 포함됩니다. 두 형식 모두 설정된 경우 Discord 멘션 대상 사용자 ID를 포함할 수 있습니다. 등록한 피드 URL 자체와 게시물 작성자는 Discord 전송 내용에 포함되지 않습니다.</li>
+  <li>이용자가 저장된 다이제스트와 활성 Discord 대상을 선택해 전송하면 다이제스트 프로필 이름·생성 시각·포함 항목의 제목·원문 링크·출처명(사용자가 직접 정한 피드 표시 이름 포함)·접힘 수와, 설정된 경우 Discord 멘션 대상 사용자 ID가 포함될 수 있습니다. 게시물 요약·이미지 URL·게시 시각·작성자는 다이제스트 payload에 포함되지 않습니다. 다이제스트 자동 전송은 기본적으로 꺼져 있습니다.</li>
   <li>고정 테스트 전송은 고정 문구만 Discord로 보내며 게시물·프로필·사용자 ID를 포함하지 않습니다.</li>
   <li>이용자가 게시물의 원문 보기나 공유를 실행하면 기기의 브라우저·공유 대상 앱으로 제목과 링크가 전달됩니다.</li>
-  <li>internalAdQc vc20 candidate가 Play 내부 테스트로 제공되는 경우 Google Mobile Ads와 UMP는 IP 주소 기반 대략적 위치, 앱 상호작용, 진단 정보, 기기 또는 기타 식별자(광고 ID(AAID), App Set ID 등)를 Google에 수집·공유할 수 있습니다. 처리 목적은 광고 또는 마케팅, 분석, 부정행위 방지·보안·규정 준수이며 데이터는 TLS로 암호화되어 전송됩니다.</li>
-  <li>해당 내부 테스트 빌드는 UMP를 통해 필요한 동의를 요청하고, 동의 선택을 다시 관리할 수 있는 privacy options 진입점을 제공합니다. 광고 요청은 등록된 테스트 기기에서 테스트 모드임을 확인한 뒤에만 수행하며 운영 광고 클릭은 금지됩니다.</li>
+  <li>test-only vc24 비공개 Alpha와 vc25부터의 정규 후보에 포함된 Google Mobile Ads와 UMP는 IP 주소 기반 대략적 위치, 앱 상호작용, 진단 정보, 기기 또는 기타 식별자(광고 ID(AAID), App Set ID 등)를 Google에 수집·공유할 수 있습니다. 처리 목적은 광고 또는 마케팅, 분석, 부정행위 방지·보안·규정 준수이며 데이터는 TLS로 암호화되어 전송됩니다.</li>
+  <li>해당 광고 후보는 UMP를 통해 필요한 동의를 요청하고, 동의 선택을 다시 관리할 수 있는 privacy options 진입점을 제공합니다. Rewarded 광고 완료 시 비현금성 토큰 1개를 최대 5개까지 적립할 수 있고, 이용자가 별도로 확인해 토큰 1개를 사용하면 하단 배너 요청과 표시를 24시간 중단합니다.</li>
 </ul>
-<p>앱은 이용자 기기의 연락처·정밀 위치·사진·파일에 직접 접근하지 않습니다. 일반 release vc19가 요청하는 권한은 인터넷 접속 권한(<code>INTERNET</code>) 하나뿐입니다. internalAdQc vc20 candidate에는 Google Mobile Ads가 사용하는 광고 ID 권한(<code>com.google.android.gms.permission.AD_ID</code>)이 포함되며, 로컬 merged manifest에서도 이를 확인했습니다. 실제 업로드 AAB에서도 다시 확인합니다.</p>
+<p>앱은 이용자 기기의 연락처·정밀 위치·사진·파일에 직접 접근하지 않습니다. 정규 기준선 vc22 Alpha의 선언 권한은 인터넷 접속 권한(<code>INTERNET</code>)뿐입니다. 별도 test-only vc24 비공개 Alpha에는 Google Mobile Ads가 사용하는 광고 ID 권한(<code>com.google.android.gms.permission.AD_ID</code>)이 포함됩니다. 이후 정규 광고 후보도 실제 업로드 AAB에서 권한을 다시 확인합니다.</p>
 
 <h2>5. 제3자 제공과 판매</h2>
-<p>개발자는 앱 데이터를 직접 받거나 판매하지 않습니다. Discord는 개발자와 별개의 제3자이며, FEED/GROUP 자동 전송을 활성화하거나 다이제스트 수동 전송을 실행하면 4항의 정보가 이용자가 등록한 Discord 웹훅으로 전달됩니다. internalAdQc vc20 candidate의 Google Mobile Ads·UMP 처리에서는 Google이 별개의 제3자이며 4항의 광고 관련 정보를 수집·공유할 수 있습니다. 피드·이미지 호스트, Discord, Google, 브라우저와 공유 대상 앱의 데이터 처리에는 각 서비스의 정책이 적용됩니다.</p>
+<p>개발자는 앱 데이터를 직접 받거나 판매하지 않습니다. Discord는 개발자와 별개의 제3자이며, FEED/GROUP 자동 전송을 활성화하거나 다이제스트 수동 전송을 실행하면 4항의 정보가 이용자가 등록한 Discord 웹훅으로 전달됩니다. test-only vc24 비공개 Alpha와 이후 정규 광고 후보의 Google Mobile Ads·UMP 처리에서는 Google이 별개의 제3자이며 4항의 광고 관련 정보를 수집·공유할 수 있습니다. 피드·이미지 호스트, Discord, Google, 브라우저와 공유 대상 앱의 데이터 처리에는 각 서비스의 정책이 적용됩니다.</p>
 
 <h2>6. 보관과 파기</h2>
-<p>기기 내부 데이터의 보관 기간은 이용자가 통제합니다. 앱 내에서 피드·게시물을 삭제하면 해당 로컬 데이터가 삭제되고, 앱을 삭제하면 기기의 로컬 앱 데이터가 삭제됩니다. 다만 Android 백업 설정에 따라 일부 앱 데이터의 백업 사본이 Google 계정에 남아 재설치 때 복원될 수 있으므로, 백업 사본은 기기와 Google 계정의 백업 설정에서 관리해야 합니다. 이미 Discord로 전송된 메시지·첨부 정보는 앱의 로컬 데이터나 앱을 삭제해도 Discord에서 삭제되지 않습니다. 개발자는 Discord 사본에 접근하거나 대신 삭제할 수 없으므로 이용자가 Discord 채널과 계정에서 직접 관리해야 합니다. internalAdQc vc20 candidate에서 Google이 처리한 데이터의 보관·삭제는 Google의 정책과 이용자 계정·기기 제어 수단이 적용됩니다. UMP privacy options에서 동의 선택을 변경해도 이미 처리된 데이터가 자동으로 삭제된다는 의미는 아닙니다. 개발자는 Google이 보관하는 데이터에 접근하거나 이용자를 대신해 삭제할 수 없습니다. 개발자 측 수집 서버에는 앱 데이터 사본이 없습니다.</p>
+<p>기기 내부 데이터의 보관 기간은 이용자가 통제합니다. 앱 내에서 피드·게시물을 삭제하면 해당 로컬 데이터가 삭제되고, 앱을 삭제하면 기기의 로컬 앱 데이터가 삭제됩니다. 다만 Android 백업 설정에 따라 일부 앱 데이터의 백업 사본이 Google 계정에 남아 재설치 때 복원될 수 있으므로, 백업 사본은 기기와 Google 계정의 백업 설정에서 관리해야 합니다. 광고 토큰 지갑과 24시간 숨김 상태는 cloud backup과 device-to-device transfer에서 제외합니다. 이미 Discord로 전송된 메시지·첨부 정보는 앱의 로컬 데이터나 앱을 삭제해도 Discord에서 삭제되지 않습니다. test-only vc24 비공개 Alpha와 이후 정규 광고 후보에서 Google이 처리한 데이터의 보관·삭제는 Google의 정책과 이용자 계정·기기 제어 수단이 적용됩니다. UMP privacy options에서 동의 선택을 변경해도 이미 처리된 데이터가 자동으로 삭제된다는 의미는 아닙니다. 개발자는 Google이 보관하는 데이터에 접근하거나 이용자를 대신해 삭제할 수 없습니다. 개발자 측 수집 서버에는 앱 데이터 사본이 없습니다.</p>
 
 <h2>7. 아동</h2>
 <p>이 앱은 아동을 주 대상으로 하지 않으며 아동으로부터 개인정보를 의도적으로 수집하지 않습니다.</p>
@@ -142,7 +142,12 @@
 <h2>9. 방침 변경</h2>
 <p>방침이 변경되면 게시 문서를 갱신하고, 앱 업데이트 설명에 변경 사실을 알립니다.</p>
 
-<h2>10. 문의</h2>
+<h2>10. 저작권 등 권리 신고</h2>
+<p>앱은 이용자가 직접 등록한 RSS, Atom, 웹페이지의 공개 콘텐츠를 이용자 기기에 내려받아 보여 줍니다. 제목, 출처, 원문 링크, 제한된 요약과 원문이 제공한 이미지 주소만 다루며 원문 전체와 원문 이미지를 복제해 저장하지 않습니다.</p>
+<p>콘텐츠 권리자께서 특정 출처의 처리에 이의가 있으시면 아래 문의처로 알려 주세요. 접수 후 7일 이내에 확인을 회신하고, 14일 이내에 조사와 조치 결정을 알려 드립니다. 조치는 해당 출처를 앱의 기본 추천 목록에서 제외하거나 광고 노출을 중단하는 방식이며, 실제 반영에는 앱 업데이트 배포 기간이 더해집니다.</p>
+<p>앱 화면 안의 신고와 차단은 그 기기에만 적용되는 이용자 본인용 기능이며 개발자에게 전달되지 않습니다. 권리자 신고는 반드시 아래 문의처를 이용해 주세요.</p>
+
+<h2>11. 문의</h2>
 <p>문의처: <a href="mailto:chechapbg@gmail.com">chechapbg@gmail.com</a></p>
 </section>
 
@@ -150,10 +155,10 @@
 
 <section class="lang-block" id="en">
 <h2>1. Summary</h2>
-<p>FeedGrove requires no account, and the developer operates no collection server. App data is stored on your device by default and is not transmitted to the developer. However, if you explicitly start automatic FEED/GROUP Discord delivery or manually send a saved digest, the information described in section 4 below may be transmitted to Discord, a third party. The general vc19 release has no advertising SDK, advertising UI, or ad requests. The internalAdQc vc20 candidate planned for Play internal testing under the same app package will include the Google Mobile Ads Next-Gen SDK and Google User Messaging Platform (UMP) SDK for a test-mode banner; in that build, Google may process the data described in section 4.</p>
+<p>FeedGrove requires no account, and the developer operates no collection server. App data is stored on your device by default and is not transmitted to the developer. However, if you explicitly start automatic FEED/GROUP Discord delivery or manually send a saved digest, the information described in section 4 below may be transmitted to Discord, a third party. The vc22 Alpha currently published on Play is a build with no advertising SDK, advertising UI, or ad requests. The test-only vc24 closed Alpha and the general candidates from vc25 onward include the Google Mobile Ads Next-Gen SDK, the Google User Messaging Platform (UMP) SDK, and the advertising ID permission; in those builds, Google may process the data described in section 4. General candidates include the SDK but make no ad requests and show no ads until publisher policy approval. Including the SDK and starting ads are separate stages.</p>
 
 <h2>2. Information the Developer Collects</h2>
-<p>The developer does not collect your data on any server operated by the developer. The app has no sign-up or login and no path that sends data to any collection server operated by the developer. The general vc19 release includes no analytics SDK or advertising SDK. The internalAdQc vc20 candidate will include no separate Analytics SDK, but is planned to include Google Mobile Ads Next-Gen 1.3.0 and UMP 4.0.0; processing by these Google SDKs is separate from collection by a developer-operated server.</p>
+<p>The developer does not collect your data on any server operated by the developer. The app has no sign-up or login and no path that sends data to any collection server operated by the developer. The test-only vc24 closed Alpha and the general advertising candidates that follow include no separate Analytics SDK, but do include Google Mobile Ads Next-Gen and UMP; processing by these Google SDKs is separate from collection by a developer-operated server.</p>
 
 <h2>3. Information Stored by the App</h2>
 <p>The app keeps the following information in your device's internal storage (the app's private database and settings store). If you enable Discord delivery or initiate it manually, some of this information may also be transmitted to Discord as described in section 4.</p>
@@ -173,20 +178,20 @@
   <li>It connects directly to the feed or web page addresses you registered and downloads their publicly available content. In doing so, ordinary web request information (IP address, request time, app identifier string) may be recorded by that site, which falls under that site operator's processing.</li>
   <li>It downloads images for the list and detail screens directly from the image addresses contained in posts. The image host may not be a destination that you entered directly.</li>
   <li>When creating a FEED or GROUP Discord target, you must review the third-party transmission to Discord, the automatically transmitted fields, and the actual mentions, and then separately confirm the final start. Only a target for which both <code>Enabled</code> and <code>Automatic delivery</code> are on will transmit matching items in the background beginning with the next feed synchronization. If the endpoint's approved ID list, template content, or target mentions change, automatic delivery is turned off for safety and must be confirmed again.</li>
-  <li>FEED/GROUP plain delivery includes the post title, original link, and source name. Single/multi embed delivery includes the title, original link, summary, source name, image URL, and published time. Both formats may include the user IDs of Discord mention recipients if configured. The registered feed URL itself and the post author are not included in Discord delivery content.</li>
-  <li>If you select and send a saved digest and an active Discord target, the delivery may include the digest profile name, generation time, the title, original link, and source name of included items, the collapsed-item count, and the user IDs of Discord mention recipients if configured. Post summaries, image URLs, published times, and authors are not included in the digest payload. Automatic digest delivery is off by default.</li>
+  <li>FEED/GROUP plain delivery includes the post title, original link, and source name (including any feed display name you set yourself). Single/multi embed delivery includes the title, original link, summary, source name, image URL, and published time. Both formats may include the user IDs of Discord mention recipients if configured. The registered feed URL itself and the post author are not included in Discord delivery content.</li>
+  <li>If you select and send a saved digest and an active Discord target, the delivery may include the digest profile name, generation time, the title, original link, and source name (including any feed display name you set yourself) of included items, the collapsed-item count, and the user IDs of Discord mention recipients if configured. Post summaries, image URLs, published times, and authors are not included in the digest payload. Automatic digest delivery is off by default.</li>
   <li>A fixed test delivery sends only fixed text to Discord and does not include posts, profiles, or user IDs.</li>
   <li>When you open the original post or share it, the title and link are passed to your device's browser or the chosen share-target app.</li>
-  <li>If the internalAdQc vc20 candidate is provided through Play internal testing, Google Mobile Ads and UMP may collect and share with Google approximate location based on IP address, app interactions, diagnostics, and device or other identifiers (including Advertising ID (AAID) and App Set ID). The purposes are advertising or marketing, analytics, and fraud prevention, security, and compliance. Data is encrypted in transit using TLS.</li>
-  <li>That internal-test build uses UMP to request consent where required and provides a privacy-options entry point where you can manage your consent choices again. Ad requests are made only after the device is confirmed as a registered test device in test mode. Clicking production ads is prohibited.</li>
+  <li>Google Mobile Ads and UMP, included in the test-only vc24 closed Alpha and in the general candidates from vc25 onward, may collect and share with Google approximate location based on IP address, app interactions, diagnostics, and device or other identifiers (including Advertising ID (AAID) and App Set ID). The purposes are advertising or marketing, analytics, and fraud prevention, security, and compliance. Data is encrypted in transit using TLS.</li>
+  <li>Those advertising candidates use UMP to request consent where required and provide a privacy-options entry point where you can manage your consent choices again. Completing a rewarded ad can earn one non-cash token, up to five, and if you separately confirm and spend one token, bottom banner requests and display stop for 24 hours.</li>
 </ul>
-<p>The app does not directly access your device's contacts, precise location, photos, or files. The general vc19 release requests only the internet access permission (<code>INTERNET</code>). The internalAdQc vc20 candidate includes the advertising ID permission used by Google Mobile Ads (<code>com.google.android.gms.permission.AD_ID</code>), as confirmed in the local merged manifest. It will be verified again in the final upload AAB.</p>
+<p>The app does not directly access your device's contacts, precise location, photos, or files. The general baseline vc22 Alpha declares only the internet access permission (<code>INTERNET</code>). The separate test-only vc24 closed Alpha includes the advertising ID permission used by Google Mobile Ads (<code>com.google.android.gms.permission.AD_ID</code>). Permissions in the general advertising candidates that follow are verified again in the actual upload AAB.</p>
 
 <h2>5. Third-Party Sharing and Sale</h2>
-<p>The developer does not directly receive or sell app data. Discord is a third party separate from the developer. When you enable automatic FEED/GROUP delivery or initiate manual digest delivery, the information described in section 4 is transmitted to the Discord webhook you registered. For Google Mobile Ads and UMP processing in the internalAdQc vc20 candidate, Google is a separate third party and may collect and share the advertising-related information described in section 4. The policies of feed and image hosts, Discord, Google, browsers, and share-target apps apply to their respective processing.</p>
+<p>The developer does not directly receive or sell app data. Discord is a third party separate from the developer. When you enable automatic FEED/GROUP delivery or initiate manual digest delivery, the information described in section 4 is transmitted to the Discord webhook you registered. For Google Mobile Ads and UMP processing in the test-only vc24 closed Alpha and the general advertising candidates that follow, Google is a separate third party and may collect and share the advertising-related information described in section 4. The policies of feed and image hosts, Discord, Google, browsers, and share-target apps apply to their respective processing.</p>
 
 <h2>6. Retention and Deletion</h2>
-<p>You control how long data is retained on your device. Deleting a feed or post in the app deletes the corresponding local data, and uninstalling the app deletes its local app data from the device. However, depending on your Android backup settings, a backup copy of some app data may remain in your Google Account and may be restored after reinstallation; manage that copy through your device and Google Account backup settings. Messages and attachment information already transmitted to Discord are not deleted from Discord when you delete local app data or uninstall the app. The developer cannot access or delete Discord copies on your behalf, so you must manage them directly through your Discord channel and account. Data processed by Google in the internalAdQc vc20 candidate is retained and deleted under Google's policies and the controls available through your account and device. Changing a consent choice through UMP privacy options does not mean data already processed is automatically deleted. The developer cannot access or delete data retained by Google on your behalf. No copy of app data exists on a collection server operated by the developer.</p>
+<p>You control how long data is retained on your device. Deleting a feed or post in the app deletes the corresponding local data, and uninstalling the app deletes its local app data from the device. However, depending on your Android backup settings, a backup copy of some app data may remain in your Google Account and may be restored after reinstallation; manage that copy through your device and Google Account backup settings. The advertising token wallet and the 24-hour hidden state are excluded from cloud backup and device-to-device transfer. Messages and attachment information already transmitted to Discord are not deleted from Discord when you delete local app data or uninstall the app. Data processed by Google in the test-only vc24 closed Alpha and the general advertising candidates that follow is retained and deleted under Google's policies and the controls available through your account and device. Changing a consent choice through UMP privacy options does not mean data already processed is automatically deleted. The developer cannot access or delete data retained by Google on your behalf. No copy of app data exists on a collection server operated by the developer.</p>
 
 <h2>7. Children</h2>
 <p>This app is not primarily directed at children and does not knowingly collect personal information from children.</p>
@@ -197,7 +202,12 @@
 <h2>9. Changes to This Policy</h2>
 <p>If this policy changes, the published document will be updated and the change will be noted in the app's update description.</p>
 
-<h2>10. Contact</h2>
+<h2>10. Copyright and Other Rights Reports</h2>
+<p>The app downloads publicly available content from the RSS, Atom, and web page addresses you registered yourself and shows it on your device. It handles only the title, source, original link, a limited summary, and the image address the original provided, and it does not copy and store the full original text or the original images.</p>
+<p>If you are a content rights holder and object to how a particular source is handled, please let us know at the contact address below. We reply with an acknowledgement within 7 days of receipt and inform you of the investigation and the action decision within 14 days. Action takes the form of removing that source from the app's default recommendation list or stopping ad display, and actual rollout adds the time needed to distribute an app update.</p>
+<p>The report and block controls inside the app are for your own use, apply only to that device, and are not sent to the developer. For rights holder reports, please use the contact address below.</p>
+
+<h2>11. Contact</h2>
 <p>Contact: <a href="mailto:chechapbg@gmail.com">chechapbg@gmail.com</a></p>
 </section>
 
