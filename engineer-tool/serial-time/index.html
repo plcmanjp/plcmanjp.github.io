@@ -367,7 +367,7 @@
       for (const c of body) {
         if (!isHexDigit(c)) return { error: "HEX가 아닌 문자 '" + c + "' (토큰: " + token + ")" };
       }
-      if (body.length % 2 !== 0) return { error: "홀수 니블 토큰: " + token + " — 각 토큰은 완전한 바이트여야 합니다." };
+      if (body.length % 2 !== 0) return { error: "홀수 니블 토큰: " + token + ". 각 토큰은 완전한 바이트여야 합니다." };
       for (let i = 0; i < body.length; i += 2) {
         bytes.push(parseInt(body.substring(i, i + 2), 16));
         if (bytes.length > MAX_BYTES) return { error: "4096 bytes를 초과했습니다. 입력을 줄이세요." };
@@ -491,7 +491,7 @@
       frameWarn.hidden = true;
       $("byteMeta").textContent = "0 bytes";
       normEl.textContent = "—"; normEl.className = "norm-hex empty";
-      clearResult(empty ? "프레임을 입력하세요" : "입력 오류 — 결과 없음");
+      clearResult(empty ? "프레임을 입력하세요" : "입력 오류: 결과 없음");
       return;
     }
     frameErr.hidden = true;
@@ -594,7 +594,7 @@
     inputMode = "HEX";
     $("modeHex").setAttribute("aria-pressed", "true");
     $("modeAscii").setAttribute("aria-pressed", "false");
-    $("frameLabel").firstChild.textContent = "HEX 프레임 (공백·콤마·하이픈·0xNN·연속 HEX)";
+    $("frameLabel").firstChild.textContent = "HEX 프레임 (공백, 콤마, 하이픈, 0xNN, 연속 HEX)";
     frameEl.placeholder = "01 03 00 00 00 0A C5 CD";
     recompute();
   });
@@ -602,7 +602,7 @@
     inputMode = "ASCII";
     $("modeHex").setAttribute("aria-pressed", "false");
     $("modeAscii").setAttribute("aria-pressed", "true");
-    $("frameLabel").firstChild.textContent = "ASCII 프레임 (US-ASCII · \\r \\n \\t \\0 \\\\ \\xNN)";
+    $("frameLabel").firstChild.textContent = "ASCII 프레임 (US-ASCII: \\r \\n \\t \\0 \\\\ \\xNN)";
     frameEl.placeholder = "HELLO\\r\\n";
     recompute();
   });

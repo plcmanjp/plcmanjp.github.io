@@ -381,8 +381,8 @@
     const { bytes, skipped, odd, truncated } = parseHexNibble(payloadEl.value);
     let warn = "";
     if (skipped.length) warn += "무시된 문자: " + skipped.join(" ");
-    if (odd) warn += (warn ? " · " : "") + "끝 홀수 니블 무시";
-    if (truncated) warn += (warn ? " · " : "") + "4096 bytes 초과분 무시";
+    if (odd) warn += (warn ? ", " : "") + "끝 홀수 니블 무시";
+    if (truncated) warn += (warn ? ", " : "") + "4096 bytes 초과분 무시";
     return { bytes, warn };
   }
 
@@ -475,7 +475,7 @@
       badge.textContent = "잠금(프리셋 값)";
       badge.classList.remove("edit");
     } else {
-      badge.textContent = "편집 · 직접 입력";
+      badge.textContent = "편집: 직접 입력";
       badge.classList.add("edit");
     }
   }
@@ -557,7 +557,7 @@
       pe.hidden = true;
       value = crc16(bytes, p);
       width = 2;
-      hint = p.label + " · poly " + pad4(p.poly);
+      hint = p.label + ", poly " + pad4(p.poly);
     }
 
     const fmt = formatResult(value, width);
@@ -632,7 +632,7 @@
     inputMode = "HEX";
     $("modeHex").setAttribute("aria-pressed", "true");
     $("modeAscii").setAttribute("aria-pressed", "false");
-    $("inputLabel").firstChild.textContent = "HEX 바이트 (공백·콤마 OK)";
+    $("inputLabel").firstChild.textContent = "HEX 바이트 (공백, 콤마 OK)";
     recompute();
   });
   $("modeAscii").addEventListener("click", () => {

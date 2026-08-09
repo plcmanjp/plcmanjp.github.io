@@ -623,17 +623,17 @@
   // ── 탭2: 직각삼각형 솔버 ─────────────────────────────────────────────────
   var triRef = "HYPOTENUSE";
   var TRI_LABEL = { HYPOTENUSE: "빗변 (c)", BASE: "밑변 (b)", HEIGHT: "높이 (a)" };
-  var TRI_PLACEHOLDER = { HYPOTENUSE: "빗변 입력 (예시:5)", BASE: "밑변 입력 (예시:3)", HEIGHT: "높이 입력 (예시:4)" };
   var TRI_FORMULA = {
-    HYPOTENUSE: "높이(a) = 빗변(c)·sinθ  ·  밑변(b) = 빗변(c)·cosθ",
-    BASE: "높이(a) = 밑변(b)·tanθ  ·  빗변(c) = 밑변(b) / cosθ",
-    HEIGHT: "밑변(b) = 높이(a) / tanθ  ·  빗변(c) = 높이(a) / sinθ"
+    HYPOTENUSE: "높이(a) = 빗변(c) × sinθ, 밑변(b) = 빗변(c) × cosθ",
+    BASE: "높이(a) = 밑변(b) × tanθ, 빗변(c) = 밑변(b) / cosθ",
+    HEIGHT: "밑변(b) = 높이(a) / tanθ, 빗변(c) = 높이(a) / sinθ"
   };
   var REV_FORMULA = {
-    BASE_HEIGHT: "θ = atan(높이(a)/밑변(b))  ·  빗변(c) = √(높이(a)²+밑변(b)²)",
-    HYP_HEIGHT: "θ = asin(높이(a)/빗변(c))  ·  밑변(b) = √(빗변(c)²−높이(a)²)",
-    HYP_BASE: "θ = acos(밑변(b)/빗변(c))  ·  높이(a) = √(빗변(c)²−밑변(b)²)"
+    BASE_HEIGHT: "θ = atan(높이(a)/밑변(b)), 빗변(c) = √(높이(a)²+밑변(b)²)",
+    HYP_HEIGHT: "θ = asin(높이(a)/빗변(c)), 밑변(b) = √(빗변(c)²−높이(a)²)",
+    HYP_BASE: "θ = acos(밑변(b)/빗변(c)), 높이(a) = √(빗변(c)²−밑변(b)²)"
   };
+  var TRI_PLACEHOLDER = { HYPOTENUSE: "빗변 입력 (예시:5)", BASE: "밑변 입력 (예시:3)", HEIGHT: "높이 입력 (예시:4)" };
 
   function clearTriOutputs() {
     el.triOut1.textContent = ""; el.triOut2.textContent = "";
@@ -751,7 +751,7 @@
     var r = CoordAngle.fromTwoPoints(x1, y1, x2, y2);
     if (r.zero) {
       el.coordDX.textContent = "0"; el.coordDY.textContent = "0"; el.coordDist.textContent = "0";
-      el.coordAngle.textContent = "두 점이 같음 — 각도 정의 안 됨";
+      el.coordAngle.textContent = "두 점이 같아 각도를 정의할 수 없음";
       el.coordAngle.classList.add("err");
       el.coordAngle360.textContent = "";
       el.coordDXCopy.disabled = false; el.coordDYCopy.disabled = false; el.coordDistCopy.disabled = false;

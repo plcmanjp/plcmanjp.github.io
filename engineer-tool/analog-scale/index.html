@@ -403,7 +403,7 @@
     c.width = W * dpr; c.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
     var cs = getComputedStyle(document.documentElement), col = function (n) { return cs.getPropertyValue(n).trim(); };
     var plotW = W - padL - padR, plotH = H - padT - padB;
-    if (!G) { ctx.fillStyle = col("--muted"); ctx.font = "12px sans-serif"; ctx.textAlign = "center"; ctx.fillText("MIN = MAX — 직선 정의 불가", W / 2, H / 2); return; }
+    if (!G) { ctx.fillStyle = col("--muted"); ctx.font = "12px sans-serif"; ctx.textAlign = "center"; ctx.fillText("MIN = MAX: 직선 정의 불가", W / 2, H / 2); return; }
 
     var xLo0 = Math.min(G.inMin, G.inMax), xHi0 = Math.max(G.inMin, G.inMax);
     var yLo0 = Math.min(G.outMin, G.outMax), yHi0 = Math.max(G.outMin, G.outMax);
