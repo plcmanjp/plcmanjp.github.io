@@ -2,21 +2,21 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; connect-src 'none'; font-src 'none'; form-action 'none'; frame-src 'none'; img-src 'self'; manifest-src 'none'; media-src 'none'; object-src 'none'; script-src 'self' 'sha256-jWFg7gEZhfwy/9fBjnYV/LGZkBXxiOizbQhlxsEbHik='; script-src-attr 'none'; style-src 'self'; style-src-attr 'none'; worker-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; connect-src 'none'; font-src 'none'; form-action 'none'; frame-src 'none'; img-src 'self'; manifest-src 'none'; media-src 'none'; object-src 'none'; script-src 'self' 'sha256-XvLRVMfKB6lgeJBanRojEC+z1SOBn3TxM3/zNb/4t2c='; script-src-attr 'none'; style-src 'self'; style-src-attr 'none'; worker-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="코딩 없이 마우스·키보드 반복 작업을 자동화하는 무료 Windows 도구, JP's Codeless Macro Tool을 소개합니다.">
+<meta name="description" content="코딩 없이 마우스와 키보드 반복 작업을 자동화하는 무료 Windows 도구, JP's Codeless Macro Tool을 소개합니다.">
 <meta name="theme-color" id="themeColor" content="#f5f7fb">
 <meta property="og:site_name" content="PLCManJP">
 <meta property="og:locale" content="ko_KR">
 <meta property="og:title" content="JP's Codeless Macro Tool | 코드 없이 만드는 Windows 자동화">
-<meta property="og:description" content="녹화와 스텝 조립, 조건·반복·변수, 이미지 검색과 OCR까지. 반복 업무를 눈에 보이는 흐름으로 자동화하세요.">
+<meta property="og:description" content="녹화와 스텝 조립, 실행 전 검증, 6개 언어 UI, 이미지 검색과 OCR까지. 반복 업무를 눈에 보이는 흐름으로 자동화하세요.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://plcmanjp.github.io/codeless-macro-tool/">
-<meta property="og:image" content="https://plcmanjp.github.io/assets/og-codeless-macro-tool.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="반복 업무를 눈에 보이는 자동화로">
+<meta property="og:image" content="https://plcmanjp.github.io/codeless-macro-tool/assets/promo-super-hero.png">
+<meta property="og:image:width" content="1920">
+<meta property="og:image:height" content="1080">
+<meta property="og:image:alt" content="자동화 스텝이 연결되어 실행되는 3D 흐름">
 <meta name="twitter:card" content="summary_large_image">
 <title>JP's Codeless Macro Tool | 코드 없이 만드는 Windows 자동화</title>
 <link rel="canonical" href="https://plcmanjp.github.io/codeless-macro-tool/">
@@ -24,7 +24,7 @@
 <link rel="icon" href="./assets/app-icon.png" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="/assets/product.css?v=20260729">
-<link rel="stylesheet" href="./assets/styles.css?v=20260729">
+<link rel="stylesheet" href="./assets/styles.css?v=20260809">
 <script src="/assets/theme-init.js"></script>
 </head>
 <body>
@@ -57,9 +57,9 @@
       <div class="hero-glow hero-glow-two" aria-hidden="true"></div>
       <div class="shell hero-grid">
         <div class="hero-copy">
-          <div class="eyebrow"><span class="status-dot"></span> Windows · 무료 · 한국어/English</div>
+          <div class="eyebrow"><span class="status-dot"></span> Windows / 무료 / 6개 언어</div>
           <h1>반복 업무를<br><span>눈에 보이는 자동화</span>로</h1>
-          <p class="hero-lead">마우스와 키보드 동작을 녹화하거나 스텝으로 조립하세요. 조건, 반복, 변수, 이미지 검색과 OCR을 더해 코딩 없이 실제 업무 흐름을 자동화할 수 있습니다.</p>
+          <p class="hero-lead">마우스와 키보드 동작을 녹화하거나 스텝으로 조립하세요. 실행 전 검증과 직전 정상본 보관이 작업을 지키고, 조건, 반복, 변수, 이미지 검색과 OCR이 실제 업무 흐름을 완성합니다.</p>
           <div class="hero-actions">
             <a class="button button-primary" href="https://apps.microsoft.com/detail/9NXX9L2ZW52W">
               <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5.5 8.5h13l1 11h-15l1-11Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M8.5 9V6.75a3.5 3.5 0 0 1 7 0V9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M8 12h3v3H8v-3Zm4 0h3v3h-3v-3Zm-4 4h3v3H8v-3Zm4 0h3v3h-3v-3Z" fill="currentColor"/></svg>
@@ -69,29 +69,23 @@
             <a class="button button-secondary" href="#features">기능 살펴보기</a>
           </div>
           <ul class="hero-facts" aria-label="제품 특징">
-            <li><span aria-hidden="true">✓</span> 모든 기능 무료</li>
-            <li><span aria-hidden="true">✓</span> 인앱 결제 없음</li>
+            <li><span aria-hidden="true">✓</span> 6개 언어 UI</li>
+            <li><span aria-hidden="true">✓</span> 실행 전 구조 검사</li>
             <li><span aria-hidden="true">✓</span> Store 자동 업데이트</li>
           </ul>
         </div>
 
         <div class="hero-visual" id="screens">
-          <div class="window-shell">
-            <div class="window-bar" aria-hidden="true">
-              <span class="window-dot"></span>
-              <span class="window-dot"></span>
-              <span class="window-dot"></span>
-              <span class="window-title">나의 첫 자동화</span>
-            </div>
-            <img src="./assets/app-main.png" width="900" height="580" alt="반복, 마우스 클릭, 텍스트 입력 스텝을 조립한 JP's Codeless Macro Tool 메인 화면">
-          </div>
+          <figure class="promo-hero">
+            <img src="./assets/promo-super-hero.png" width="1920" height="1080" fetchpriority="high" alt="마우스, 스텝 카드, 이미지 검색, OCR과 재생이 연결된 자동화 흐름">
+          </figure>
           <div class="floating-card floating-card-top">
-            <span class="floating-icon">●</span>
-            <span><strong>REC</strong> 동작을 스텝으로 기록</span>
+            <span class="floating-icon">✓</span>
+            <span><strong>CHECK</strong> 실행 전 구조 검사</span>
           </div>
           <div class="floating-card floating-card-bottom">
             <span class="floating-icon floating-icon-play">▶</span>
-            <span><strong>F9</strong> 바로 실행</span>
+            <span><strong>PLAY</strong> 검증 후 안전하게 재생</span>
           </div>
         </div>
       </div>
@@ -100,9 +94,9 @@
     <section class="proof-strip" aria-label="핵심 가치">
       <div class="shell proof-grid">
         <div><strong>코딩 0줄</strong><span>화면에서 순서를 조립</span></div>
-        <div><strong>녹화 + 편집</strong><span>빠르게 만들고 세밀하게 수정</span></div>
-        <div><strong>조건 + 반복</strong><span>단순 재생을 넘어 업무 흐름으로</span></div>
-        <div><strong>실시간 확인</strong><span>변수와 동작 로그를 한눈에</span></div>
+        <div><strong>6개 언어</strong><span>Windows 언어에 맞춘 화면</span></div>
+        <div><strong>실행 전 검증</strong><span>문제가 있으면 입력 전에 중단</span></div>
+        <div><strong>정상본 보관</strong><span>직전 정상 프로젝트 한 세대 유지</span></div>
       </div>
     </section>
 
@@ -146,10 +140,10 @@
             <div class="feature-copy">
               <span class="feature-label">BUILD</span>
               <h3>녹화하고, 스텝으로 다듬기</h3>
-              <p>실제 마우스·키보드 동작을 녹화해 스텝으로 바꾸고, 필요한 곳만 직접 추가하거나 순서를 조정할 수 있습니다.</p>
+              <p>실제 마우스와 키보드 동작을 녹화해 스텝으로 바꾸고, 필요한 곳만 직접 추가하거나 순서를 조정할 수 있습니다.</p>
               <ul class="mini-list">
-                <li>클릭 · 더블클릭 · 드래그 · 스크롤</li>
-                <li>단일 키 · 조합키 · 긴 텍스트 입력</li>
+                <li>클릭, 더블클릭, 드래그와 스크롤</li>
+                <li>단일 키, 조합키와 긴 텍스트 입력</li>
                 <li>보기 모드와 편집 모드 분리</li>
               </ul>
             </div>
@@ -164,7 +158,7 @@
           <article class="feature-card">
             <span class="feature-label">LOGIC</span>
             <h3>조건, 반복, 변수</h3>
-            <p>IF·AND·OR·ELSE 분기, 중첩 반복, 변수 계산과 텍스트 치환으로 상황에 따라 달라지는 흐름을 만듭니다.</p>
+            <p>IF, AND, OR, ELSE 분기와 중첩 반복, 변수 계산, 텍스트 치환으로 상황에 따라 달라지는 흐름을 만듭니다.</p>
             <div class="logic-map" aria-hidden="true">
               <span>IF 화면 확인</span>
               <i></i>
@@ -192,9 +186,26 @@
               <p>화면에서 지정한 이미지를 찾거나, 선택 영역의 텍스트를 OCR로 읽어 변수에 저장합니다. 인식한 위치를 다음 클릭 좌표로 사용할 수도 있습니다.</p>
               <a class="text-link" href="https://plcman.tistory.com/234">OCR 사용법 보기 <span aria-hidden="true">→</span></a>
               <figure class="detail-shot">
-                <img src="./assets/app-ocr.png" width="1032" height="365" loading="lazy" alt="OCR 읽기 영역과 저장할 변수명, 업스케일·이진화 옵션을 설정하는 스텝 편집 창">
-                <figcaption>읽기 영역(ROI)·저장 변수·업스케일·이진화를 스텝에서 바로 설정합니다.</figcaption>
+                <img src="./assets/app-ocr.png" width="1032" height="365" loading="lazy" alt="OCR 읽기 영역과 저장할 변수명, 업스케일과 이진화 옵션을 설정하는 스텝 편집 창">
+                <figcaption>읽기 영역(ROI), 저장 변수, 업스케일과 이진화를 스텝에서 바로 설정합니다.</figcaption>
               </figure>
+            </div>
+          </article>
+
+          <article class="feature-card feature-card-wide media-card media-card-reverse promo-feature-card">
+            <div class="feature-copy">
+              <span class="feature-label">SAFE</span>
+              <h3>실행 전 검사와 정상본 복구</h3>
+              <p>반복, 조건, 포인터 구조와 누락된 이미지, 대상 창 설정을 재생 전에 확인합니다. 기존 프로젝트를 덮어쓸 때는 직전 정상본을 자동으로 한 세대 보관합니다.</p>
+              <ul class="mini-list">
+                <li>문제가 있으면 실제 입력을 시작하기 전에 중단</li>
+                <li>실행 스텝, 반복 횟수와 전체 시간에 안전 한도 적용</li>
+                <li>민감한 입력값을 남기지 않는 실행 기록</li>
+              </ul>
+              <a class="text-link" href="https://plcman.tistory.com/229">전체 업데이트 이력 보기 <span aria-hidden="true">→</span></a>
+            </div>
+            <div class="media-image promo-art-square">
+              <img src="./assets/promo-box.png" width="1080" height="1080" loading="lazy" alt="마우스, 재생, 이미지 검색과 OCR이 스텝 카드에 연결된 3D 자동화 흐름">
             </div>
           </article>
 
@@ -223,11 +234,11 @@
           </article>
 
           <article class="feature-card feature-card-blue">
-            <span class="feature-label">POSITION</span>
-            <h3>좌표 어레이 자동 생성</h3>
-            <p>기준 좌표, 개수, 간격만 넣으면 반복마다 사용할 격자 좌표를 만들고 지그재그 순서까지 미리 확인할 수 있습니다.</p>
-            <div class="dot-grid" aria-hidden="true">
-              <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            <span class="feature-label">LANGUAGE</span>
+            <h3>6개 언어로 같은 작업 흐름</h3>
+            <p>한국어, English, 日本語, 简体中文, 繁體中文, Español 가운데 원하는 언어를 고르거나 Windows 표시 언어에 맞춰 자동 선택할 수 있습니다.</p>
+            <div class="chip-row language-chips" aria-hidden="true">
+              <span>한국어</span><span>English</span><span>日本語</span><span>中文</span><span>Español</span>
             </div>
           </article>
         </div>
@@ -271,10 +282,10 @@
           <p>모든 기능을 무료로 사용할 수 있고 인앱 결제가 없습니다. Microsoft Store에서 설치하면 새 버전이 자동으로 업데이트됩니다.</p>
         </div>
         <div class="trust-list">
-          <div><span aria-hidden="true">✓</span><p><strong>한국어·영어 UI</strong>시스템 언어에 맞춰 자동 선택하거나 직접 바꿀 수 있습니다.</p></div>
+          <div><span aria-hidden="true">✓</span><p><strong>6개 언어 UI</strong>한국어, 영어, 일본어, 중국어 간체와 번체, 스페인어를 자동 선택하거나 직접 바꿀 수 있습니다.</p></div>
           <div><span aria-hidden="true">✓</span><p><strong>로컬 프로젝트</strong>자동화 스텝과 프로젝트 파일을 사용자의 PC에서 관리합니다.</p></div>
           <div><span aria-hidden="true">✓</span><p><strong>실행 제어</strong>전역 단축키로 매크로를 시작하고 즉시 중지할 수 있습니다.</p></div>
-          <p class="env-note"><span><b>지원 환경</b> Windows 10 버전 1809(빌드 17763) 이상</span><span><b>아키텍처</b> x64</span><span><b>언어</b> 한국어 · English</span></p>
+          <p class="env-note"><span><b>지원 환경</b> Windows 10 버전 1809(빌드 17763) 이상</span><span><b>아키텍처</b> x64</span><span><b>언어</b> 한국어, English, 日本語, 简体中文, 繁體中文, Español</span></p>
         </div>
       </div>
     </section>
@@ -299,7 +310,7 @@
     <div class="shell footer-grid">
       <div>
         <a class="footer-brand" href="https://plcmanjp.github.io/">PLCManJP</a>
-        <p>제조·설비 현장을 위한 실용 도구를 만듭니다.</p>
+        <p>제조와 설비 현장을 위한 실용 도구를 만듭니다.</p>
       </div>
       <div class="footer-links">
         <a href="https://apps.microsoft.com/detail/9NXX9L2ZW52W">Microsoft Store</a>
@@ -320,9 +331,9 @@
         "url": "https://plcmanjp.github.io/codeless-macro-tool/",
         "applicationCategory": "DeveloperApplication",
         "operatingSystem": "Windows 10 1809+ (x64)",
-        "inLanguage": ["ko", "en"],
-        "description": "마우스·키보드 동작을 녹화하거나 스텝으로 조립해 반복 업무를 자동화하는 Windows 도구. 조건·반복·변수, 이미지 검색과 OCR을 지원한다.",
-        "image": "https://plcmanjp.github.io/assets/og-codeless-macro-tool.png",
+        "inLanguage": ["ko", "en", "ja", "zh-Hans", "zh-Hant", "es"],
+        "description": "마우스와 키보드 동작을 녹화하거나 스텝으로 조립해 반복 업무를 자동화하는 Windows 도구. 실행 전 검증, 조건, 반복, 변수, 이미지 검색과 OCR을 지원한다.",
+        "image": "https://plcmanjp.github.io/codeless-macro-tool/assets/promo-super-hero.png",
         "installUrl": "https://apps.microsoft.com/detail/9NXX9L2ZW52W",
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
         "author": { "@type": "Person", "name": "PLCManJP", "url": "https://plcmanjp.github.io/" }
