@@ -53,6 +53,69 @@
   margin-top: 26px;
 }
 
+.app-screens-section {
+  border-top: 1px solid var(--line);
+  background: var(--page-alt);
+}
+
+.app-screen-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 30px 24px;
+}
+
+.app-screen-grid figure {
+  min-width: 0;
+  margin: 0;
+}
+
+.app-screen-grid figure > div {
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  border-radius: 20px;
+  background: var(--surface);
+  box-shadow: var(--shadow-soft);
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+
+.app-screen-grid figure:hover > div {
+  box-shadow: var(--shadow);
+  transform: translateY(-5px);
+}
+
+.app-screen-grid img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.app-screen-grid figcaption {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 15px 4px 0;
+}
+
+.app-screen-grid figcaption strong {
+  font-size: 1rem;
+}
+
+.app-screen-grid figcaption span {
+  color: var(--muted);
+  font-size: .8rem;
+}
+
+.app-screen-featured {
+  grid-column: 1 / -1;
+}
+
+.app-screen-featured figcaption {
+  align-items: center;
+  text-align: center;
+}
+
 .final-actions {
   max-width: 226px;
 }
@@ -60,5 +123,27 @@
 @media (max-width: 740px) {
   .promo-hero {
     border-radius: 16px;
+  }
+
+  .app-screen-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .app-screen-featured {
+    grid-column: auto;
+  }
+
+  .app-screen-featured figcaption {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .app-screen-grid figure > div {
+    border-radius: 14px;
+  }
+
+  .app-screen-grid figcaption {
+    padding-top: 11px;
   }
 }
