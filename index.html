@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; connect-src 'none'; font-src 'none'; form-action 'none'; frame-src 'none'; img-src 'self'; manifest-src 'none'; media-src 'none'; object-src 'none'; script-src 'sha256-wJG50zY5Rw4NDG+CxHCS1J3bGs9fy2dNenSkydYXsBs=' 'sha256-uZEqWL2EXo3pIcfcPUD74rb3A7AYqjbYry4EFX9/BX4=' 'sha256-QtqAB+zmzoCwLNrhUOw6HoSDr4Ez8/TNkaRS1L3Pc1s='; script-src-attr 'none'; style-src 'sha256-9Ss+ZBJk1tLTr+7ToB3qXvB8Nnlj1K+BhLdRHI+FAVg='; style-src-attr 'none'; worker-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; connect-src 'none'; font-src 'none'; form-action 'none'; frame-src 'none'; img-src 'self'; manifest-src 'none'; media-src 'none'; object-src 'none'; script-src 'sha256-wJG50zY5Rw4NDG+CxHCS1J3bGs9fy2dNenSkydYXsBs=' 'sha256-uZEqWL2EXo3pIcfcPUD74rb3A7AYqjbYry4EFX9/BX4=' 'sha256-QtqAB+zmzoCwLNrhUOw6HoSDr4Ez8/TNkaRS1L3Pc1s='; script-src-attr 'none'; style-src 'sha256-OgjBOhVZI7bCehe9pnOQ6NpRsmqCkS7ss9mpmV76o3w='; style-src-attr 'none'; worker-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="google-site-verification" content="OwG5LbzGDYkvqDulqCkbK-_Yn-M28l3_QhQ-glExRZk">
 <meta name="google-adsense-account" content="ca-pub-2244929162842411">
@@ -142,22 +142,11 @@
 
   /* wide tools card */
   .card.wide{padding:24px 26px}
-  .ladder-shot{display:block;width:min(100%,360px);margin:0 auto;overflow:hidden;border:1px solid var(--line);border-radius:14px;background:#0c1016}
-  .ladder-shot img{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:cover}
   @media(min-width:681px){
     .card.wide{flex-direction:row;align-items:center;gap:26px}
     .card.wide .wbody{flex:1}
     .card.wide p{margin-bottom:0}
     .card.wide .cta{flex:0 0 auto}
-  }
-  @media(min-width:901px){
-    .card.wide.ladder-card{display:grid;grid-template-columns:240px minmax(0,1fr) auto;align-items:center;gap:26px}
-    .ladder-card .ladder-shot{width:240px}
-  }
-  @media(min-width:681px) and (max-width:900px){
-    .card.wide.ladder-card{flex-direction:column;align-items:stretch}
-    .ladder-card .cta{align-self:stretch;display:grid;grid-template-columns:1fr}
-    .ladder-card .cta .btn{width:100%;justify-content:center;text-align:center}
   }
   .card.wide h3{margin-bottom:10px}
   .tool-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
@@ -321,16 +310,18 @@
     <div class="wrap">
       <h2 class="sec-h">PLC 학습</h2>
       <!-- Ladder Quest (ladder-quest/ slug) -->
-      <article class="card wide ladder-card">
-        <figure class="ladder-shot">
-          <img src="./assets/ladder-quest-modes.png" width="1080" height="1080" loading="lazy" decoding="async" alt="Ladder Quest 첫 화면에 기초, 미로, 신호등 세 모드가 표시된 모습">
-        </figure>
+      <article class="card wide">
         <div class="wbody">
-          <div class="badges">
-            <span class="plat"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/></svg>Web</span>
-            <span class="st st-live">웹 공개, 무료</span>
+          <div class="product-head">
+            <img class="product-icon" src="./ladder-quest/icon.svg" width="512" height="512" alt="">
+            <div>
+              <div class="badges">
+                <span class="plat"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/></svg>Web</span>
+                <span class="st st-live">웹 공개, 무료</span>
+              </div>
+              <h3>Ladder Quest</h3>
+            </div>
           </div>
-          <h3>Ladder Quest</h3>
           <p>PLC 래더 로직으로 현장 설비를 움직이는 퍼즐 게임입니다. 미션 사양을 읽고 래더 다이어그램을 직접 편성해 요구 동작을 재현합니다. 기초 7개 챕터 24라운드, 미로 10라운드와 샌드박스 2종, 신호등 4라운드를 공개했습니다. 설치나 회원가입 없이 브라우저에서 바로 즐길 수 있고, 처음 접속한 뒤에는 오프라인에서도 동작합니다. 가로와 세로 화면을 모두 지원합니다.</p>
         </div>
         <div class="cta">
