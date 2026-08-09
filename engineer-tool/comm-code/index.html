@@ -679,6 +679,14 @@
     try { await navigator.clipboard.writeText(t); } catch (_) {}
   });
 
+  document.querySelectorAll("[data-theme-set]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const v = btn.getAttribute("data-theme-set");
+      if (v === "auto") document.documentElement.removeAttribute("data-theme");
+      else document.documentElement.setAttribute("data-theme", v);
+    });
+  });
+
   applyAlgoUi();
   recompute();
 })();
