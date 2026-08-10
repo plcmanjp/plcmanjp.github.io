@@ -2,15 +2,15 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; connect-src 'none'; font-src 'none'; form-action 'none'; frame-src 'none'; img-src 'self'; manifest-src 'none'; media-src 'none'; object-src 'none'; script-src 'self' 'sha256-zAcnC/oVRkkl7r2lelUBpEalEwqmHgQs6fwhQIWtMmY='; script-src-attr 'none'; style-src 'self'; style-src-attr 'none'; worker-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; connect-src 'none'; font-src 'none'; form-action 'none'; frame-src 'none'; img-src 'self'; manifest-src 'none'; media-src 'none'; object-src 'none'; script-src 'self' 'sha256-wG2ppajysdnzqg3dUbvcuD15CBdv8DKr4ZWj/fZd2jY='; script-src-attr 'none'; style-src 'self'; style-src-attr 'none'; worker-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="RSS와 Atom, 일반 웹페이지를 한곳에서 구독하고, 오프라인으로 읽고, 다이제스트와 Discord 전송까지 구성하는 로컬 우선 Android 앱 FeedGrove를 소개합니다. 현재 비공개 테스트 중입니다.">
+<meta name="description" content="RSS와 Atom, 일반 웹페이지를 한곳에서 구독하고 오프라인으로 다시 읽으며, 규칙 기반 다이제스트와 선택형 Discord 전송을 구성하는 로컬 우선 Android 앱 FeedGrove입니다.">
 <meta name="theme-color" id="themeColor" content="#f5f7fb">
 <meta property="og:site_name" content="PLCManJP">
 <meta property="og:locale" content="ko_KR">
 <meta property="og:title" content="FeedGrove | 흩어진 웹을 내 피드로">
-<meta property="og:description" content="RSS와 Atom부터 일반 HTML 페이지까지 모아 읽고, 규칙 기반 다이제스트와 선택형 Discord 전송을 구성하는 로컬 우선 Android 앱. 현재 비공개 테스트 중입니다.">
+<meta property="og:description" content="RSS와 Atom부터 일반 웹페이지까지 모아 읽고, 규칙 기반 다이제스트와 선택형 Discord 전송을 구성하는 로컬 우선 Android 앱입니다.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://plcmanjp.github.io/feedgrove/">
 <meta property="og:image" content="https://plcmanjp.github.io/assets/og-feedgrove.png">
@@ -18,12 +18,12 @@
 <meta property="og:image:height" content="500">
 <meta property="og:image:alt" content="FeedGrove: 원하는 소식을 한 곳에서 구독하고 정리하세요">
 <meta name="twitter:card" content="summary_large_image">
-<title>FeedGrove | RSS/HTML 피드 리더 비공개 테스트</title>
+<title>FeedGrove | RSS와 웹페이지를 한곳에서 읽는 Android 피드 리더</title>
 <link rel="canonical" href="https://plcmanjp.github.io/feedgrove/">
 <link rel="icon" href="./assets/app-icon.png" type="image/png">
 <link rel="apple-touch-icon" href="./assets/app-icon.png">
-<link rel="stylesheet" href="/assets/product.css?v=20260731">
-<link rel="stylesheet" href="./assets/styles.css?v=20260731">
+<link rel="stylesheet" href="/assets/product.css?v=20260810">
+<link rel="stylesheet" href="./assets/styles.css?v=20260810">
 <script src="/assets/theme-init.js"></script>
 </head>
 <body>
@@ -38,7 +38,7 @@
       <nav class="top-nav" aria-label="페이지 내 이동">
         <a href="#features">핵심 기능</a>
         <a href="#screens">실제 화면</a>
-        <a href="#testing">테스트 참여</a>
+        <a href="#install">시작 방법</a>
       </nav>
       <button class="theme-button" id="themeButton" type="button" aria-label="테마 전환: 현재 라이트">
         <span aria-hidden="true">◐</span><span id="themeLabel">라이트</span>
@@ -52,16 +52,16 @@
       <div class="hero-glow hero-glow-two" aria-hidden="true"></div>
       <div class="shell hero-grid">
         <div class="hero-copy">
-          <span class="test-badge"><span class="status-dot"></span> 비공개 테스트 중</span>
+          <span class="release-badge"><span class="status-dot"></span> Google Play 출시</span>
           <h1>흩어진 웹을<br><span>내 피드로 가꾸세요</span></h1>
           <p class="hero-lead">RSS와 Atom, 일반 웹페이지를 한곳에 모아 카드로 읽고, 필요한 소식만 다이제스트로 정리하세요. FeedGrove는 계정 없이 기기 안에서 내 피드를 관리하는 로컬 우선 Android 앱입니다.</p>
           <div class="hero-actions">
-            <a class="button button-primary" href="https://play.google.com/apps/testing/com.plcmanjp.feedgrove">테스트 참여 <span aria-hidden="true">↗</span></a>
-            <a class="button button-secondary" href="#testing">참여 방법 보기</a>
+            <a class="button button-primary" href="https://play.google.com/store/apps/details?id=com.plcmanjp.feedgrove">Google Play에서 설치 <span aria-hidden="true">↗</span></a>
+            <a class="button button-secondary" href="#features">주요 기능 보기</a>
           </div>
           <ul class="hero-facts" aria-label="제품 특징">
             <li><span aria-hidden="true">✓</span> Android 8.0+</li>
-            <li><span aria-hidden="true">✓</span> 한국어, English</li>
+            <li><span aria-hidden="true">✓</span> 한국어, English, 日本語</li>
             <li><span aria-hidden="true">✓</span> 계정 생성 없음</li>
           </ul>
         </div>
@@ -89,7 +89,7 @@
         <div class="section-heading centered">
           <p class="kicker">YOUR WEB, CULTIVATED</p>
           <h2>피드가 없는 페이지도<br>내 구독 목록으로</h2>
-          <p>뉴스와 블로그는 RSS와 Atom으로, 피드가 없는 일반 페이지는 필요한 영역을 직접 골라 같은 읽기 흐름에 담을 수 있습니다.</p>
+          <p>RSS와 Atom 피드는 주소에서 후보를 찾을 수 있습니다. 공식 피드가 없는 공개 웹페이지는 파서 스튜디오에서 반복 영역을 고르고 결과를 미리본 뒤 직접 확정할 수 있습니다.</p>
         </div>
         <div class="use-case-grid">
           <article class="use-card"><span class="use-number">01</span><h3>모아서 읽기</h3><p>카드, 컴팩트, 그룹 보기와 검색으로 여러 출처의 새 글을 한곳에서 확인합니다.</p></article>
@@ -132,18 +132,18 @@
       </div>
     </section>
 
-    <section class="section testing-section" id="testing">
+    <section class="section install-section" id="install">
       <div class="shell workflow-grid">
         <div class="section-heading sticky-heading">
-          <span class="test-badge"><span class="status-dot"></span> 비공개 테스트 중</span>
-          <h2>세 단계로<br>테스트에 참여하세요</h2>
-          <p>비공개 테스트는 Google 그룹 멤버에게만 열립니다. 먼저 테스트 그룹에 가입한 뒤, 같은 Google 계정으로 등록과 설치를 진행해야 합니다.</p>
-          <div class="testing-note"><strong>중요:</strong> 그룹 가입이 반영되지 않으면 테스트 등록 페이지나 Play 설치 화면에 접근할 수 없습니다.</div>
+          <span class="release-badge"><span class="status-dot"></span> 지금 설치 가능</span>
+          <h2>설치하고<br>내 피드를 시작하세요</h2>
+          <p>Google Play에서 설치한 뒤 주소 하나로 첫 피드를 추가할 수 있습니다. 공식 피드가 없는 공개 페이지는 파서 스튜디오에서 직접 구성할 수 있습니다.</p>
+          <a class="button button-primary install-button" href="https://play.google.com/store/apps/details?id=com.plcmanjp.feedgrove">Google Play에서 설치 <span aria-hidden="true">↗</span></a>
         </div>
         <ol class="workflow-list">
-          <li><span>01</span><div><h3>Google 그룹 가입</h3><p>FeedGrove 테스터 그룹에 가입합니다. 이후 단계에서도 그룹에 가입한 Google 계정을 사용하세요.</p><a class="step-action" href="https://groups.google.com/g/feedgrove-testers">테스터 그룹 가입 <span aria-hidden="true">↗</span></a></div></li>
-          <li><span>02</span><div><h3>비공개 테스트 등록</h3><p>그룹 가입에 사용한 계정으로 Google Play 테스트 참여 페이지에서 테스터 등록을 완료합니다.</p><a class="step-action" href="https://play.google.com/apps/testing/com.plcmanjp.feedgrove">테스트 등록 <span aria-hidden="true">↗</span></a></div></li>
-          <li><span>03</span><div><h3>Google Play에서 설치</h3><p>등록 완료 후 같은 계정으로 Play 스토어를 열어 FeedGrove를 설치합니다.</p><a class="step-action" href="https://play.google.com/store/apps/details?id=com.plcmanjp.feedgrove">Play 설치 페이지 <span aria-hidden="true">↗</span></a></div></li>
+          <li><span>01</span><div><h3>Google Play에서 설치</h3><p>Android 8.0 이상 기기에 FeedGrove를 설치합니다. 별도 서비스 계정을 만들 필요가 없습니다.</p></div></li>
+          <li><span>02</span><div><h3>첫 피드 추가</h3><p>RSS나 Atom 주소를 입력하거나 공개 웹페이지에서 피드 후보를 만들고 미리보기 결과를 직접 확정합니다.</p></div></li>
+          <li><span>03</span><div><h3>읽기 흐름 구성</h3><p>그룹, 검색, 읽음, 즐겨찾기와 다이제스트를 설정합니다. 필요한 경우에만 본인 소유의 Discord 웹훅을 연결합니다.</p></div></li>
         </ol>
       </div>
     </section>
@@ -153,9 +153,11 @@
         <div class="trust-copy"><p class="kicker">LOCAL FIRST</p><h2>계정 없이,<br>내 피드는 내 기기에서</h2><p>FeedGrove는 별도 서비스 계정을 요구하지 않습니다. 외부 전송은 사용자가 직접 구성한 기능을 활성화했을 때만 동작합니다.</p></div>
         <div class="trust-list">
           <div><span aria-hidden="true">✓</span><p><strong>로컬 우선 보관</strong>피드와 읽기 상태는 기기 내 Room 데이터베이스를 중심으로 관리합니다.</p></div>
+          <div><span aria-hidden="true">✓</span><p><strong>오프라인 다시 읽기</strong>저장된 제목, 링크, 요약과 항목 정보를 다시 볼 수 있습니다. 원문 전체를 저장하는 기능은 아닙니다.</p></div>
           <div><span aria-hidden="true">✓</span><p><strong>선택형 Discord 연동</strong>사용자가 자신의 웹훅을 등록하고 전송을 선택한 경우에만 외부로 전달합니다.</p></div>
-          <div><span aria-hidden="true">i</span><p><strong>정책과 피드백</strong><a href="https://plcmanjp.github.io/feedgrove/privacy/">개인정보처리방침</a>을 확인하거나 <a href="https://groups.google.com/g/feedgrove-testers">테스터 그룹</a>에서 의견을 남길 수 있습니다.</p></div>
-          <p class="env-note"><span><b>지원 환경</b> Android 8.0(API 26) 이상</span><span><b>언어</b> 한국어, English</span><span><b>상태</b> 비공개 테스트 중</span></p>
+          <div><span aria-hidden="true">i</span><p><strong>공개 페이지 범위</strong>로그인, 유료벽, CAPTCHA나 접근 제한을 우회하지 않습니다. 희망 갱신 주기는 Android 절전 정책에 따라 실제 실행 시각이 달라질 수 있습니다.</p></div>
+          <div><span aria-hidden="true">i</span><p><strong>정책과 문의</strong><a href="https://plcmanjp.github.io/feedgrove/privacy/">개인정보처리방침</a>을 확인하거나 <a href="mailto:chechapbg@gmail.com">이메일</a>로 의견을 남길 수 있습니다.</p></div>
+          <p class="env-note"><span><b>지원 환경</b> Android 8.0(API 26) 이상</span><span><b>언어</b> 한국어, English, 日本語</span><span><b>상태</b> Google Play 출시</span></p>
         </div>
       </div>
     </section>
@@ -163,8 +165,8 @@
     <section class="final-cta">
       <div class="shell final-card">
         <img src="./assets/app-icon.png" width="92" height="92" alt="">
-        <div><p class="kicker">JOIN THE TEST</p><h2>FeedGrove를<br>먼저 사용해 보세요</h2><p>Google 그룹 가입 후 비공개 테스트에 등록할 수 있습니다.</p></div>
-        <div class="final-actions"><a class="button button-light" href="https://groups.google.com/g/feedgrove-testers">1. 그룹 가입 <span aria-hidden="true">↗</span></a><a class="button button-outline-light" href="https://play.google.com/apps/testing/com.plcmanjp.feedgrove">2. 테스트 참여 <span aria-hidden="true">↗</span></a></div>
+        <div><p class="kicker">AVAILABLE ON GOOGLE PLAY</p><h2>FeedGrove로<br>내 피드를 시작하세요</h2><p>RSS와 웹페이지를 한곳에 모아 읽고 필요한 소식만 정리할 수 있습니다.</p></div>
+        <div class="final-actions"><a class="button button-light" href="https://play.google.com/store/apps/details?id=com.plcmanjp.feedgrove">Google Play에서 설치 <span aria-hidden="true">↗</span></a><a class="button button-outline-light" href="https://plcmanjp.github.io/feedgrove/privacy/">개인정보처리방침</a></div>
       </div>
     </section>
   </main>
@@ -172,7 +174,7 @@
   <footer class="site-footer">
     <div class="shell footer-grid">
       <div><a class="footer-brand" href="https://plcmanjp.github.io/">PLCManJP</a><p>제조와 설비 현장을 위한 실용 도구를 만듭니다.</p></div>
-      <div class="footer-links"><a href="https://groups.google.com/g/feedgrove-testers">테스트 피드백</a><a href="https://plcmanjp.github.io/feedgrove/privacy/">개인정보처리방침</a><a href="https://plcmanjp.github.io/">다른 제품 보기</a></div>
+      <div class="footer-links"><a href="mailto:chechapbg@gmail.com">이메일 문의</a><a href="https://plcmanjp.github.io/feedgrove/privacy/">개인정보처리방침</a><a href="https://plcmanjp.github.io/">다른 제품 보기</a></div>
     </div>
   </footer>
 
@@ -186,12 +188,12 @@
         "url": "https://plcmanjp.github.io/feedgrove/",
         "applicationCategory": "UtilitiesApplication",
         "operatingSystem": "Android 8.0+",
-        "inLanguage": ["ko", "en"],
-        "description": "RSS와 Atom, 일반 HTML 페이지를 모아 읽고 규칙 기반 다이제스트와 선택형 Discord 웹훅 전송을 구성하는 로컬 우선 Android 앱. 현재 비공개 테스트 중입니다.",
+        "inLanguage": ["ko", "en", "ja"],
+        "description": "RSS와 Atom, 일반 웹페이지를 모아 읽고 규칙 기반 다이제스트와 선택형 Discord 웹훅 전송을 구성하는 로컬 우선 Android 앱입니다.",
         "image": "https://plcmanjp.github.io/assets/og-feedgrove.png",
         "installUrl": "https://play.google.com/store/apps/details?id=com.plcmanjp.feedgrove",
-        "audience": { "@type": "Audience", "audienceType": "비공개 테스터" },
-        "potentialAction": { "@type": "JoinAction", "target": "https://play.google.com/apps/testing/com.plcmanjp.feedgrove" },
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
+        "potentialAction": { "@type": "DownloadAction", "target": "https://play.google.com/store/apps/details?id=com.plcmanjp.feedgrove" },
         "author": { "@type": "Person", "name": "PLCManJP", "url": "https://plcmanjp.github.io/" }
       },
       {

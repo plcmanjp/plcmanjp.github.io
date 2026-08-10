@@ -37,7 +37,7 @@
   box-shadow: 0 7px 18px color-mix(in srgb, var(--brand) 24%, transparent);
 }
 
-.test-badge {
+.release-badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -50,7 +50,7 @@
   font-weight: 850;
 }
 
-:root[data-theme="dark"] .test-badge {
+:root[data-theme="dark"] .release-badge {
   color: var(--brand);
 }
 
@@ -156,19 +156,9 @@
 .screen-grid figcaption strong { font-size: .88rem; }
 .screen-grid figcaption span { color: var(--muted); font-size: .72rem; }
 
-.testing-section { background: var(--surface); }
+.install-section { background: var(--surface); }
 
-.testing-note {
-  margin-top: 24px;
-  padding: 18px 20px;
-  border-left: 4px solid var(--grove-gold);
-  border-radius: 0 12px 12px 0;
-  background: color-mix(in srgb, var(--grove-gold) 10%, var(--surface));
-  color: var(--muted);
-  font-size: .84rem;
-}
-
-.testing-note strong { color: var(--ink); }
+.install-button { margin-top: 28px; }
 
 .workflow-list .step-action {
   display: inline-flex;

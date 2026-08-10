@@ -17,7 +17,9 @@
     label.textContent = name;
     button.setAttribute("aria-label", "테마 전환: 현재 " + name);
     if (meta) {
-      meta.setAttribute("content", next === "dark" ? "#0e1119" : "#f5f7fb");
+      var lightColor = meta.getAttribute("data-theme-light") || "#f5f7fb";
+      var darkColor = meta.getAttribute("data-theme-dark") || "#0e1119";
+      meta.setAttribute("content", next === "dark" ? darkColor : lightColor);
     }
     if (save) {
       try {
