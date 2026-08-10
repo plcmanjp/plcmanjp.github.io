@@ -558,10 +558,18 @@
 }
 
 .portfolio-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
   padding: 9px 13px;
   border-radius: 11px;
   background: var(--ink);
   color: var(--page);
+}
+
+.portfolio-primary svg {
+  flex: 0 0 auto;
 }
 
 .web-section {
