@@ -62,14 +62,31 @@
   .zone.params .zone-head .h { color: var(--signal); }
   .zone-head .sub { font-size: 10.5px; color: var(--muted); margin-top: 2px; }
 
-  .chiprow { display: flex; flex-wrap: wrap; gap: 6px; }
-  .chiprow button {
-    appearance: none; border: 1px solid var(--line); background: var(--surface); color: var(--ink);
-    border-radius: 999px; padding: 6px 11px; font-size: 12px; font-weight: 600; font-family: var(--sans); cursor: pointer;
+  .selector-trigger { appearance: none; width: 100%; min-height: 54px; border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px; background: var(--surface); color: var(--ink); text-align: left; cursor: pointer; }
+  .selector-trigger strong, .selector-trigger span { display: block; }
+  .selector-trigger strong { font-size: 13px; }
+  .selector-trigger span { margin-top: 2px; color: var(--muted); font-size: 11px; line-height: 1.4; }
+  dialog.selector { width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: transparent; color: var(--ink); }
+  dialog.selector[open] { display: grid; place-items: center; }
+  dialog.selector::backdrop { background: rgba(10, 16, 22, .55); }
+  .selector-panel { width: min(560px, calc(100vw - 32px)); max-height: min(82dvh, 720px); overflow: auto; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); box-shadow: 0 18px 50px rgba(12, 20, 30, .38); }
+  .selector-head { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--line); background: var(--surface); }
+  .selector-head h3 { margin: 0; font-size: 17px; }
+  .selector-close { min-width: 44px; min-height: 44px; border: 0; border-radius: 999px; background: var(--surface-2); color: var(--ink); cursor: pointer; }
+  .selector-body { padding: 8px 12px 16px; }
+  .selector-group-title { margin: 12px 4px 6px; color: var(--muted); font-size: 12px; font-weight: 800; }
+  .selector-options { display: grid; gap: 4px; }
+  .selector-option { appearance: none; display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; align-items: center; width: 100%; min-height: 52px; padding: 8px 10px; border: 1px solid transparent; border-radius: 10px; background: transparent; color: var(--ink); text-align: left; cursor: pointer; }
+  .selector-option:hover, .selector-option:focus-visible { background: var(--primary-soft); border-color: var(--line); }
+  .selector-radio { width: 18px; height: 18px; border: 2px solid var(--muted); border-radius: 50%; }
+  .selector-option[aria-checked="true"] .selector-radio { border: 5px solid var(--primary); }
+  .selector-copy strong, .selector-copy span { display: block; }
+  .selector-copy strong { font-size: 13px; }
+  .selector-copy span { margin-top: 2px; color: var(--muted); font-size: 11px; line-height: 1.4; }
+  @media (max-width: 839px) {
+    dialog.selector[open] { align-items: end; }
+    .selector-panel { width: 100%; max-height: 86dvh; border-width: 1px 0 0; border-radius: 20px 20px 0 0; }
   }
-  .chiprow button[aria-pressed="true"] { background: var(--primary); border-color: var(--primary); color: #fff; font-weight: 800; }
-  .chiprow.cs button[aria-pressed="true"] { background: var(--signal); border-color: var(--signal); }
-  .group-label { font-size: 11px; font-weight: 700; color: var(--muted); margin: 2px 0 0; }
 
   .seg-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
   .seg-toggle.cols3 { grid-template-columns: 1fr 1fr 1fr; }
@@ -214,21 +231,10 @@
           <div class="h">▶ 알고리즘</div>
           <div class="sub">체크섬 4종, CRC-16 프리셋 4종, 직접 입력</div>
         </div>
-        <p class="group-label">체크섬</p>
-        <div class="chiprow cs" id="csChips">
-          <button type="button" data-algo="SUM8">합산 8</button>
-          <button type="button" data-algo="SUM16">합산 16</button>
-          <button type="button" data-algo="XOR8">XOR 8</button>
-          <button type="button" data-algo="LRC8">LRC</button>
-        </div>
-        <p class="group-label">CRC-16</p>
-        <div class="chiprow" id="crcChips">
-          <button type="button" data-algo="MODBUS" aria-pressed="true">Modbus</button>
-          <button type="button" data-algo="CCITT_FALSE">CCITT-FALSE</button>
-          <button type="button" data-algo="XMODEM">XMODEM</button>
-          <button type="button" data-algo="ARC">ARC</button>
-          <button type="button" data-algo="CUSTOM">직접 입력</button>
-        </div>
+        <button class="selector-trigger" id="algoTrigger" type="button" aria-haspopup="dialog" aria-controls="algoSelector">
+          <strong id="algoTriggerLabel">CRC-16/Modbus</strong>
+          <span id="algoTriggerDescription">Modbus RTU에서 쓰는 반사형 CRC-16 프리셋입니다.</span>
+        </button>
       </div>
 
       <!-- 파라미터 패널 -->
@@ -332,6 +338,32 @@
   </div>
 </footer>
 
+<dialog class="selector" id="algoSelector" aria-labelledby="algoSelectorTitle">
+  <div class="selector-panel" id="algoSelectorPanel">
+    <div class="selector-head">
+      <h3 id="algoSelectorTitle">알고리즘 선택</h3>
+      <button class="selector-close" id="algoSelectorClose" type="button" aria-label="선택하지 않고 닫기">닫기</button>
+    </div>
+    <div class="selector-body" id="algoRadioGroup" role="radiogroup" aria-labelledby="algoSelectorTitle">
+      <div class="selector-group-title" id="algoChecksumGroup" role="heading" aria-level="4">체크섬</div>
+      <div class="selector-options" role="group" aria-labelledby="algoChecksumGroup">
+        <button class="selector-option" type="button" role="radio" aria-checked="false" data-algo="SUM8"><span class="selector-radio" aria-hidden="true"></span><span class="selector-copy"><strong>합산 8비트</strong><span>모든 바이트 합계의 하위 8비트를 사용합니다.</span></span></button>
+        <button class="selector-option" type="button" role="radio" aria-checked="false" data-algo="SUM16"><span class="selector-radio" aria-hidden="true"></span><span class="selector-copy"><strong>합산 16비트</strong><span>모든 바이트 합계의 하위 16비트를 사용합니다.</span></span></button>
+        <button class="selector-option" type="button" role="radio" aria-checked="false" data-algo="XOR8"><span class="selector-radio" aria-hidden="true"></span><span class="selector-copy"><strong>XOR 8비트</strong><span>모든 바이트를 차례로 XOR한 8비트 값을 사용합니다.</span></span></button>
+        <button class="selector-option" type="button" role="radio" aria-checked="false" data-algo="LRC8"><span class="selector-radio" aria-hidden="true"></span><span class="selector-copy"><strong>LRC</strong><span>바이트 합계의 2의 보수를 8비트로 사용합니다.</span></span></button>
+      </div>
+      <div class="selector-group-title" id="algoCrcGroup" role="heading" aria-level="4">CRC-16</div>
+      <div class="selector-options" role="group" aria-labelledby="algoCrcGroup">
+        <button class="selector-option" type="button" role="radio" aria-checked="true" data-algo="MODBUS"><span class="selector-radio" aria-hidden="true"></span><span class="selector-copy"><strong>Modbus</strong><span>Modbus RTU에서 쓰는 반사형 CRC-16 프리셋입니다.</span></span></button>
+        <button class="selector-option" type="button" role="radio" aria-checked="false" data-algo="CCITT_FALSE"><span class="selector-radio" aria-hidden="true"></span><span class="selector-copy"><strong>CCITT-FALSE</strong><span>초기값 FFFF를 쓰는 비반사형 CCITT 프리셋입니다.</span></span></button>
+        <button class="selector-option" type="button" role="radio" aria-checked="false" data-algo="XMODEM"><span class="selector-radio" aria-hidden="true"></span><span class="selector-copy"><strong>XMODEM</strong><span>초기값 0000을 쓰는 비반사형 CCITT 프리셋입니다.</span></span></button>
+        <button class="selector-option" type="button" role="radio" aria-checked="false" data-algo="ARC"><span class="selector-radio" aria-hidden="true"></span><span class="selector-copy"><strong>ARC</strong><span>IBM 계열에서 쓰는 반사형 CRC-16 프리셋입니다.</span></span></button>
+        <button class="selector-option" type="button" role="radio" aria-checked="false" data-algo="CUSTOM"><span class="selector-radio" aria-hidden="true"></span><span class="selector-copy"><strong>직접 입력</strong><span>Poly, Init, RefIn, RefOut, XorOut을 직접 정합니다.</span></span></button>
+      </div>
+    </div>
+  </div>
+</dialog>
+
 <script>
 (function () {
   const MAX_BYTES = 4096;
@@ -342,6 +374,17 @@
     ARC:          { poly: 0x8005, init: 0x0000, refin: true,  refout: true,  xorout: 0x0000, label: "CRC-16/ARC" }
   };
   const CS = new Set(["SUM8", "SUM16", "XOR8", "LRC8"]);
+  const ALGORITHMS = {
+    SUM8: { label: "합산 8비트", description: "모든 바이트 합계의 하위 8비트를 사용합니다." },
+    SUM16: { label: "합산 16비트", description: "모든 바이트 합계의 하위 16비트를 사용합니다." },
+    XOR8: { label: "XOR 8비트", description: "모든 바이트를 차례로 XOR한 8비트 값을 사용합니다." },
+    LRC8: { label: "LRC", description: "바이트 합계의 2의 보수를 8비트로 사용합니다." },
+    MODBUS: { label: "CRC-16/Modbus", description: "Modbus RTU에서 쓰는 반사형 CRC-16 프리셋입니다." },
+    CCITT_FALSE: { label: "CRC-16/CCITT-FALSE", description: "초기값 FFFF를 쓰는 비반사형 CCITT 프리셋입니다." },
+    XMODEM: { label: "CRC-16/XMODEM", description: "초기값 0000을 쓰는 비반사형 CCITT 프리셋입니다." },
+    ARC: { label: "CRC-16/ARC", description: "IBM 계열에서 쓰는 반사형 CRC-16 프리셋입니다." },
+    CUSTOM: { label: "CRC-16/직접 입력", description: "Poly, Init, RefIn, RefOut, XorOut을 직접 정합니다." }
+  };
 
   let algo = "MODBUS";
   let inputMode = "HEX"; // HEX | ASCII
@@ -352,6 +395,7 @@
   const polyEl = $("poly"), initEl = $("init"), xorEl = $("xorout");
   const refinBtn = $("refin"), refoutBtn = $("refout");
   const payloadEl = $("payload"), expectedEl = $("expected");
+  const algoDialog = $("algoSelector"), algoTrigger = $("algoTrigger");
 
   function pad4(n) { return (n & 0xFFFF).toString(16).toUpperCase().padStart(4, "0"); }
   function pad2(n) { return (n & 0xFF).toString(16).toUpperCase().padStart(2, "0"); }
@@ -481,9 +525,14 @@
   }
 
   function applyAlgoUi() {
-    document.querySelectorAll("#csChips button, #crcChips button").forEach((btn) => {
-      btn.setAttribute("aria-pressed", btn.dataset.algo === algo ? "true" : "false");
+    document.querySelectorAll("#algoRadioGroup [role='radio']").forEach((btn) => {
+      const selected = btn.dataset.algo === algo;
+      btn.setAttribute("aria-checked", selected ? "true" : "false");
+      btn.tabIndex = selected ? 0 : -1;
     });
+    $("algoTriggerLabel").textContent = ALGORITHMS[algo].label;
+    $("algoTriggerDescription").textContent = ALGORITHMS[algo].description;
+    algoTrigger.setAttribute("aria-label", `알고리즘 선택: ${ALGORITHMS[algo].label}. ${ALGORITHMS[algo].description}`);
     const isCs = CS.has(algo);
     $("paramsZone").hidden = isCs;
     if (!isCs) {
@@ -618,12 +667,47 @@
     st.textContent = ok ? "일치" : "불일치";
   }
 
-  // chips
-  document.querySelectorAll("#csChips button, #crcChips button").forEach((btn) => {
+  function closeAlgoSelector() {
+    if (typeof algoDialog.close === "function") algoDialog.close();
+    else algoDialog.removeAttribute("open");
+    algoTrigger.focus();
+  }
+
+  function openAlgoSelector() {
+    if (typeof algoDialog.showModal === "function") algoDialog.showModal();
+    else algoDialog.setAttribute("open", "");
+    const current = algoDialog.querySelector(`[data-algo="${algo}"]`);
+    algoDialog.querySelectorAll("[role='radio']").forEach((option) => { option.tabIndex = option === current ? 0 : -1; });
+    (current || algoDialog.querySelector("[role='radio']")).focus();
+  }
+
+  algoTrigger.addEventListener("click", openAlgoSelector);
+  $("algoSelectorClose").addEventListener("click", closeAlgoSelector);
+  algoDialog.addEventListener("cancel", (event) => { event.preventDefault(); closeAlgoSelector(); });
+  algoDialog.addEventListener("click", (event) => {
+    const panel = $("algoSelectorPanel").getBoundingClientRect();
+    const outside = event.clientX < panel.left || event.clientX > panel.right || event.clientY < panel.top || event.clientY > panel.bottom;
+    if (event.target === algoDialog && outside) closeAlgoSelector();
+  });
+  $("algoRadioGroup").addEventListener("keydown", (event) => {
+    const keys = ["ArrowDown", "ArrowRight", "ArrowUp", "ArrowLeft", "Home", "End"];
+    if (!keys.includes(event.key)) return;
+    event.preventDefault();
+    const options = [...algoDialog.querySelectorAll("[role='radio']")];
+    const index = options.indexOf(document.activeElement);
+    const next = event.key === "Home" ? 0 : event.key === "End" ? options.length - 1 : (index + (event.key === "ArrowDown" || event.key === "ArrowRight" ? 1 : -1) + options.length) % options.length;
+    options.forEach((option, optionIndex) => { option.tabIndex = optionIndex === next ? 0 : -1; });
+    options[next].focus();
+  });
+  document.querySelectorAll("#algoRadioGroup [role='radio']").forEach((btn) => {
     btn.addEventListener("click", () => {
-      algo = btn.dataset.algo;
-      applyAlgoUi();
-      recompute();
+      const next = btn.dataset.algo;
+      if (next !== algo) {
+        algo = next;
+        applyAlgoUi();
+        recompute();
+      }
+      closeAlgoSelector();
     });
   });
 
