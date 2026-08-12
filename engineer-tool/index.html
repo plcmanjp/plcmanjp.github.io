@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" id="themeColor" content="#e9edf1">
 <title>엔지니어 도구: 제조와 설비 현장 필수 계산 도구 모음 | PLCManJP</title>
-<meta name="description" content="프로그래머 계산기, 전자기어비 산출, 원둘레/면적 계산, 삼각함수, 아스키코드 인코딩, 아날로그 스케일 변환, 통신 체크섬, 시리얼 전송시간, UVW 스테이지 정렬까지 현장 엔지니어를 위한 9종의 필수 계산 도구를 브라우저에서 바로 사용해보세요.">
+<meta name="description" content="프로그래머 계산기, 전자기어비 산출, 통신 체크섬, 시리얼 전송시간, UVW 스테이지 정렬, Modbus RTU 프레임 생성기까지 현장 엔지니어를 위한 10종의 필수 계산 도구를 브라우저에서 바로 사용해보세요.">
 <meta property="og:title" content="엔지니어 도구: 제조와 설비 현장 필수 계산 도구 모음">
-<meta property="og:description" content="현장 엔지니어가 실무에서 즉시 활용할 수 있는 직관적인 계산 도구 9종을 설치 없이 무료로 제공합니다.">
+<meta property="og:description" content="현장 엔지니어가 실무에서 즉시 활용할 수 있는 직관적인 계산 도구 10종을 설치 없이 무료로 제공합니다.">
 <meta property="og:site_name" content="PLCManJP">
 <meta property="og:locale" content="ko_KR">
 <meta property="og:type" content="website">
@@ -15,7 +15,7 @@
 <meta property="og:image" content="https://plcmanjp.github.io/assets/og-engineer-tool.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="제조와 설비 현장 필수 계산 도구 9종">
+<meta property="og:image:alt" content="제조와 설비 현장 필수 계산 도구 10종">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://plcmanjp.github.io/engineer-tool/">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -111,7 +111,7 @@
       <div class="eyebrow">Engineer Tools, Free, Browser</div>
       <h1>제조와 설비 현장 필수 계산 도구 모음</h1>
       <p>프로그래밍, 통신 디버깅, 기구부 셋업 등 현장에서 마주치는 복잡한 계산을 쉽고 빠르게 해결하세요. 오프라인 상태에서도 브라우저만 있으면 즉시 사용할 수 있습니다. 처음 쓰는 도구라면 각 도구 제목 행의 <b>도움말</b> 버튼에서 쓰는 순서와 주의할 점을 볼 수 있습니다.</p>
-      <div class="meta">도구 <b>9종</b>, 무료, 오프라인에서도 동작</div>
+      <div class="meta">도구 <b>10종</b>, 무료, 오프라인에서도 동작</div>
     </div>
   </header>
 
@@ -183,6 +183,13 @@
           <span class="go">열기 →</span>
         </a>
 
+        <a class="tool" href="modbus-rtu/">
+          <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M4 7h16v10H4z M7 10h2 M7 14h2 M12 10h5 M12 14h5"/></svg></span>
+          <h3>Modbus RTU 프레임 생성기</h3>
+          <p>8개 기능 코드의 요청 프레임과 CRC를 계산합니다. 실제 장치에 연결하거나 송신하지 않습니다.</p>
+          <span class="go">열기 →</span>
+        </a>
+
       </div>
 
       <div class="appx">
@@ -226,7 +233,7 @@
       {
         "@type": "ItemList",
         "name": "제조와 설비 현장 필수 계산 도구",
-        "numberOfItems": 9,
+        "numberOfItems": 10,
         "itemListElement": [
           { "@type": "ListItem", "position": 1, "name": "프로그래머 계산기", "url": "https://plcmanjp.github.io/engineer-tool/programmer-calculator/" },
           { "@type": "ListItem", "position": 2, "name": "전자기어비 계산기", "url": "https://plcmanjp.github.io/engineer-tool/gear-ratio/" },
@@ -236,7 +243,8 @@
           { "@type": "ListItem", "position": 6, "name": "아날로그 스케일 변환", "url": "https://plcmanjp.github.io/engineer-tool/analog-scale/" },
           { "@type": "ListItem", "position": 7, "name": "통신 코드 계산기", "url": "https://plcmanjp.github.io/engineer-tool/comm-code/" },
           { "@type": "ListItem", "position": 8, "name": "시리얼 통신 속도 계산기", "url": "https://plcmanjp.github.io/engineer-tool/serial-time/" },
-          { "@type": "ListItem", "position": 9, "name": "UVW 스테이지 계산기", "url": "https://plcmanjp.github.io/engineer-tool/uvw-stage/" }
+          { "@type": "ListItem", "position": 9, "name": "UVW 스테이지 계산기", "url": "https://plcmanjp.github.io/engineer-tool/uvw-stage/" },
+          { "@type": "ListItem", "position": 10, "name": "Modbus RTU 프레임 생성기", "url": "https://plcmanjp.github.io/engineer-tool/modbus-rtu/" }
         ]
       }
     ]
