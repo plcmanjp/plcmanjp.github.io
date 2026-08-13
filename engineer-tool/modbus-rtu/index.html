@@ -10,7 +10,7 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../assets/tool-shell.css">
 <style>
-:root{color-scheme:light;--bg:#e9edf1;--surface:#fff;--surface2:#f3f6f9;--ink:#18222e;--muted:#5c6772;--line:#d3dae1;--primary:#15629f;--soft:#e4eef7;--danger:#b3261e;--dangerSoft:#fce8e6;--good:#28783b;--mono:ui-monospace,"Cascadia Mono",Consolas,monospace;--sans:-apple-system,"Segoe UI","Malgun Gothic",system-ui,sans-serif}
+:root{color-scheme:light;--bg:#e9edf1;--surface:#fff;--surface2:#f3f6f9;--surface-2:var(--surface2);--ink:#18222e;--muted:#5c6772;--line:#d3dae1;--primary:#15629f;--soft:#e4eef7;--danger:#b3261e;--dangerSoft:#fce8e6;--good:#28783b;--mono:ui-monospace,"Cascadia Mono",Consolas,monospace;--sans:-apple-system,"Segoe UI","Malgun Gothic",system-ui,sans-serif}
 :root[data-theme="dark"]{color-scheme:dark;--bg:#10161d;--surface:#19222c;--surface2:#141c25;--ink:#e7edf3;--muted:#93a1b0;--line:#2a3542;--primary:#4ea3e6;--soft:#17303f;--danger:#f2b8b5;--dangerSoft:#3a1f21;--good:#82c892}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55}.wrap{max-width:880px;margin:auto;padding:0 16px}a{color:inherit}.notice{padding:11px 13px;border:1px solid var(--line);border-radius:12px;background:var(--surface2);font-size:.9rem}.app{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr);gap:16px;padding-bottom:44px}@media(max-width:760px){.app{grid-template-columns:1fr}}.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 3px 14px rgba(20,32,46,.06)}.card h2{font-size:1rem;margin:0 0 12px}.fields{display:grid;gap:12px}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:460px){.two{grid-template-columns:1fr}}label{display:grid;gap:5px;color:var(--muted);font-size:.82rem;font-weight:650}input,select,textarea{width:100%;border:1px solid var(--line);border-radius:9px;background:var(--surface);color:var(--ink);padding:10px;font:inherit}textarea{font-family:var(--mono);min-height:94px;resize:vertical}input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--primary);outline-offset:1px}.seg{display:flex;flex-wrap:wrap;gap:7px}.seg button,.bit{border:1px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:999px;padding:8px 11px;cursor:pointer;font-weight:700}.seg button[aria-pressed="true"],.bit[aria-pressed="true"]{background:var(--primary);border-color:var(--primary);color:#fff}.help{font-size:.78rem;color:var(--muted)}.error{font-size:.8rem;color:var(--danger);font-weight:700;min-height:1.25em}.bitsHead{display:flex;justify-content:space-between;align-items:center;gap:8px}.pager{display:flex;gap:6px}.pager button{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:6px 9px;cursor:pointer}.bits{display:flex;gap:6px;overflow-x:auto;padding:3px 0 7px}.bit{min-width:74px}.result{position:sticky;top:10px;align-self:start}.hexLabel{font-size:.77rem;color:var(--muted);font-weight:700;margin-top:10px}.hexRow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px;align-items:center}.hex{font-family:var(--mono);font-size:.91rem;white-space:nowrap;overflow-x:auto;background:var(--surface2);border-radius:8px;padding:10px}.copy{border:1px solid var(--primary);background:var(--soft);color:var(--primary);border-radius:8px;padding:9px 11px;cursor:pointer;font-weight:700}.copy:disabled{opacity:.42;cursor:not-allowed}.metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:14px 0}.metric{background:var(--surface2);border-radius:9px;padding:9px}.metric span{display:block;font-size:.7rem;color:var(--muted)}.metric b{font-family:var(--mono)}table{width:100%;border-collapse:collapse;font-size:.78rem}th,td{text-align:left;border-bottom:1px solid var(--line);padding:7px 4px;vertical-align:top}th{color:var(--muted)}.breakdown th,.breakdown td:nth-child(-n+3){white-space:nowrap}.breakdown th:nth-child(-n+3),.breakdown td:nth-child(-n+3){width:1%}.breakdown th:not(:last-child),.breakdown td:not(:last-child){padding-right:10px}td.code{font-family:var(--mono)}.empty{color:var(--muted);font-size:.88rem}.limits{margin-top:16px}.limits summary{cursor:pointer;font-weight:750}.limits table{margin-top:8px}.hidden{display:none!important}
 .selector-field{display:grid;gap:5px}.selector-label{color:var(--muted);font-size:.82rem;font-weight:650}.selector-trigger{width:100%;min-height:58px;border:1px solid var(--line);border-radius:9px;background:var(--surface);color:var(--ink);padding:9px 10px;text-align:left;cursor:pointer}.selector-trigger strong,.selector-trigger span{display:block}.selector-trigger span{margin-top:2px;color:var(--muted);font-size:.78rem;line-height:1.35}dialog.selector{width:100vw;height:100dvh;max-width:none;max-height:none;margin:0;padding:0;border:0;background:transparent;color:var(--ink)}dialog.selector[open]{display:grid;place-items:center}dialog.selector::backdrop{background:rgba(10,16,22,.58)}.selector-panel{width:min(600px,calc(100vw - 32px));max-height:min(82dvh,740px);overflow:auto;border:1px solid var(--line);border-radius:18px;background:var(--surface);box-shadow:0 18px 50px rgba(12,20,30,.38)}.selector-head{position:sticky;top:0;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);background:var(--surface)}.selector-head h2{margin:0;font-size:1.05rem}.selector-close{min-width:44px;min-height:44px;border:0;border-radius:999px;background:var(--surface2);color:var(--ink);cursor:pointer}.selector-body{padding:8px 12px 16px}.selector-group{margin:12px 4px 6px;color:var(--muted);font-size:.78rem;font-weight:800}.selector-options{display:grid;gap:4px}.selector-option{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;align-items:center;width:100%;min-height:54px;padding:8px 10px;border:1px solid transparent;border-radius:10px;background:transparent;color:var(--ink);text-align:left;cursor:pointer}.selector-option:hover,.selector-option:focus-visible{border-color:var(--line);background:var(--soft)}.selector-radio{width:18px;height:18px;border:2px solid var(--muted);border-radius:50%}.selector-option[aria-checked="true"] .selector-radio{border:5px solid var(--primary)}.selector-copy strong,.selector-copy span{display:block}.selector-copy span{margin-top:2px;color:var(--muted);font-size:.78rem;line-height:1.35}@media(max-width:839px){dialog.selector[open]{align-items:end}.selector-panel{width:100%;max-height:86dvh;border-width:1px 0 0;border-radius:20px 20px 0 0}}
@@ -18,7 +18,7 @@
 </head>
 <body>
 <div class="topbar"><div class="tw"><div class="crumb"><a href="/">PLCManJP</a><span class="sep">/</span><a href="../">엔지니어 도구</a><span class="sep">/</span><span class="cur">Modbus RTU</span></div><button class="themebtn" id="themeBtn" type="button" aria-label="테마 전환: 현재 라이트" aria-live="polite">🌓 <span id="themeLbl">라이트</span></button></div></div>
-<header class="page-head"><p class="eyebrow">엔지니어 도구</p><h1 class="page">Modbus RTU 프레임 생성기</h1><p class="lede">요청 ADU를 계산하고 spaced HEX, compact HEX, 필드 해설과 CRC byte 순서를 확인합니다.</p><div class="notice"><b>계산과 복사 전용입니다.</b> 시리얼 포트나 PLC에 연결하지 않으며 데이터를 송신하지 않습니다. 국번 0 방송과 40001 계열 참조 주소 직접 입력은 지원하지 않습니다.</div></header>
+<header class="page-head"><p class="eyebrow">엔지니어 도구</p><div class="page-title-row"><h1 class="page">Modbus RTU 프레임 생성기</h1><button class="helpbtn" id="toolHelpBtn" type="button" aria-haspopup="dialog"><span aria-hidden="true">?</span> 도움말</button></div><p class="lede">요청 ADU를 계산하고 spaced HEX, compact HEX, 필드 해설과 CRC byte 순서를 확인합니다.</p><div class="notice"><b>계산과 복사 전용입니다.</b> 시리얼 포트나 PLC에 연결하지 않으며 데이터를 송신하지 않습니다. 국번 0 방송과 40001 계열 참조 주소 직접 입력은 지원하지 않습니다.</div></header>
 <main class="app wrap">
 <section class="card fields" aria-labelledby="inputTitle">
 <h2 id="inputTitle">요청 입력</h2>
@@ -87,6 +87,64 @@ fcTrigger.addEventListener("click",openFunctionSelector);$("fcSelectorClose").ad
 function copy(id){navigator.clipboard&&navigator.clipboard.writeText($(id).textContent)}$("copySpaced").onclick=()=>copy("spaced");$("copyCompact").onclick=()=>copy("compact");
 const themeBtn=$("themeBtn"),themeLbl=$("themeLbl");function applyTheme(next,save=true){const theme=next==="dark"?"dark":"light";document.documentElement.dataset.theme=theme;themeLbl.textContent=theme==="dark"?"다크":"라이트";themeBtn.setAttribute("aria-label",`테마 전환: 현재 ${themeLbl.textContent}`);if(save)try{localStorage.setItem("plcmanjp-theme",theme)}catch(e){}}themeBtn.onclick=()=>applyTheme(document.documentElement.dataset.theme==="dark"?"light":"dark");try{applyTheme(localStorage.getItem("plcmanjp-theme"),false)}catch(e){applyTheme("light",false)}
 render();
+})();
+</script>
+<dialog class="toolhelp" id="toolHelp" aria-labelledby="toolHelpTitle">
+  <div class="toolhelp-head">
+    <h3 id="toolHelpTitle">Modbus RTU 프레임 생성기 도움말</h3>
+    <button class="toolhelp-close" id="toolHelpClose" type="button" aria-label="닫기">&times;</button>
+  </div>
+  <div class="toolhelp-body">
+    <h4>이 도구로 할 수 있는 일</h4>
+    <ul>
+      <li>FC01, FC02, FC03, FC04, FC05, FC06, FC0F, FC10 요청 ADU를 만듭니다.</li>
+      <li>공백으로 구분한 HEX와 붙여 쓴 HEX를 함께 보여 주고 바로 복사합니다.</li>
+      <li>각 필드의 offset, 길이, 의미와 CRC word, 실제 송신 순서의 CRC 바이트를 확인합니다.</li>
+    </ul>
+    <h4>쓰는 순서</h4>
+    <ol>
+      <li>국번과 기능 코드를 선택합니다.</li>
+      <li>주소 기준을 고르고 시작 주소, 개수, 쓰기 데이터를 입력합니다.</li>
+      <li>요청 프레임과 필드 해설을 확인한 뒤 필요한 HEX 형식을 복사합니다.</li>
+    </ol>
+    <h4>알아두면 좋은 것</h4>
+    <ul>
+      <li>0기준 raw 주소 또는 1기준 주소를 입력합니다. 40001 계열 참조 주소를 직접 넣는 방식은 지원하지 않습니다.</li>
+      <li>Modbus RTU의 CRC는 Low byte를 먼저, High byte를 다음에 송신합니다.</li>
+      <li>FC0F 코일 데이터는 LSB first로 묶고, FC10 레지스터 값은 High byte first로 넣습니다.</li>
+      <li>이 도구는 계산과 복사만 수행합니다. 실제 PLC 연결과 송신은 하지 않습니다.</li>
+    </ul>
+  </div>
+</dialog>
+<script>
+/* 도움말 팝업, 페이지 내부 로직에 의존하지 않는 독립 레이어 */
+(function () {
+  "use strict";
+  var dlg = document.getElementById("toolHelp");
+  var btn = document.getElementById("toolHelpBtn");
+  var closeBtn = document.getElementById("toolHelpClose");
+  if (!dlg || !btn) return;
+  function openHelp() {
+    if (typeof dlg.showModal === "function") dlg.showModal();
+    else dlg.setAttribute("open", "");
+    if (closeBtn) closeBtn.focus();
+  }
+  function closeHelp() {
+    if (typeof dlg.close === "function") dlg.close();
+    else dlg.removeAttribute("open");
+    btn.focus();
+  }
+  btn.addEventListener("click", openHelp);
+  if (closeBtn) closeBtn.addEventListener("click", closeHelp);
+  document.addEventListener("keydown", function (e) {
+    if (!dlg.open) return;
+    if (e.key === "Escape" || e.key === "Esc") { e.preventDefault(); closeHelp(); }
+  });
+  dlg.addEventListener("click", function (e) {
+    if (e.target !== dlg) return;
+    var r = dlg.getBoundingClientRect();
+    if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) closeHelp();
+  });
 })();
 </script>
 </body>
