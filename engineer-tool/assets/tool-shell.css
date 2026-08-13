@@ -131,6 +131,11 @@ footer.site .fl .tool-list-link:hover {
   color: var(--primary);
 }
 
+footer.site .fl .tool-list-link:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
 footer.site .note {
   max-width: 460px;
   margin: 0 auto;
