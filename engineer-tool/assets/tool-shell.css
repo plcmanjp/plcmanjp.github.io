@@ -142,3 +142,163 @@ footer.site .note {
   font-size: 11.5px;
   line-height: 1.7;
 }
+
+.helpbtn {
+  flex: 0 0 auto;
+  appearance: none;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 5px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.helpbtn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+dialog.toolhelp {
+  width: min(460px, 92vw);
+  max-height: 82vh;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 0;
+  overflow: hidden;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 18px 50px rgba(12, 20, 30, .38);
+}
+
+dialog.toolhelp::backdrop {
+  background: rgba(10, 16, 22, .55);
+}
+
+.toolhelp-head {
+  border-bottom: 1px solid var(--line);
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toolhelp-head h3 {
+  flex: 1;
+  margin: 0;
+  font-size: 14.5px;
+}
+
+.toolhelp-close {
+  appearance: none;
+  border: 0;
+  border-radius: 8px;
+  padding: 2px 7px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.toolhelp-close:hover {
+  background: var(--surface-2);
+  color: var(--ink);
+}
+
+.toolhelp-body {
+  max-height: calc(82vh - 53px);
+  padding: 12px 14px 16px;
+  overflow-y: auto;
+}
+
+.toolhelp-body h4 {
+  margin: 14px 0 7px;
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .04em;
+}
+
+.toolhelp-body h4:first-child {
+  margin-top: 0;
+}
+
+.toolhelp-body dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: baseline;
+  gap: 7px 12px;
+}
+
+.toolhelp-body dt,
+.toolhelp-body dd {
+  margin: 0;
+}
+
+.toolhelp-body dd {
+  color: var(--muted);
+  font-size: 12.5px;
+}
+
+.toolhelp-body ol,
+.toolhelp-body ul {
+  margin: 0;
+  padding-left: 17px;
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.65;
+}
+
+.toolhelp-body li {
+  margin-bottom: 5px;
+}
+
+.toolhelp-body li:last-child {
+  margin-bottom: 0;
+}
+
+.toolhelp-body b {
+  color: var(--ink);
+}
+
+.toolhelp-body code {
+  border-radius: 4px;
+  padding: 1px 4px;
+  background: var(--surface-2);
+  font-family: var(--mono);
+  font-size: 11.5px;
+}
+
+.toolhelp-foot {
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: 11.5px;
+  line-height: 1.65;
+}
+
+.toolhelp-body kbd {
+  border: 1px solid var(--line);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  padding: 2px 6px;
+  background: var(--surface-2);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.toolhelp-body .sep {
+  margin: 0 2px;
+  color: var(--muted);
+  font-size: 11px;
+}
