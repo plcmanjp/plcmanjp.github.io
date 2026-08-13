@@ -142,7 +142,7 @@
   </header>
 
   <section class="device">
-    <div class="device-bar"><a class="back" href="../" aria-label="도구 목록으로">&larr;</a><h2>시리얼 통신 속도 계산기</h2><button class="helpbtn" id="toolHelpBtn" type="button" aria-haspopup="dialog"><span aria-hidden="true">?</span> 도움말</button></div>
+    <div class="device-bar"><a class="back" href="../" aria-label="도구 목록으로">&larr;</a><h2>시리얼 통신 속도 계산기</h2><button class="helpbtn" id="toolHelpBtn" data-tool-help-open="toolHelp" aria-controls="toolHelp" type="button" aria-haspopup="dialog"><span aria-hidden="true">?</span> 도움말</button></div>
     <div class="screen">
       <p class="hint0">첫 시작 비트 송신 시작부터 마지막 정지 비트 송신 완료까지의 시간입니다. 장치 <b>응답시간이 아닙니다</b>.</p>
 
@@ -617,10 +617,10 @@
   apply(cur,false);
 })();
 </script>
-<dialog class="toolhelp" id="toolHelp" aria-labelledby="toolHelpTitle">
+<dialog class="toolhelp" id="toolHelp" data-tool-help aria-labelledby="toolHelpTitle">
   <div class="toolhelp-head">
     <h3 id="toolHelpTitle">시리얼 통신 속도 계산기 도움말</h3>
-    <button class="toolhelp-close" id="toolHelpClose" type="button" aria-label="닫기">&times;</button>
+    <button class="toolhelp-close" id="toolHelpClose" data-tool-help-close type="button" aria-label="닫기">&times;</button>
   </div>
   <div class="toolhelp-body">
     <h4>이 도구로 할 수 있는 일</h4>
@@ -647,38 +647,6 @@
     </ul>
   </div>
 </dialog>
-<script>
-/* 도움말 팝업 (엔지니어 도구 공용) — 페이지 내부 로직에 의존하지 않는 독립 레이어 */
-(function () {
-  "use strict";
-  var dlg = document.getElementById("toolHelp");
-  var btn = document.getElementById("toolHelpBtn");
-  var closeBtn = document.getElementById("toolHelpClose");
-  if (!dlg || !btn) return;
-  function openHelp() {
-    if (typeof dlg.showModal === "function") dlg.showModal();
-    else dlg.setAttribute("open", "");
-    if (closeBtn) closeBtn.focus();
-  }
-  function closeHelp() {
-    if (typeof dlg.close === "function") dlg.close();
-    else dlg.removeAttribute("open");
-    btn.focus();
-  }
-  btn.addEventListener("click", openHelp);
-  if (closeBtn) closeBtn.addEventListener("click", closeHelp);
-  // Esc 닫기 — 브라우저의 dialog 기본 취소에만 기대지 않고 명시적으로 처리한다
-  document.addEventListener("keydown", function (e) {
-    if (!dlg.open) return;
-    if (e.key === "Escape" || e.key === "Esc") { e.preventDefault(); closeHelp(); }
-  });
-  // 배경(backdrop) 클릭으로 닫기 — 패널 바깥 좌표일 때만
-  dlg.addEventListener("click", function (e) {
-    if (e.target !== dlg) return;
-    var r = dlg.getBoundingClientRect();
-    if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) closeHelp();
-  });
-})();
-</script>
+<script src="../assets/tool-help.js"></script>
 </body>
 </html>
