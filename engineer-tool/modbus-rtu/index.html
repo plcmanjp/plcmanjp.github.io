@@ -114,6 +114,18 @@ render();
       <li>FC0F 코일 데이터는 LSB first로 묶고, FC10 레지스터 값은 High byte first로 넣습니다.</li>
       <li>이 도구는 계산과 복사만 수행합니다. 실제 PLC 연결과 송신은 하지 않습니다.</li>
     </ul>
+    <h4>기능 코드별 예제 프레임</h4>
+    <p class="toolhelp-foot">모두 국번 1, raw 시작 주소 0 기준입니다. 마지막 두 바이트가 wire CRC Low, High 순서입니다.</p>
+    <dl>
+      <dt>FC01</dt><dd>코일 8개 읽기: <code>01 01 00 00 00 08 3D CC</code></dd>
+      <dt>FC02</dt><dd>이산 입력 8개 읽기: <code>01 02 00 00 00 08 79 CC</code></dd>
+      <dt>FC03</dt><dd>홀딩 레지스터 10개 읽기: <code>01 03 00 00 00 0A C5 CD</code></dd>
+      <dt>FC04</dt><dd>입력 레지스터 2개 읽기: <code>01 04 00 00 00 02 71 CB</code></dd>
+      <dt>FC05</dt><dd>단일 코일 ON 쓰기: <code>01 05 00 00 FF 00 8C 3A</code></dd>
+      <dt>FC06</dt><dd>단일 레지스터에 10 쓰기: <code>01 06 00 00 00 0A 09 CD</code></dd>
+      <dt>FC0F</dt><dd>코일 10개에 <code>1 0 1 0 1 0 1 0 1 1</code> 쓰기: <code>01 0F 00 00 00 0A 02 55 03 9A 69</code></dd>
+      <dt>FC10</dt><dd>레지스터 2개에 <code>1234 ABCD</code> 쓰기: <code>01 10 00 00 00 02 04 12 34 AB CD 09 BC</code></dd>
+    </dl>
   </div>
 </dialog>
 <script>
