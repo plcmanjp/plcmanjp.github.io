@@ -1,6 +1,6 @@
 /* 제품 상세 페이지 공용 셸 — 부모(수퍼바이저) 소유.
    브랜드 색·제품 전용 블록은 각 <slug>/assets/styles.css 가 덮어쓴다.
-   운영 규칙: .agents/wiki/dev-landing/README.md */
+   운영 규칙: .agents/tools/dev-landing/README.md */
 
 :root {
   color-scheme: light;
