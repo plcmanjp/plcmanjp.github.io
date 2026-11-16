@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://plcmanjp.github.io/</loc><lastmod>2026-08-13</lastmod></url>
-  <url><loc>https://plcmanjp.github.io/plc-io-check-helper/</loc><lastmod>2026-07-29</lastmod></url>
-  <url><loc>https://plcmanjp.github.io/codeless-macro-tool/</loc><lastmod>2026-07-29</lastmod></url>
-  <url><loc>https://plcmanjp.github.io/engineer-tool/</loc><lastmod>2026-08-12</lastmod></url>
+  <url><loc>https://plcmanjp.github.io/</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://plcmanjp.github.io/plc-io-check-helper/</loc><lastmod>2026-11-15</lastmod></url>
+  <url><loc>https://plcmanjp.github.io/codeless-macro-tool/</loc><lastmod>2026-11-15</lastmod></url>
+  <url><loc>https://plcmanjp.github.io/engineer-tool/</loc><lastmod>2026-10-25</lastmod></url>
   <url><loc>https://plcmanjp.github.io/engineer-tool/programmer-calculator/</loc><lastmod>2026-07-29</lastmod></url>
   <url><loc>https://plcmanjp.github.io/engineer-tool/gear-ratio/</loc><lastmod>2026-07-29</lastmod></url>
   <url><loc>https://plcmanjp.github.io/engineer-tool/circumference/</loc><lastmod>2026-07-29</lastmod></url>
@@ -16,9 +16,9 @@
   <url><loc>https://plcmanjp.github.io/engineer-tool/modbus-rtu/</loc><lastmod>2026-08-12</lastmod></url>
   <url><loc>https://plcmanjp.github.io/novel/</loc><lastmod>2026-07-29</lastmod></url>
   <url><loc>https://plcmanjp.github.io/ladder-quest/</loc><lastmod>2026-07-31</lastmod></url>
-  <url><loc>https://plcmanjp.github.io/codeless-macro-tool/privacy/</loc></url>
-  <url><loc>https://plcmanjp.github.io/plc-io-check-helper/privacy/</loc></url>
-  <url><loc>https://plcmanjp.github.io/feedgrove/</loc><lastmod>2026-08-10</lastmod></url>
+  <url><loc>https://plcmanjp.github.io/codeless-macro-tool/privacy/</loc><lastmod>2026-07-29</lastmod></url>
+  <url><loc>https://plcmanjp.github.io/plc-io-check-helper/privacy/</loc><lastmod>2026-07-29</lastmod></url>
+  <url><loc>https://plcmanjp.github.io/feedgrove/</loc><lastmod>2026-11-15</lastmod></url>
   <url><loc>https://plcmanjp.github.io/feedgrove/privacy/</loc><lastmod>2026-07-31</lastmod></url>
   <url><loc>https://plcmanjp.github.io/engineer-tool/inverter-conveyor/</loc><lastmod>2026-10-11</lastmod></url>
   <url><loc>https://plcmanjp.github.io/engineer-tool/servo-move-time/</loc><lastmod>2026-10-11</lastmod></url>

@@ -16,6 +16,7 @@
     root.setAttribute("data-theme", next);
     label.textContent = name;
     button.setAttribute("aria-label", "테마 전환: 현재 " + name);
+    button.setAttribute("aria-pressed", next === "dark" ? "true" : "false");
     if (meta) {
       var lightColor = meta.getAttribute("data-theme-light") || "#f5f7fb";
       var darkColor = meta.getAttribute("data-theme-dark") || "#0e1119";
