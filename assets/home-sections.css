@@ -454,12 +454,14 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
   width: 28px;
   height: 28px;
   border-radius: 999px;
   border: 1px solid var(--line);
   background: var(--surface-2);
   font-size: 14px;
+  line-height: 1;
   color: var(--muted);
   transition: transform 0.22s var(--ease-out-expo), background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
@@ -737,9 +739,9 @@
   border-color: var(--accent);
   background: var(--surface);
 }
-.novel-item strong { display: block; font-size: 15px; font-weight: 700; color: var(--ink); }
-.novel-item span { display: block; margin-top: 3px; font-size: 12.5px; color: var(--muted); }
-.novel-item .tool-arrow { flex-shrink: 0; }
+.novel-item > div strong { display: block; font-size: 15px; font-weight: 700; color: var(--ink); }
+.novel-item > div span { display: block; margin-top: 3px; font-size: 12.5px; color: var(--muted); }
+.novel-item > .tool-arrow { flex-shrink: 0; }
 .novel-item:hover .tool-arrow {
   background: var(--accent);
   border-color: var(--accent);
